@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tips · BetMeisters</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Open Free, Pro and NAP tips from BetMeisters, with price, stake and start time.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BetMeisters">
+<meta property="og:title" content="Tips · BetMeisters">
+<meta property="og:description" content="Open Free, Pro and NAP tips from BetMeisters, with price, stake and start time.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tips · BetMeisters">
+<meta name="twitter:description" content="Open Free, Pro and NAP tips from BetMeisters, with price, stake and start time.">
+<meta name="twitter:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
+</head>
+<body data-page="tips">
+<div id="bm-header"></div>
+<div class="page-head"><div class="wrap"><nav class="sub-tabs" aria-label="Tips sections"><a href="tips.html" class="on">All open tips</a><a href="propicks.html">Pro Picks</a><a href="tips.html#nap">NAP</a><a href="results.html">Results</a></nav><p class="eyebrow">Free · Pro · NAP</p><h1>Open <span>tips</span></h1><p>Every tip is published before the event with its price and advised stake. Free tips are open to everyone. Pro tips are for members.</p></div></div>
+<main class="wrap">
+  <section aria-label="Filters">
+    <div id="tip-filters"></div>
+    <div id="when-bar" role="group" aria-label="Filter by day, sport and event"></div>
+  </section>
+  <section aria-labelledby="h-open">
+    <div class="sec-head"><div><p class="eyebrow">Still to start · <span id="open-n">0</span> tips</p><h2 class="sec-title" id="h-open">Coming up</h2></div></div>
+    <div id="open-tips"></div>
+  </section>
+  <section id="in-play-sec" class="inplay" hidden aria-labelledby="h-inplay">
+    <div class="inplay-head"><h2 id="h-inplay"><span class="live-dot" aria-hidden="true"></span>In play <span class="count" id="in-play-n">0</span></h2><p>Betting has closed. These tips stay here until the result is confirmed. We do not show live scores here.</p></div>
+    <div id="in-play"></div>
+  </section>
+  <section aria-labelledby="h-settled">
+    <div class="sec-head"><div><p class="eyebrow">Most recent first</p><h2 class="sec-title" id="h-settled">Just settled</h2></div><a class="more" href="results.html">Full record</a></div>
+    <div id="settled-tips"></div>
+  </section>
+  <section class="panel" aria-labelledby="h-key" style="padding:22px">
+    <h2 class="sec-title" id="h-key" style="font-size:30px">How to read a tip</h2>
+    <dl class="explain">
+      <div><dt>Free, Pro, NAP, Best Value</dt><dd>Teal is a Free tip, yellow is Pro. Orange marks the NAP, our most confident selection. Blue marks Best Value, the biggest edge of the day available at three or more bookmakers.</dd></div>
+      <div><dt>Chance, bookie, edge</dt><dd>Chance is our estimate of the true chance. Bookie is the chance the best price implies. Edge is chance × price − 1. Each-way tips show the win and place chance. Stakes are in points: 1 is standard.</dd></div>
+      <div><dt>Times</dt><dd>Start times are UK time (GMT in winter, BST in summer), with East Africa Time (EAT) alongside during the test. Every day on the site is the UK day.</dd></div>
+    </dl>
+  </section>
+</main>
+<div id="bm-footer"></div>
+<script>window.BM_PUBLIC=1</script>
+<script src="data.js"></script>
+<script src="news_feed.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Results · BetMeisters</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="The full BetMeisters record: every settled tip, profit by tier and by Meister.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BetMeisters">
+<meta property="og:title" content="Results · BetMeisters">
+<meta property="og:description" content="The full BetMeisters record: every settled tip, profit by tier and by Meister.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Results · BetMeisters">
+<meta name="twitter:description" content="The full BetMeisters record: every settled tip, profit by tier and by Meister.">
+<meta name="twitter:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
+</head>
+<body data-page="results">
+<div id="bm-header"></div>
+<div class="page-head"><div class="wrap"><p class="eyebrow">The full record</p><h1>Every <span>result</span></h1><p>Winners and losers stay on the record. Profit is in points at the advised stake and the published price, so you can check every number.</p></div></div>
+<main class="wrap">
+  <div id="pp-line"></div>
+  <p class="pf-note" style="margin:0">Every settled tip and acca, winners and losers, newest first. Tap a tip to open its card. Charts and stats are on <a href="performance.html">Performance</a>.</p>
+  <section aria-labelledby="h-all">
+    <div class="sec-head"><div><p class="eyebrow" id="res-summary"></p><h2 class="sec-title" id="h-all">Every settled tip</h2></div></div>
+    <div id="res-filters"></div>
+    <div id="res-narrow"></div>
+    <div id="res-table"></div>
+  </section>
+  <section aria-labelledby="h-acca-res">
+    <div class="sec-head"><div><p class="eyebrow">Acca Meister · separate record, not in the totals above</p><h2 class="sec-title" id="h-acca-res">Settled accas</h2></div><a class="more" href="acca.html">Acca record and charts</a></div>
+    <section class="pf-panel" style="border-top-color:#FF5FA2"><div class="pf-hd"><h3>Acca Meister</h3><p id="res-acca-line"></p></div><div class="pf-body"><div id="res-accas"></div></div></section>
+  </section>
+</main>
+<div id="bm-footer"></div>
+<script>window.BM_PUBLIC=1</script>
+<script src="data.js"></script>
+<script src="news_feed.js"></script>
+<script src="app.js"></script>
+<script>
+(function () { var U = BM.accaUI; if (!U) return; var R = U.record();
+  document.getElementById("res-acca-line").textContent = R.n ? (R.n + " settled · " + R.won + " won · " + U.ptsFmt(R.pts) + " pts · " + R.open + " open. Tap “Show all” on an acca to see every leg.") : ("No settled accas yet · " + R.open + " open. Every acca is listed here when it settles, winners and losers.");
+  document.getElementById("res-accas").innerHTML = R.n ? U.list(R.settled.slice().sort(function (x, y) { return new Date(y.publishedAt) - new Date(x.publishedAt); })) : "";
+})();
+</script>
+</body>
+</html>

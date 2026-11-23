@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Combo Meister · BetMeisters</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="The Combo Meister: doubles and trebles from main-sport lines, each leg priced above our fair price and at least 50% likely.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BetMeisters">
+<meta property="og:title" content="Combo Meister · BetMeisters">
+<meta property="og:description" content="Priced accumulators with the chance on every one. Separate record, every result kept.">
+<meta property="og:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }
+.ac-note { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--yellow, #FFC629); border-radius: var(--r); padding: 14px 18px; color: var(--ink-2); font-size: 15px; }
+.ac-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 12px; }
+.ac-stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.ac-stat b { display: block; white-space: nowrap; font-family: var(--f-data); font-size: 24px; font-variant-numeric: tabular-nums; color: var(--ink); }
+.ac-stat span { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; }
+.ac-stat b small { font-size: 15px; font-weight: 600; color: var(--ink-3); }
+.ac-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.ac-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.ac-top h3 { font-size: 24px; text-transform: uppercase; }
+.ac-top .meta { color: var(--ink-3); font-size: 13.5px; margin-top: 2px; }
+.ac-fig { display: flex; gap: 22px; flex-wrap: wrap; }
+.ac-fig div { text-align: right; }
+.ac-fig b { display: block; font-family: var(--f-data); font-size: 22px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ac-fig span { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; }
+.ac-legs { overflow-x: auto; }
+.ac-foot { padding: 12px 20px; color: var(--ink-3); font-size: 13.5px; border-top: 1px solid var(--line); }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--surface-2); color: var(--ink-2); }
+.pill.won { background: #1f7a4a; color: #fff; } .pill.lost { background: #a33a2a; color: #fff; } .pill.open { background: var(--surface-2); color: var(--ink); }
+.pos { color: var(--won); } .neg { color: var(--lost); }
+.ac-sec { display: flex; flex-direction: column; gap: 10px; }
+.ac-live { margin-block: 6px 4px; }
+@media (max-width: 640px) { .ac-fig { width: 100%; justify-content: space-between; gap: 10px; } .ac-fig div { text-align: left; } table.data td, table.data th { padding: 10px 8px; } }
+
+.ac-setbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ac-setbox>.ac-day:first-child{border-top:0}
+.ac-day>summary small{font-weight:500;text-transform:none;letter-spacing:0;opacity:.8}
+.ac-day>summary .ac-dpts{margin-left:auto;font-family:var(--f-data);font-size:15px;letter-spacing:0}
+.ac-day>summary::after{margin-left:12px}
+.ac-set{list-style:none;margin:0;padding:0 16px 6px}
+.ac-set>li{border-top:1px dashed var(--line)}
+.ac-set>li>details>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:4.4em minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0}
+.ac-set>li>details>summary::-webkit-details-marker{display:none}
+.ac-set .ac-st b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-set .ac-st small{display:block;color:var(--ink-3);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-set summary>b{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.ac-sl{list-style:none;margin:0 0 10px;padding:0 0 0 4.4em}
+.ac-sl li{display:grid;grid-template-columns:5em minmax(0,1fr) auto;gap:8px;padding:5px 0;font-size:13px;border-top:1px solid var(--line)}
+.ac-sl li small{display:block;color:var(--ink-3);font-size:12px}
+.ac-sl .n{font-family:var(--f-data)}
+.ac-lr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3)}
+.ac-lr.won,.ac-lr.half-won{color:var(--won)}.ac-lr.lost,.ac-lr.half-lost{color:var(--lost)}
+@media (max-width:560px){.ac-sl{padding-left:0}}
+.ac-set .pill{padding:3px 8px!important;font-size:10.5px!important;justify-self:start;align-self:center;line-height:1.3!important;min-height:0!important;height:auto!important;border:0!important;box-shadow:none!important}
+@media (max-width:560px){.ac-day>summary{flex-wrap:wrap;row-gap:2px}.ac-day>summary small{order:3;flex-basis:100%}}
+.ac-charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
+.ac-ch{padding:14px 16px}.ac-ch h3{font-size:15px;text-transform:uppercase;letter-spacing:.04em;margin:0}.ac-ch .panel-sub{margin:2px 0 8px;font-size:12.5px}
+.ac-ch svg{display:block;width:100%;height:auto;color:var(--ink-3)}
+@media (max-width:900px){.ac-charts{grid-template-columns:minmax(0,1fr)}}
+.ac-wins{padding:16px 18px;border-left:4px solid #2fae6a}.ac-wins h3{margin:0;font-size:17px;text-transform:uppercase;letter-spacing:.04em}.ac-wins .panel-sub{margin:2px 0 10px;font-size:13px}
+.badge.combo{background:#7FD3FF!important;color:#0B1630!important}.badge.combo.tom{background:#9A6BD1!important;color:#fff!important;font-size:9px!important}.cm-by td,.cm-by th{padding:8px 6px}.cm-by .badge{display:inline-grid;place-items:center;min-width:30px;height:22px;border-radius:11px;font:800 10px/1 var(--f-body);padding:0 5px}.cm-leg{font-size:12px;color:var(--ink-3);margin:6px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}.cm-leg span{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:-6px}.cm-leg span.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)}
+.cm-mini{display:inline-grid;place-items:center;min-width:30px;height:18px;border-radius:9px;font:800 9px/1 var(--f-body);padding:0 4px;vertical-align:2px;margin-right:4px}
+</style>
+</head>
+<body data-page="combo">
+<div id="bm-header"></div>
+<div class="page-head"><div class="wrap"><p class="eyebrow">New · test stage from 16 Nov 2026</p><h1>The Combo <span>Meister</span></h1><p>Doubles and trebles from the main sports: every leg priced above our fair price, at least 50% likely, and never on a game we tip as a single.</p></div></div>
+<main class="wrap" style="padding-block:28px 40px">
+  <div class="ac-note"><b>A separate record during the test.</b> Combo Meister results are kept here, apart from the main BetMeisters totals for now. Two Meisters share this record: the <b>Combo Meister</b> (CM, picked by the numbers) and the <b>Original Combo Meister</b> (OC, The Original Meister&rsquo;s own combos, kept apart from his singles). The <b>Racing Combo Meister</b> (RC, horse racing only, from 20 Nov) is a trial with its own line in the table below and is not in this record. A combo is a double (2 legs) or a treble (3 legs); 4+ legs is an acca and sits with the Acca Meister. Returns are shown for a £10 stake as an example only.</div>
+  <section class="ac-sec" aria-labelledby="h-rec"><h2 class="sec-title" id="h-rec">The record</h2><div class="ac-stats" id="ac-stats"></div>
+    <div class="panel ac-legs" id="ac-bym" style="padding:6px 14px"></div>
+</section>
+  <!-- Owner 16 Nov 08:28: filters hidden for now (low volume; Accas page should look different from Tips). Remove hidden to bring back. -->
+  <section class="ac-sec" aria-labelledby="h-filt" hidden><h2 class="visually-hidden" id="h-filt">Filter accas</h2><div id="ac-filters"></div></section>
+  <section class="ac-sec" aria-labelledby="h-open"><h2 class="sec-title" id="h-open">Open to back <span class="count" id="ac-open-n"></span></h2><div id="ac-open" style="display:flex;flex-direction:column;gap:18px"></div></section>
+  <section class="ac-sec" aria-labelledby="h-ip" id="ac-ip-sec" hidden><h2 class="sec-title" id="h-ip"><span class="live-dot" aria-hidden="true"></span> In play <span class="count" id="ac-ip-n"></span></h2><p class="panel-sub">Started, so no longer available to back. A leg has kicked off and none has lost. No live scores.</p><div id="ac-ip"></div></section>
+  <section class="ac-sec" aria-labelledby="h-done"><h2 class="sec-title" id="h-done">Settled combos <span class="count" id="ac-done-n"></span></h2><div id="ac-done" style="display:flex;flex-direction:column;gap:18px"></div></section>
+  <!-- Owner 16 Nov 08:29: stat bar at the top, charts at the bottom (where the old chart was) -->
+  <section class="ac-sec" aria-labelledby="h-charts"><h2 class="sec-title" id="h-charts">Winners and charts</h2>
+    <div class="panel ac-wins" id="ac-wins" hidden style="margin-bottom:12px"></div>
+    <div class="ac-charts">
+      <div class="panel ac-ch"><h3>Running profit</h3><p class="panel-sub">Points after each settled combo; dashed = what our prices expected.</p><div id="ac-chart"></div></div>
+      <div class="panel ac-ch"><h3>Doubles v trebles</h3><p class="panel-sub">Points v expected for doubles and trebles (settled).</p><div id="ac-band"></div></div>
+      <div class="panel ac-ch"><h3>Day by day</h3><p class="panel-sub">Combos settled each day (by first leg) and the day&rsquo;s points.</p><div id="ac-days"></div></div>
+    </div></section>
+  <section class="ac-sec"><div class="ac-note"><b>How a combo is built.</b> Main sports only (football, tennis, basketball, NFL, NHL). Each leg must be at least 50% likely, priced above our fair price from the sharpest market by at least the singles bar minus 2 points (football 7%, never under 5%), and matched by a second bookmaker or the exchange. No leg is on a game we tip as a single, no two legs share a team, and a void leg drops out so the combo pays on the rest. 18+ · BeGambleAware.org</div></section>
+</main>
+<div id="bm-footer"></div>
+<script>window.BM_PUBLIC=1</script>
+<script src="data.js"></script>
+<script src="news_feed.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  "use strict";
+  var A = ((window.BM && BM.COMBOS) || []).filter(function (a) { return a.legs.length >= 2 && a.legs.length <= 3; }); /* Owner 16 Nov 09:41: an acca = 4+ legs; doubles/trebles stay in the Ledger, not on this page */
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function f2(x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(2); }
+  function money(x) { return "£" + Math.round(x).toLocaleString("en-GB"); }
+  var FAC = { won: function (p) { return p; }, "half-won": function (p) { return (1 + p) / 2; }, void: function () { return 1; }, "half-lost": function () { return 0.5; }, lost: function () { return 0; } };
+  function price(a) { return a.legs.reduce(function (m, l) { return m * l.price; }, 1); }
+  function chance(a) { return a.legs.reduce(function (m, l) { return m * l.chance; }, 1); }
+  function state(a) {
+    var anyLost = a.legs.some(function (l) { return l.result === "lost"; });
+    var allDone = a.legs.every(function (l) { return l.result && l.result !== "open"; });
+    if (anyLost) return "lost";
+    if (!allDone) return "open";
+    return "won";
+  }
+  function retMult(a) { return a.legs.reduce(function (m, l) { return m * (FAC[l.result] ? FAC[l.result](l.price) : 1); }, 1); }
+  function pts(a) { var s = state(a); if (s === "open") return 0; if (s === "lost") return -a.stake; return a.stake * retMult(a) - a.stake; }
+  function hm(iso) { return new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(iso)); }
+  function uk(iso) { /* Owner 20 Nov 12:43: UK time first, EAT beside it during the test */ return new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Kampala", hour: "2-digit", minute: "2-digit" }).format(new Date(iso)); }
+  var legRes = { open: "Open", won: "Won", lost: "Lost", void: "Void", "half-won": "Half won", "half-lost": "Half lost" };
+
+  function card(a) {
+    var P = price(a), C = chance(a), E = P * C - 1, s = state(a), p = pts(a);
+    var legs = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); });
+    return '<article class="ac-card"><div class="ac-top"><div><h3>' + esc(a.title) + ' <span class="pill ' + s + '">' + s + '</span></h3><div class="meta">' + a.legs.length + " legs · " + esc(a.type) + " · stake " + a.stake + " pt · published " + hm(a.publishedAt) + " UK</div></div>" +
+      '<div class="ac-fig"><div><b>' + P.toFixed(2) + '</b><span>Combo price</span></div><div><b>1 in ' + Math.round(1 / C) + '</b><span>Our chance (' + (C * 100).toFixed(1) + '%)</span></div><div><b>' + (E >= 0 ? "+" : "−") + Math.abs(E * 100).toFixed(1) + '%</b><span>Edge</span></div><div><b>' + money(10 * P) + '</b><span>£10 returns</span></div>' +
+      (s !== "open" ? '<div><b class="' + (p >= 0 ? "pos" : "neg") + '">' + f2(p) + '</b><span>Points</span></div>' : "") + "</div></div>" +
+      '<div class="ac-legs"><table class="data"><thead><tr><th>Start (UK · EAT)</th><th>Leg</th><th class="n">Price</th><th class="n">Chance</th><th class="n">Edge</th><th>Result</th></tr></thead><tbody>' +
+      legs.map(function (l) {
+        var e = l.price * l.chance - 1;
+        return "<tr><td>" + hm(l.start) + '<small class="sub">' + uk(l.start) + " EAT</small></td><td><span class=\"sel\">" + esc(l.sel) + '</span><small class="sub">' + esc(l.event) + " · " + esc(l.comp) + '</small></td><td class="n">' + l.price.toFixed(2) + '</td><td class="n">' + Math.round(l.chance * 100) + '%</td><td class="n">' + (e >= 0 ? "+" : "−") + Math.abs(e * 100).toFixed(1) + "%</td><td>" + (legRes[l.result] || "Open") + (l.score ? '<small class="sub">' + esc(l.score) + "</small>" : "") + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      (a.note ? '<div class="ac-foot">' + esc(a.note) + "</div>" : "") + "</article>";
+  }
+
+  var settled = A.filter(function (a) { return state(a) !== "open" && a.meister !== "rcm"; }) /* main record = CM + OC; the Racing Combo Meister has its own line in the table */.sort(function (x, y) { return new Date(x.publishedAt) - new Date(y.publishedAt); });
+  var open = A.filter(function (a) { return state(a) === "open"; });
+  var tot = settled.reduce(function (m, a) { return m + pts(a); }, 0), staked = settled.reduce(function (m, a) { return m + a.stake; }, 0);
+  var exp = settled.reduce(function (m, a) { return m + a.stake * (price(a) * chance(a) - 1); }, 0);
+  var run = 0, best = 0; settled.forEach(function (a) { if (state(a) === "lost") { run++; best = Math.max(best, run); } else run = 0; });
+  var wins = settled.filter(function (a) { return state(a) === "won"; }).length;
+  var stats = [["Combos settled", settled.length + ""], ["Won", wins + (settled.length ? "<small> of " + settled.length + "</small>" : "")], ["Points", settled.length ? f2(tot) : "0.00"], ["Return on stakes", staked ? ((tot / staked) * 100).toFixed(1) + "%" : "–"], ["Expected points", settled.length ? f2(exp) : "0.00"], ["Longest losing run", best + ""], ["To back now", open.filter(function (x) { return Math.min.apply(null, x.legs.map(function (l) { return new Date(l.start).getTime(); })) > Date.now(); }).length + ""], ["In play", open.filter(function (x) { return Math.min.apply(null, x.legs.map(function (l) { return new Date(l.start).getTime(); })) <= Date.now(); }).length + ""]];
+  /* Owner 16 Nov 10:23: two combo Meisters on one page and one record: the Combo Meister (maths) and the Original Combo Meister (Owner, manual) */
+  var CMS = [["combo", "Combo Meister", "#7FD3FF", "CM", "#2196D3"], ["tom", "Original Combo Meister", "#9A6BD1", "OC"], ["rcm", "Racing Combo Meister", "#B5651D", "RC"]]; /* Owner 20 Nov 11:28: Racing Combo Meister, racing only, own line; not in the main combo record */
+  var cmOf = function (a) { return a.meister === "tom" || a.meister === "meister" ? "tom" : a.meister === "rcm" ? "rcm" : "combo"; };
+  (function () { var box = document.getElementById("ac-bym"); if (!box) return;
+    box.innerHTML = '<table class="data cm-by"><thead><tr><th>Meister</th><th class="n">Combos</th><th class="n">Settled</th><th class="n">Won</th><th class="n">Staked</th><th class="n">Points</th><th class="n">Return</th></tr></thead><tbody>' +
+      CMS.map(function (m) { var L = A.filter(function (x) { return cmOf(x) === m[0]; }), S = L.filter(function (x) { return state(x) !== "open"; }), st = S.reduce(function (t, x) { return t + x.stake; }, 0), p = S.reduce(function (t, x) { return t + pts(x); }, 0);
+        return '<tr><td><span class="badge combo ' + m[0] + '">' + m[3] + "</span> " + m[1] + '</td><td class="n">' + L.length + '</td><td class="n">' + S.length + '</td><td class="n">' + S.filter(function (x) { return state(x) === "won"; }).length + '</td><td class="n">' + st + '</td><td class="n ' + (p >= 0 ? "pos" : "neg") + '">' + (S.length ? f2(p) : "0.00") + '</td><td class="n">' + (st ? (p / st * 100).toFixed(1) + "%" : "–") + "</td></tr>"; }).join("") + "</tbody></table>"; })();
+  document.getElementById("ac-stats").innerHTML = stats.map(function (s) { return '<div class="ac-stat"><b>' + s[1] + "</b><span>" + s[0] + "</span></div>"; }).join("");
+  var W = 600, H = 320, pad = 40, cum = [0], ex = [0];
+  settled.forEach(function (x) { cum.push(cum[cum.length - 1] + pts(x)); ex.push(ex[ex.length - 1] + x.stake * (price(x) * chance(x) - 1)); });
+  var ch = document.getElementById("ac-chart");
+  if (settled.length < 1) { ch.innerHTML = '<p class="panel-sub">The chart starts with the first settled combo.</p>'; }
+  else {
+    var all = cum.concat(ex), lo = Math.min.apply(null, all.concat([0])), hi = Math.max.apply(null, all.concat([0])); if (hi - lo < 1) { hi += 0.5; lo -= 0.5; }
+    var X = function (i) { return pad + (W - 2 * pad) * (cum.length < 2 ? 0 : i / (cum.length - 1)); }, Y = function (v) { return H - pad - (H - 2 * pad) * (v - lo) / (hi - lo); };
+    var path = function (arr) { return arr.map(function (v, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1); }).join(" "); };
+    ch.innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="Combo Meister running profit">' +
+      '<line x1="' + pad + '" x2="' + (W - pad) + '" y1="' + Y(0) + '" y2="' + Y(0) + '" stroke="currentColor" opacity=".25"/>' +
+      '<path d="' + path(ex) + '" fill="none" stroke="currentColor" opacity=".45" stroke-dasharray="5 5" stroke-width="2"/>' +
+      '<path d="' + path(cum) + '" fill="none" stroke="currentColor" stroke-width="3"/>' +
+      CMS.map(function (m) { var c = [0]; settled.forEach(function (x) { c.push(c[c.length - 1] + (cmOf(x) === m[0] ? pts(x) : 0)); }); return settled.some(function (x) { return cmOf(x) === m[0]; }) ? '<path d="' + path(c) + '" fill="none" stroke="' + (m[4]||m[2]) + '" stroke-width="2.5"/>' : ""; }).join("") +
+      '<text x="' + (W - pad) + '" y="' + (pad - 8) + '" text-anchor="end" font-size="22" font-weight="700" fill="currentColor">' + f2(cum[cum.length - 1]) + " pts</text></svg>" +
+      '<p class="cm-leg"><span style="background:currentColor"></span>All combos ' + CMS.map(function (m) { return '<span style="background:' + (m[4]||m[2]) + '"></span>' + m[1]; }).join(" ") + '<span class="dash"></span>Expected</p>';
+  }
+  /* Owner 16 Nov 09:34: winners box (last 12 landed accas), so wins show clearly; all stats stay as they are */
+  (function () {
+    var W = A.filter(function (a) { return state(a) === "won" && !a.legs.every(function (l) { return l.result === "void"; }); }) /* Owner 20 Nov 11:32: every combo Meister, labelled; an all-void combo is not a winner */.sort(function (x, y) { return fs2(y) - fs2(x); }).slice(0, 24); /* Owner 20 Nov 13:00: up to 24, 6 shown, the rest behind "Show all" */
+    function fs2(a) { return Math.min.apply(null, a.legs.map(function (l) { return new Date(l.start).getTime(); })); }
+    var el = document.getElementById("ac-wins"); el.hidden = false; if (!W.length) { el.innerHTML = '<h3>Winners <span class="count">0</span></h3><p class="panel-sub">No combo has landed yet. Every winner will show here: date, legs, price, stake, points and what &pound;10 returned.</p>'; return; }
+    var dd = function (t) { return new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", day: "numeric", month: "short" }).format(new Date(t)); };
+    el.innerHTML = '<h3>Winners <span class="count">' + W.length + '</span></h3><p class="panel-sub">Every combo that landed, newest first' + (W.length === 24 ? " (last 24)" : "") + '. Points at the advised stake; return shown for a &pound;10 stake. Voided legs drop out, so the price paid can be lower than the price at publication.</p>' +
+      '<div class="ac-legs"><table class="data"><thead><tr><th>Date</th><th>Meister</th><th>Combo</th><th class="n">Legs</th><th class="n">Price paid</th><th class="n">Stake</th><th class="n">Points</th><th class="n">&pound;10 returns</th></tr></thead><tbody>' +
+      W.map(function (a, wi) { var m = retMult(a), vd = a.legs.filter(function (l) { return l.result === "void"; }).length;
+        var mm = CMS.filter(function (x) { return x[0] === cmOf(a); })[0] || CMS[0];
+        return "<tr" + (wi >= 6 ? ' class="wx" hidden' : "") + "><td>" + dd(fs2(a)) + '</td><td><span class="badge combo ' + mm[0] + ' cm-mini">' + mm[3] + '</span> ' + mm[1] + '</td><td><a href="#' + esc(a.id) + '">' + esc(a.title) + "</a></td><td class=\"n\">" + a.legs.length + (vd ? " <small>(" + vd + " void)</small>" : "") + '</td><td class="n">' + m.toFixed(2) + '</td><td class="n">' + a.stake + ' pt</td><td class="n pos">' + f2(pts(a)) + '</td><td class="n">' + money(10 * m) + "</td></tr>"; }).join("") + "</tbody></table></div>" + (W.length > 6 ? '<button type="button" class="wx-more" aria-expanded="false">Show all ' + W.length + " winners \u25be</button>" : "");
+    var wb = el.querySelector(".wx-more"); if (wb) wb.addEventListener("click", function () { var open = wb.getAttribute("aria-expanded") !== "true"; Array.prototype.forEach.call(el.querySelectorAll("tr.wx"), function (r) { r.hidden = !open; }); wb.setAttribute("aria-expanded", open ? "true" : "false"); wb.textContent = open ? "Show fewer \u25b4" : "Show all " + W.length + " winners \u25be"; });
+    /* Owner 20 Nov 13:00: last six settled, like the Last six on the home page */
+    var L6 = settled.slice().sort(function (x, y) { return lst(x) - lst(y); }).slice(-6), l6p = L6.reduce(function (t, a) { return t + pts(a); }, 0), l6w = L6.filter(function (a) { return state(a) === "won"; }).length;
+    function lst(a) { return Math.max.apply(null, a.legs.map(function (l) { return new Date(l.start).getTime(); })); }
+    if (L6.length) el.querySelector("h3").insertAdjacentHTML("afterend", '<p class="last6"><b>Last six settled:</b> <span class="' + (l6p >= 0 ? "pos" : "neg") + '">' + f2(l6p) + " pts</span> \u00b7 " + l6w + " won \u00b7 " + (L6.length - l6w) + " lost</p>");
+  })();
+  /* Owner 16 Nov 08:25: chart grid under the record (running profit, by legs, day by day) */
+  (function () {
+    var BANDS = [["Doubles", 2, 2], ["Trebles", 3, 3]];
+    var rows = BANDS.map(function (b) { var L = settled.filter(function (a) { return a.legs.length >= b[1] && a.legs.length <= b[2]; });
+      return { k: b[0], n: L.length, p: L.reduce(function (m, a) { return m + pts(a); }, 0), e: L.reduce(function (m, a) { return m + a.stake * (price(a) * chance(a) - 1); }, 0) }; });
+    var bars = function (el, items, lab) {
+      var W2 = 600, H2 = 320, pl = 10, pb = 66, top = 34, vals = []; items.forEach(function (r) { vals.push(r.p); if (r.e != null) vals.push(r.e); });
+      var lo = Math.min.apply(null, vals.concat([0])), hi = Math.max.apply(null, vals.concat([0])); if (hi - lo < 1) { hi += 0.5; lo -= 0.5; }
+      var Y = function (v) { return top + (H2 - top - pb) * (hi - v) / (hi - lo); }, bw = (W2 - pl - 10) / items.length;
+      var g = '<svg viewBox="0 0 ' + W2 + " " + H2 + '" role="img" aria-label="' + lab + '"><line x1="' + pl + '" x2="' + W2 + '" y1="' + Y(0) + '" y2="' + Y(0) + '" stroke="currentColor" opacity=".35"/>';
+      items.forEach(function (r, i) { var x = pl + i * bw, w = bw * (r.e != null ? 0.36 : 0.6), y0 = Y(0), y1 = Y(r.p);
+        g += '<rect x="' + (x + bw * 0.12) + '" y="' + Math.min(y0, y1) + '" width="' + w + '" height="' + Math.max(1, Math.abs(y1 - y0)) + '" rx="3" fill="' + (r.p >= 0 ? "#2fae6a" : "#d4553f") + '"/>';
+        if (r.e != null) { var ye = Y(r.e); g += '<rect x="' + (x + bw * 0.5) + '" y="' + Math.min(y0, ye) + '" width="' + w + '" height="' + Math.max(1, Math.abs(ye - y0)) + '" rx="3" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>'; }
+        g += '<text x="' + (x + bw / 2) + '" y="' + (H2 - 12) + '" text-anchor="middle" font-size="21" fill="currentColor">' + r.k + (r.n != null ? " (" + r.n + ")" : "") + "</text>";
+        g += '<text x="' + (x + bw * 0.12 + w / 2) + '" y="' + (r.p >= 0 ? y1 - 7 : y1 + 22) + '" text-anchor="middle" font-size="20" font-weight="700" fill="currentColor">' + f2(r.p) + "</text>"; });
+      el.innerHTML = g + "</svg>";
+    };
+    bars(document.getElementById("ac-band"), rows, "Points by number of legs");
+    var dk = function (a) { return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date(Math.min.apply(null, a.legs.map(function (l) { return new Date(l.start).getTime(); })))); }, D = {};
+    settled.forEach(function (a) { var k = dk(a); D[k] = (D[k] || 0) + pts(a); });
+    var keys = Object.keys(D).sort().slice(-7);
+    bars(document.getElementById("ac-days"), keys.map(function (k) { return { k: new Date(k + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric" }), p: D[k], e: null, n: null }; }), "Points by day");
+  })();
+  /* Owner 12 Nov 10:21: many accas a day and long ones, so open accas are a compact list too; each opens into its betslip */
+  /* Owner 12 Nov 10:41: filters (legs, sport, edge, Meister), like the Tips page; empty results say so */
+  var F = { legs: "all", sport: "all", edge: 0, m: "all" };
+  var sportOf = function (l) { return l.sport || "Football"; };
+  var MN = { acca: "Acca Meister", meister: "The Original Meister" };
+  var mOf = function (a) { return a.meister || "acca"; };
+  var LEGB = [["all", "All"], ["2-4", "4"], ["5-6", "5 to 6"], ["7-10", "7 to 10"], ["11+", "11+"]];
+  var EDB = [[0, "Any"], [5, "5%+"], [10, "10%+"], [25, "25%+"], [50, "50%+"]];
+  var inLegs = function (n) { return F.legs === "all" || (F.legs === "2-4" ? n <= 4 : F.legs === "5-6" ? n >= 5 && n <= 6 : F.legs === "7-10" ? n >= 7 && n <= 10 : n >= 11); };
+  var pass = function (a) { var e = price(a) * chance(a) - 1; return inLegs(a.legs.length) && (F.sport === "all" || a.legs.some(function (l) { return sportOf(l) === F.sport; })) && (!F.edge || e * 100 >= F.edge) && (F.m === "all" || mOf(a) === F.m); };
+  var sports = []; A.forEach(function (a) { a.legs.forEach(function (l) { if (sports.indexOf(sportOf(l)) < 0) sports.push(sportOf(l)); }); }); ["Football", "Racing", "Tennis", "Basketball"].forEach(function (x) { if (sports.indexOf(x) < 0) sports.push(x); });
+  var fs = function (x) { return Math.min.apply(null, x.legs.map(function (l) { return new Date(l.start).getTime(); })); };
+  function grp(key, label, opts) { return '<div class="filters" role="group" aria-label="Filter by ' + label + '"><span class="seg-label">' + label + "</span>" + opts.map(function (o) { return '<button type="button" class="pill" data-af="' + key + '" data-v="' + o[0] + '" aria-pressed="' + (String(F[key]) === String(o[0])) + '">' + esc(o[1]) + "</button>"; }).join("") + "</div>"; }
+  function bar() {
+    var el = document.getElementById("ac-filters");
+    el.innerHTML = grp("legs", "Legs", LEGB) + grp("sport", "Sport", [["all", "All sports"]].concat(sports.map(function (x) { return [x, x]; }))) + grp("edge", "Edge", EDB) + grp("m", "Meister", [["all", "All"], ["acca", MN.acca], ["meister", MN.meister]]);
+    Array.prototype.forEach.call(el.querySelectorAll("[data-af]"), function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-af"), v = b.getAttribute("data-v"); F[k] = k === "edge" ? +v : v; bar(); draw(); }); });
+  }
+  function draw() {
+    /* Owner 12 Nov 12:52: grouped by the day of the first leg (Today, Tomorrow, Saturday ...), two accas per row */
+    var U = BM.accaUI, fk = function (x) { return U.dayKey(new Date(fs(x)).toISOString()); };
+    var byDay = function (list, newest) { var g = [], cur = null; list.forEach(function (a) { var k = fk(a); if (!cur || cur.k !== k) { cur = { k: k, items: [] }; g.push(cur); } cur.items.push(a); }); return g.map(function (x) { return '<section class="tday"><h3 class="tday-h">' + esc(U.dayLabel(x.k)) + ' <span class="count">' + x.items.length + (x.items.length === 1 ? " combo" : " combos") + "</span></h3>" + U.list(x.items, "two") + "</section>"; }).join(""); };
+    var nowT = Date.now(), ip = open.filter(pass).filter(function (x) { return fs(x) <= nowT; }).sort(function (x, y) { return fs(x) - fs(y); }), o = open.filter(pass).filter(function (x) { return fs(x) > nowT; }).sort(function (x, y) { return fs(x) - fs(y); }), d = settled.filter(pass).slice().sort(function (x, y) { return fs(y) - fs(x); });
+    /* Owner 20 Nov 13:19: open and in-play lists grouped by number of legs (fold), each group collapsible, soonest first inside; empty groups shown */
+    var FOLDS = [2, 3];
+    var foldName = function (n) { return n === 2 ? "Doubles (2-folds)" : n === 3 ? "Trebles (3-folds)" : n + "-folds"; };
+    var folds = function (list, tag) { var ns = FOLDS.slice(); list.forEach(function (a) { if (ns.indexOf(a.legs.length) < 0) ns.push(a.legs.length); }); ns.sort(function (p, q) { return p - q; });
+      return '<div class="ac-folds">' + ns.map(function (n) { var it = list.filter(function (a) { return a.legs.length === n; }).sort(function (x, y) { return fs(x) - fs(y); });
+        if (tag && !it.length) return "";
+        var nx = it.length ? hm(new Date(fs(it[0])).toISOString()) : "";
+        return '<details class="ac-fold' + (it.length ? '" open>' : ' empty">') + '<summary><span class="af-t">' + esc(foldName(n)) + '</span><span class="af-n">' + it.length + "</span>" + (it.length ? '<small>' + (tag ? "first leg " : "next ") + esc(nx) + ' UK</small>' : '<small>none' + (tag ? "" : " to back") + ' right now</small>') + "</summary>" +
+          (it.length ? '<div class="af-body">' + U.list(it, "two", function (a) { return '<p class="acca-dayl">' + esc(U.dayLabel(fk(a))) + (tag || "") + "</p>"; }) + "</div>" : "") + "</details>"; }).join("") + "</div>"; };
+    document.getElementById("ac-open-n").textContent = o.length;
+    document.getElementById("ac-done-n").textContent = d.length;
+    document.getElementById("ac-open").innerHTML = o.length ? '<p class="panel-sub">Not started yet, so still available. Grouped by number of legs: tap a group title to close or open it. Soonest first inside each group; the day of the first leg is on each card. Each combo shows its first two legs; tap \u201cShow all\u201d for the rest.</p>' + folds(o) : '<p class="empty">' + (open.length ? "No combos still to start match these filters." : "No combos to back right now. A combo only goes up when two or three main-sport legs pass every check; on quiet days there are none.") + "</p>";
+    /* Owner 16 Nov 08:20: accas that have started are not bettable; own section, full cards */
+    var ipSec = document.getElementById("ac-ip-sec"); ipSec.hidden = !ip.length; document.getElementById("ac-ip-n").textContent = ip.length;
+    document.getElementById("ac-ip").innerHTML = ip.length ? folds(ip, " \u00b7 in play") : "";
+    /* Owner 16 Nov 16:46: in-play combo cards stay compact (2 legs, "Show all" to expand), the same as accas */
+    /* Owner 16 Nov 08:14: settled accas collapse by day (expandable, like the Meister stats); each acca one line marked won/lost, tap for the legs */
+    var setDay = function (list) { var g = [], cur = null; list.forEach(function (a) { var k = fk(a); if (!cur || cur.k !== k) { cur = { k: k, items: [] }; g.push(cur); } cur.items.push(a); });
+      return '<div class="ac-setbox">' + g.map(function (x) {
+        var w = x.items.filter(function (a) { return state(a) === "won"; }).length, P = x.items.reduce(function (m, a) { return m + pts(a); }, 0);
+        return '<details class="mr-x ac-day"><summary>' + esc(U.dayLabel(x.k)) + ' <small>' + x.items.length + (x.items.length === 1 ? " combo" : " combos") + " \u00b7 " + w + " won \u00b7 " + (x.items.length - w) + ' lost</small><b class="ac-dpts ' + (P >= 0 ? "pos" : "neg") + '">' + f2(P) + "</b></summary><ul class=\"ac-set\">" +
+          x.items.map(function (a) { var s = state(a), legs = a.legs.slice().sort(function (p, q) { return new Date(p.start) - new Date(q.start); }), lostOn = legs.filter(function (l) { return l.result === "lost"; })[0];
+            return '<li id="' + esc(a.id) + '"><details><summary><span class="pill ' + s + '">' + s + '</span><span class="ac-st"><b>' + (cmOf(a) === "tom" ? '<span class="badge combo tom cm-mini">OC</span> ' : cmOf(a) === "rcm" ? '<span class="badge combo rcm cm-mini">RC</span> ' : '<span class="badge combo cm-mini">CM</span> ') + esc(a.title) + " @ " + price(a).toFixed(2) + "</b><small>" + a.legs.length + " legs" + (lostOn ? " \u00b7 lost on " + esc(lostOn.sel) + (lostOn.score ? " (" + esc(lostOn.score) + ")" : "") : "") + '</small></span><b class="' + (pts(a) >= 0 ? "pos" : "neg") + '">' + f2(pts(a)) + "</b></summary>" +
+              '<ol class="ac-sl">' + legs.map(function (l) { return '<li><span class="ac-lr ' + esc(l.result || "open") + '">' + (legRes[l.result] || "Open") + "</span><span><b>" + esc(l.sel) + "</b><small>" + esc(l.event) + (l.score ? " \u00b7 " + esc(l.score) : "") + "</small></span><span class=\"n\">" + l.price.toFixed(2) + "</span></li>"; }).join("") + "</ol></details></li>"; }).join("") + "</ul></details>"; }).join("") + "</div>"; };
+    document.getElementById("ac-done").innerHTML = d.length ? '<p class="panel-sub">Newest first, by the day of the first leg. Tap a day to see its combos, and a combo to see every leg.</p>' + setDay(d) : '<p class="empty">' + (settled.length ? "No settled combos match these filters." : "No settled combos yet.") + "</p>";
+  }
+
+  /* Owner 13 Nov 09:46 / 09:50: accas in play live here (not on the home page), placed between Today's and Tomorrow's open accas */
+  var liveSec = document.createElement("section");
+  liveSec.className = "ac-sec inplay ac-live"; liveSec.id = "ac-live-sec"; liveSec.hidden = true; liveSec.setAttribute("aria-labelledby", "h-live");
+  liveSec.innerHTML = '<div class="inplay-head"><h2 id="h-live"><span class="live-dot" aria-hidden="true"></span>Accas in play <span class="count" id="ac-live-n">0</span></h2><p>A leg has started and none has lost. Tap one to see every leg. No live scores.</p></div><div id="ac-live" class="ip-accas"></div>';
+  function liveAccas() {
+    var L = window.BMAccaLive; if (!L) return;
+    var list = L.list(); liveSec.hidden = !list.length;
+    liveSec.querySelector("#ac-live-n").textContent = list.length;
+    liveSec.querySelector("#ac-live").innerHTML = list.map(L.row).join("").replace(/href="acca\.html#/g, 'href="#');
+  }
+  function placeLive() {
+    var box = document.getElementById("ac-open"), days = box.querySelectorAll("section.tday"), today = null;
+    Array.prototype.forEach.call(days, function (g) { var h = g.querySelector(".tday-h"); if (!today && h && /^today/i.test(h.textContent.trim())) today = g; });
+    if (today) today.parentNode.insertBefore(liveSec, today.nextSibling);
+    else if (days.length) days[0].parentNode.insertBefore(liveSec, days[0]);
+    else box.appendChild(liveSec);
+  }
+  /* compact live list replaced by the In play section (Owner 16 Nov 08:20) */
+  bar(); draw();
+  function openHash() {
+    var id = decodeURIComponent((location.hash || "").slice(1)); if (!id) return;
+    var el = document.getElementById(id); if (!el) return;
+    var d = el.querySelector("details.acca-more"); if (d) d.open = true; for (var pd = el.parentElement; pd; pd = pd.parentElement) if (pd.tagName === "DETAILS") pd.open = true; var own = el.querySelector(":scope > details"); if (own) own.open = true;
+    el.classList.add("acca-target");
+    setTimeout(function () { el.scrollIntoView({ block: "start", behavior: "smooth" }); }, 60);
+  }
+  window.addEventListener("hashchange", openHash);
+  /* Owner 12 Nov 10:38: links from the home boxes land on the exact acca, opened in full */
+  (function () {
+    var id = decodeURIComponent((location.hash || "").slice(1)); if (!id) return;
+    var el = document.getElementById(id); if (!el) return;
+    var d = el.querySelector("details.acca-more"); if (d) d.open = true; for (var pd = el.parentElement; pd; pd = pd.parentElement) if (pd.tagName === "DETAILS") pd.open = true; var own = el.querySelector(":scope > details"); if (own) own.open = true;
+    el.classList.add("acca-target");
+    setTimeout(function () { el.scrollIntoView({ block: "start", behavior: "smooth" }); }, 60);
+  })();
+
+  /* Combo page: reuse the acca card renderer, then relabel AM -> CM and point links at this page */
+  (function () { var fixUp = function () { Array.prototype.forEach.call(document.querySelectorAll(".badge.acca"), function (b) { var li = b.closest("li[id]"), c = li && A.filter(function (x) { return x.id === li.id; })[0], tom = c && cmOf(c) === "tom", rc = c && cmOf(c) === "rcm", lab = tom ? "OC" : rc ? "RC" : "CM";
+      if (b.textContent !== lab) b.textContent = lab; b.title = tom ? "Original Combo Meister (The Original Meister's own combos)" : rc ? "Racing Combo Meister (racing only)" : "Combo Meister"; b.classList.add("combo"); if (tom) b.classList.add("tom"); if (rc) b.classList.add("rcm"); });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="acca.html#"]'), function (a) { a.setAttribute("href", a.getAttribute("href").replace("acca.html", "combo.html")); });
+     };
+    fixUp(); new MutationObserver(fixUp).observe(document.querySelector("main"), { childList: true, subtree: true }); })();
+})();
+</script>
+</body>
+</html>
