@@ -4,7 +4,7 @@
   var BM = window.BM;
   /* Owner 1 Nov 2026: tips voided because our price data was wrong (single-feed prices) are kept in data.js and the Ledger but never shown on the site. */
   BM.TIPS = BM.TIPS.filter(function (t) { return !t.hidden; });
-  /* Owner 6 Nov 09:34: the site shows Phase 2 only (from 5 Nov 09:00 EAT). Phase 1 stays in full in data.js and the Ledger. */
+  /* Owner 6 Nov 09:34: the site shows Phase 2 only (from 5 Nov 06:00 UK). Phase 1 stays in full in data.js and the Ledger. */
   BM.TIPS = BM.TIPS.filter(function (t) { return t.phase === 2; });
   /* Owner 3 Nov 2026: The Close Meister (meister "close") is a tracking Meister for near misses. Its tips are kept out of TIPS so no total, chart or four-box layout changes; they are shown only in the Close Meister strip. */
   /* Owner 16 Nov 09:42: an acca is 4+ legs. Doubles/trebles stay in the Ledger (BM.ACCAS_ALL) but are not shown or counted on the site */
@@ -94,6 +94,8 @@
   /* Owner 11 Nov 10:43: ITF / Challenger / UTR tennis runs to an order of play, so the start is shown as a "not before" time. */
   function oop(t) { return t && t.sport === "Tennis" && /\bITF\b|Challenger|UTR/i.test(t.comp || ""); }
   var SITE_TZ = "Europe/London";
+  var ALT_LBL = window.BM_PUBLIC ? "your time" : "EAT";
+  function ALT(tm, pre, post) { return tm.uk ? (pre || "") + tm.uk + " " + ALT_LBL + (post || "") : ""; }
   function fmtTime(iso) {
     var d = new Date(iso);
     /* Owner 20 Nov 12:43: the site reports in UK time (Europe/London, GMT/BST). EAT stays beside it in small text during the test.
@@ -102,6 +104,9 @@
     var hm = { hour: "2-digit", minute: "2-digit", hourCycle: "h23" };
     var main = new Intl.DateTimeFormat("en-GB", Object.assign({ timeZone: SITE_TZ }, hm)).format(d);
     var alt = new Intl.DateTimeFormat("en-GB", Object.assign({ timeZone: "Africa/Kampala" }, hm)).format(d);
+    if (window.BM_PUBLIC) { /* Owner 23 Nov 11:10: public site = UK time, plus the visitor's own local time when it differs; no Kampala/EAT */
+      alt = ""; try { var lt = new Intl.DateTimeFormat("en-GB", hm).format(d); if (lt !== main) alt = lt; } catch (e) {}
+    }
     return { day: day, eat: main, uk: alt };
   }
   function countdown(t) {
@@ -175,7 +180,7 @@
       var tm = fmtTime(t.start), lock = locked(t);
       /* Owner 6 Nov 09:47: in-play rows open to the full tip card (event, market, price, chance, published time) */
       return '<li><details><summary><span class="live-dot" aria-hidden="true"></span>' +
-        '<span class="ip-time"><b>' + tm.eat + '</b> UK<small>' + tm.uk + " EAT</small></span>" +
+        '<span class="ip-time"><b>' + tm.eat + '</b> UK' + ALT(tm, "<small>", "</small>") + "</span>" +
         '<span class="ip-main"><span class="ip-sel">' + (lock ? "Pro tip · subscribers only" : selHTML(t)) + '</span><span class="ip-ev">' + esc(t.event) + " · " + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + "</span>" + ipScore(t) + "</span>" +
         '<span class="ip-tier">' + tierPill(t) + "</span>" +
         '<span class="ip-who">' + whoTag(t.meister) + secTag(t) + "</span>" +
@@ -277,7 +282,7 @@
     if (t.phase !== 2) return "";
     var c = secOf(t); if (!c) return "";
     var k = t.sport === "Esports" ? "E" : c.slice(-1);
-    return '<span class="sec-tag sec-' + k + '" title="' + esc(c) + ": " + esc(meisterById(t.meister).name) + ", " + SEC_SPORT[k] + '"><b>' + esc(c) + "</b>" + SEC_SPORT[k] + "</span>" + (t.usTag ? '<span class="sec-tag sec-U us-tag" title="Also counts as a US game"><b>US</b></span>' : "");
+    return '<span class="sec-tag sec-' + k + '" title="' + esc(c) + ": " + esc(meisterById(t.meister).name) + ", " + SEC_SPORT[k] + '">' + (window.BM_PUBLIC ? "" : "<b>" + esc(c) + "</b>") + SEC_SPORT[k] + "</span>" + (t.usTag ? '<span class="sec-tag sec-U us-tag" title="Also counts as a US game"><b>US</b></span>' : "");
   }
   function whoTag(id) {
     var m = meisterById(id);
@@ -314,7 +319,7 @@
   function edgeLine(t) {
     if (!t.prob) return "";
     var e = edgeOf(t);
-    var mid = t.ew && t.probPlace ? '<div><dt>Place</dt><dd>' + pct(t.probPlace) + "</dd></div>" : '<div><dt>Bookie</dt><dd>' + pct(1 / t.price) + "</dd></div>";
+    var mid = t.ew && t.probPlace ? '<div><dt>Place</dt><dd>' + pct(t.probPlace) + "</dd></div>" : '<div><dt>Bookmaker</dt><dd>' + pct(1 / t.price) + "</dd></div>";
     return '<div class="tip-numbers"><dl class="edge-line"><div><dt>' + (t.ew ? "Win" : "Chance") + '</dt><dd>' + pct(t.prob) + "</dd></div>" + mid + '<div><dt>Edge</dt><dd class="pts ' + cls(e) + '">' + pct(e, true) + "</dd></div></dl>" +
       (t.minPrice ? '<p class="tip-market tip-take">Take ' + fmtOdds(t.minPrice) + " or bigger</p>" : '<p class="tip-market tip-take">&nbsp;</p>') + exchLine(t) + "</div>";
   }
@@ -363,7 +368,7 @@
       '<div class="tip-body"><div class="tip-chips">' + secTag(t) + '<span class="chip">' + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + "</span>" + '<span class="tip-tags">' + extraTags(t) + "</span></div>" + body + "</div>" +
       '<dl class="tip-meta" style="margin:0">' + first +
       "<div><dt>Price</dt><dd>" + (lock ? "–" : fmtOdds(t.price)) + "</dd></div>" + third + "</dl>" +
-      '<div class="tip-foot">' + foot + "<span>" + tm.day + " · " + tm.uk + " EAT</span></div>" + pubLine(t) + "</article>";
+      '<div class="tip-foot">' + foot + "<span>" + tm.day + " · " + (tm.uk ? tm.uk + " " + ALT_LBL : tm.eat + " UK") + "</span></div>" + pubLine(t) + "</article>";
   }
   /* Owner 6 Nov 09:33: the published time matters, so every tip shows when it went up and how far ahead of the start */
   function leadH(t) { return t.published ? (new Date(t.start) - new Date(t.published)) / 3600000 : null; }
@@ -649,7 +654,7 @@
       '<div><h4>BetMeisters</h4><ul><li><a href="meisters.html">The Meisters</a></li><li><a href="acca.html">Acca Meister (separate record)</a></li><li><a href="article-price-first.html">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="privacy.html">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
       '<div class="foot-rev"><h4>BetMeisters.news</h4><ul><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">News, previews and guides ↗</a></li><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">Bookmaker reviews ↗</a></li></ul></div></div>' +
       '<div class="rg-box"><span class="age">18+</span><p>Only bet what you can afford to lose. Our tips are opinions, not guarantees, and past results do not predict future ones. If gambling stops being fun, get free, confidential help from <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">GambleAware.org</a> or the National Gambling Helpline on <span class="mono">0808 8020 133</span> (UK).</p></div>' +
-      '<div class="foot-small"><span>© 2026 BetMeisters. No bookmaker commissions, no paid placements.</span><span>Times shown in UK time (GMT/BST), with East Africa Time (EAT) alongside during the test.</span><span>Contact <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></span></div></div></footer>';
+      '<div class="foot-small"><span>© 2026 BetMeisters. No bookmaker commissions, no paid placements.</span><span>' + (window.BM_PUBLIC ? "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK." : "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK.") + '</span><span>Contact <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></span></div></div></footer>';
   }
   function mountChrome() {
     var h = $("#bm-header"), f = $("#bm-footer");
@@ -731,7 +736,7 @@
       '<div class="hc-top"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + lab[0] + '<small>' + lab[1] + '</small></p>' +
       '<a class="who hc-who" href="acca.html#' + esc(a.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>' +
       '<div class="ah-title"><h2 class="hc-sel"><a href="acca.html#' + esc(a.id) + '">' + legs.length + '-fold</a><small>' + esc(a.type.replace(/ \(.*\)$/, "")) + '</small></h2><span class="ah-price">' + accaOdds(P) + '</span></div>' +
-      '<dl class="hc-stats ah-stats"><div><dt>' + (started ? "Next leg" : "First leg") + '</dt><dd>' + tm.eat + ' <small>UK</small><small class="hc-uk">' + tm.uk + ' EAT</small></dd></div>' +
+      '<dl class="hc-stats ah-stats"><div><dt>' + (started ? "Next leg" : "First leg") + '</dt><dd>' + tm.eat + ' <small>UK</small>' + ALT(tm, '<small class="hc-uk">', "</small>") + '</dd></div>' +
       '<div><dt>Our chance</dt><dd>1 in ' + Math.round(1 / C).toLocaleString("en-GB") + '</dd></div><div><dt>Edge</dt><dd class="' + cls(P * C - 1) + '">' + pct(P * C - 1, true) + '</dd></div>' +
       '<div><dt>Stake</dt><dd>' + a.stake + ' pt</dd></div><div><dt>\u00a310 returns</dt><dd class="price">\u00a3' + Math.round(10 * P).toLocaleString("en-GB") + '</dd></div></dl>' +
       '<ul class="ac-mini">' + legs.slice(0, SHOW).map(function (l) { return '<li><span><small class="t">' + fmtTime(l.start).eat + '</small>' + esc(l.sel) + '</span><b>' + fmtOdds(l.price) + '</b></li>'; }).join("") +
@@ -757,8 +762,8 @@
       ? '<h3 class="htip-sel">Pro tip · subscribers only</h3><p class="htip-ev" title="' + esc(t.event) + '">' + esc(t.event) + '</p><p class="htip-ln">' + where + '</p><p class="htip-ln"><a href="#join" data-join>Subscribe</a> to ' + esc(m.short || m.name) + " or get Full Meister Access to see it.</p>"
       : '<h3 class="htip-sel">' + selHTML(t) + ' <b class="htip-px">@ ' + fmtOdds(t.price) + "</b></h3>" +
         '<p class="htip-ev" title="' + esc(t.event + " · " + (t.sport || "") + (t.comp ? " · " + t.comp : "")) + '">' + esc(t.event) + " · " + where + "</p>" +
-        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">Edge ' + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookie ' + pct(1 / t.price) + "</span>") + "</div>";
-    var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + tm.uk + " EAT · " + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
+        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">Edge ' + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>";
+    var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + ALT(tm, "", " · ") + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
       (lock ? "" : '<p class="htip-sm">' + esc(t.market) + hcpExp(t) + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + exchLine(t).replace('class="tip-market exch-line"', 'class="htip-sm htip-exch"')) +
       pubLine(t).replace('class="tip-pub"', 'class="htip-sm htip-pub"') + (o.next || "") + (o.share ? '<div class="htip-share">' + shareButtons(shareText(t)) + "</div>" : "");
     return '<li class="htip' + (o.dark ? " dark" : "") + '" data-tier="' + t.tier + '"' + (o.label && /^NAP \u00b7 TOM|^TOM\u2019s NAP/.test(o.label) ? " data-hnap" : o.label && /^NAP/.test(o.label) ? " data-nap" : "") + '><div class="htip-hd">' + left + badge + '</div><div class="htip-tags">' + tags + "</div>" + body + lines + "</li>";
@@ -789,7 +794,7 @@
       '<h2 class="hc-sel">' + (lock ? "Pro tip · subscribers only" : selHTML(t)) + "</h2>" +
       '<p class="hc-event">' + esc(t.event) + " · " + esc(t.market) + "</p>" +
       '<p class="hc-comp">' + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + (t.postponed ? ' · <span class="mini-tag postponed">Rescheduled</span>' : "") + "</p>" +
-      '<dl class="hc-stats"><div><dt>' + (oop(t) ? "Not before" : "Starts") + '</dt><dd>' + tm.eat + ' <small>UK</small><small class="hc-uk">' + tm.uk + ' EAT</small></dd></div><div><dt>Price</dt><dd class="price">' + (lock ? "–" : fmtOdds(t.price)) + "</dd></div><div><dt>Stake</dt><dd>" + stakeHTML(t) + "</dd></div>" +
+      '<dl class="hc-stats"><div><dt>' + (oop(t) ? "Not before" : "Starts") + '</dt><dd>' + tm.eat + ' <small>UK</small>' + ALT(tm, '<small class="hc-uk">', "</small>") + '</dd></div><div><dt>Price</dt><dd class="price">' + (lock ? "–" : fmtOdds(t.price)) + "</dd></div><div><dt>Stake</dt><dd>" + stakeHTML(t) + "</dd></div>" +
       "<div><dt>Our chance</dt><dd>" + (t.prob && !lock ? pct(t.ew && t.probPlace ? t.probPlace : t.prob) + (t.ew && t.probPlace ? " <small>place</small>" : "") : "–") + "</dd></div>" +
       "<div><dt>Edge</dt><dd class=\"" + (e != null && !lock ? cls(e) : "") + "\">" + (e != null && !lock ? pct(e, true) : "–") + "</dd></div></dl>" +
       (lock ? "" : exchLine(t).replace('tip-market exch-line', 'hc-exch')) +
@@ -848,7 +853,7 @@
   function heroIds() { return heroPicks().map(function (g) { return g.list[0] && g.list[0].id; }).filter(Boolean); }
   function nextTips(el, n) {
     var list = upcoming().slice(0, n || 4);
-    el.innerHTML = list.length ? '<ul class="htips d-only">' + list.map(function (t) { return homeTip(t); }).join("") + "</ul>" + '<div class="tlist m-only">' + list.map(tipRow).join("") + "</div>" + '<div class="home-bar">' + tipsBar(list, "the next " + list.length + (list.length === 1 ? " tip" : " tips")) + "</div>" : '<div class="empty">No more open tips right now. New tips are published from 10:00 EAT.</div>';
+    el.innerHTML = list.length ? '<ul class="htips d-only">' + list.map(function (t) { return homeTip(t); }).join("") + "</ul>" + '<div class="tlist m-only">' + list.map(tipRow).join("") + "</div>" + '<div class="home-bar">' + tipsBar(list, "the next " + list.length + (list.length === 1 ? " tip" : " tips")) + "</div>" : '<div class="empty">No more open tips right now. New tips are published ' + (window.BM_PUBLIC ? "through the day, from 07:00 UK." : "from 07:00 UK.") + '</div>';
   }
   var dp = { meister: "all", sport: "all", day: "all", sort: "start", all: false };
   /* Owner 12 Nov 12:20: "What the price says" rows as a reusable block (home: only what the home page shows; Tips: under each day) */
@@ -1055,7 +1060,7 @@
       ? '<span class="res ' + t.result + '">' + t.result + '</span><span class="tr-pl pts ' + cls(profit(t)) + '">' + pts(profit(t)) + "</span>"
       : '<span class="tr-price">' + (lock ? "–" : fmtOdds(t.price)) + '</span><span class="tr-stake">' + stakeLbl(t) + "</span>";
     return '<details class="trow" data-tier="' + t.tier + '"><summary>' +
-      '<span class="tr-time">' + tm.eat + ' UK<small>' + tm.uk + ' EAT</small></span>' +
+      '<span class="tr-time">' + tm.eat + ' UK' + ALT(tm, "<small>", "</small>") + '</span>' +
       '<span class="tr-main"><span class="tr-sel">' + (lock ? ICON.lock + " Pro tip" : selHTML(t)) + '</span><span class="tr-ev">' + esc(t.event) + " · " + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + "</span></span>" +
       '<span class="tr-tags">' + tierPill(t) + '<span class="badge ' + t.meister + '" title="' + esc(meisterById(t.meister).name) + '">' + esc(meisterById(t.meister).initials) + "</span>" + secTag(t) + extraTags(t) + "</span>" +
       '<span class="tr-right">' + right + '</span><span class="tr-chev" aria-hidden="true"></span></summary>' +
@@ -1096,7 +1101,7 @@
   }
 
   /* ---------- Phase 2 views (rebuild, 6 Nov) ---------- */
-  var CHANGE_NOTE = '<p class="change-note"><b>New from 10 November:</b> the Number Cruncher Meister carries every AI pick, and The Original Meister is our human tipster (his own picks). AI tips published 5 to 9 November under TOM were moved to NCM to match. No result, price or stake was changed; only the Meister label. <b>From 12 November</b> every TOM pick is his own, with no AI input, and his record starts there; his earlier AI hybrid picks (5 to 11 November) are retired. <b>From 19 November</b> the NCM Racing Meister uses a new exchange method and its record starts there; racing tips under the old bookmaker method (5 to 18 November) are retired. Retired tips stay in our full ledger. Guest Meisters will join later.</p>';
+  var CHANGE_NOTE = '<p class="change-note"><b>New from 10 November:</b> the Number Cruncher Meister carries every AI pick, and The Original Meister is our human tipster (his own picks). AI tips published 5 to 9 November under TOM were moved to NCM to match. No result, price or stake was changed; only the Meister label. <b>From 12 November</b> every TOM pick is his own, with no AI input, and his record starts there; his earlier test picks (5 to 11 November) are kept in the full record. <b>From 19 November</b> the NCM Racing Meister uses a new exchange method and its record starts there; racing tips under the old bookmaker method (5 to 18 November) are kept in the full record.</p>';
   var P2M = ["meister", "cruncher", "ncmr"]; /* Owner 20 Nov 10:53: NCM Racing Meister, own record, still in site totals */ /* Owner 9 Nov 08:15: Fine Margins retired; its tips stay in the site totals and the data, but it has no lines, cards, charts or open-tip rows of its own */
   var SPORTC = { F: "#2E9E5B", R: "#B5651D", T: "#B8A200", B: "#FF8A00", U: "#C8102E", O: "#8A5CD1", E: "#0E9AA7" };
   var SPK = ["F", "R", "T", "B", "U", "O", "E"]; /* Owner 10 Nov 08:57: basketball is its own sport; NBA and college games also carry a US tag */ /* Owner 8 Nov 19:11: eSports is its own sport */
@@ -1252,7 +1257,7 @@
     var today = dayKey(new Date().toISOString()), tod = L.slice().sort(byStart).filter(function (t) { return dayKey(t.start) === today || (dayKey(t.proPickAt || t.published) === today); });
     var rows = tod.map(function (t) {
       var ft = fmtTime(t.start), e = edgeOf(t);
-      return '<tr><td class="mono">' + esc(ft.eat) + ' <small>UK</small><br><small>' + esc(ft.uk) + ' EAT</small></td><td>' + (locked(t) ? '<b>\ud83d\udd12 Pro selection</b><small class="pp-ev"><br>' + esc(t.sport) + ' \u00b7 for subscribers</small>' : '<b>' + esc(t.selection) + '</b><small class="pp-ev"><br>' + esc(t.event) + ' \u00b7 ' + esc(t.comp || t.sport) + '</small>') + '</td><td class="mono">' + (locked(t) ? esc(priceBand(t.price)) : t.price) + '</td><td class="mono pp-ch">' + (t.prob ? pct(t.prob) : "\u2013") + '</td><td class="mono pos">' + (locked(t) ? "Pro" : e == null ? "\u2013" : pct(e, true)) + '</td><td>' + (t.result === "open" ? "Open" : '<b class="pts ' + cls(profit(t)) + '">' + t.result.toUpperCase() + " " + pts(profit(t)) + "</b>") + "</td></tr>";
+      return '<tr><td class="mono">' + esc(ft.eat) + ' <small>UK</small>' + ALT(ft, "<br><small>", "</small>") + '</td><td>' + (locked(t) ? '<b>\ud83d\udd12 Pro selection</b><small class="pp-ev"><br>' + esc(t.sport) + ' \u00b7 for subscribers</small>' : '<b>' + esc(t.selection) + '</b><small class="pp-ev"><br>' + esc(t.event) + ' \u00b7 ' + esc(t.comp || t.sport) + '</small>') + '</td><td class="mono">' + (locked(t) ? esc(priceBand(t.price)) : t.price) + '</td><td class="mono pp-ch">' + (t.prob ? pct(t.prob) : "\u2013") + '</td><td class="mono pos">' + (locked(t) ? "Pro" : e == null ? "\u2013" : pct(e, true)) + '</td><td>' + (t.result === "open" ? "Open" : '<b class="pts ' + cls(profit(t)) + '">' + t.result.toUpperCase() + " " + pts(profit(t)) + "</b>") + "</td></tr>";
     }).join("");
     var byDay = {}; L.forEach(function (t) { var k = dayKey(t.start); (byDay[k] = byDay[k] || []).push(t); });
     var run = 0, dayRows = Object.keys(byDay).sort().map(function (k) { var s = stats(byDay[k]); run += s.profit; return '<tr><td>' + esc(dayLabel(k)) + '</td><td class="mono">' + byDay[k].length + '</td><td class="mono">' + s.won + "\u2013" + s.lost + (s.void ? " (" + s.void + " void)" : "") + (s.open ? " \u00b7 " + s.open + " open" : "") + '</td><td class="mono pts ' + cls(s.profit) + '">' + pts(s.profit) + '</td><td class="mono pts ' + cls(run) + '">' + pts(run) + "</td></tr>"; }).reverse().join("");
@@ -1404,7 +1409,7 @@
     var tot = function (id, L, label) { var s = stats(L), c = clvStats(L); return "<tr" + (id ? "" : ' class="mr-tot"') + ">" + (id ? name(id) : '<th scope="row" class="mr-m">' + label + "<small>Live Meisters</small></th>") + '<td class="n">' + s.settled + '</td><td class="n">' + s.won + "–" + s.lost + '</td><td class="n">' + s.staked.toFixed(1) + '</td><td class="n pts ' + cls(s.profit) + '"><b>' + pts(s.profit) + '</b></td><td class="n ' + cls(s.roi || 0) + '">' + (s.roi == null ? "–" : pct(s.roi, true)) + '</td><td class="n ' + (c.avg == null ? "" : cls(c.avg)) + '">' + clvTxt(c.avg) + "</td></tr>"; };
     var t3 = '<details class="mr-x"><summary>Total to date <small>since 5 November</small></summary><div class="mr-scroll"><table class="data mr"><thead><tr><th>Meister</th><th class="n">Settled</th><th class="n">Won–Lost</th><th class="n">Staked</th><th class="n">P/L</th><th class="n">ROI</th><th class="n">CLV</th></tr></thead><tbody>' +
       ids.map(function (id) { return tot(id, S.filter(function (t) { return t.meister === id; })); }).join("") + tot(null, S.filter(function (t) { return ids.indexOf(t.meister) >= 0; }), "Total") + "</tbody></table></div>";
-    el.innerHTML = '<div class="table-box mr-box">' + t1 + t2.replace(/<\/div>$/, '</div></details>') + t3.replace(/<\/div>$/, '</div></details>') + '</div><p class="rec-key">Points at advised stakes, by the day each game started (UK time); W–L under each figure, v = void. One row per live Meister, so new Meisters join the grid automatically. Retired Meisters are left out of these rows (their tips stay in the overall record).</p>';
+    el.innerHTML = '<div class="table-box mr-box">' + t1 + t2.replace(/<\/div>$/, '</div></details>') + t3.replace(/<\/div>$/, '</div></details>') + '</div><p class="rec-key">Points at advised stakes, by the day each game started (UK time); W–L under each figure, v = void. One row per live Meister, so new Meisters join the grid automatically. Earlier test Meisters are left out of these rows (their tips stay in the overall record).</p>';
   }
   function dayTable() {
     var S = p2Set(), days = [];
@@ -1417,7 +1422,7 @@
       days.map(function (k) { var l = S.filter(function (t) { return pk(t) === k; }), s = stats(l); run += s.profit;
         var by = function (id) { var p = 0; l.forEach(function (t) { if (t.meister === id) p += profit(t); }); return '<td class="n pts ' + cls(p) + '">' + pts(p) + "</td>"; };
         return "<tr><td>" + dayLabel(k) + '</td><td class="n">' + l.length + '</td><td class="n">' + s.won + "–" + s.lost + "</td>" + by("meister") + by("cruncher") + by("ncmr") + '<td class="n pts ' + cls(s.profit) + '"><b>' + pts(s.profit) + '</b></td><td class="n pts ' + cls(run) + '">' + pts(run) + "</td></tr>"; }).join("") +
-      "</tbody></table></div>" + '<p class="rec-key">By the day each game was played (UK time), so a late finish counts on the day it started. <b>Tips</b> are settled tips only; games still to run are added when they finish. <b>Day P/L</b> and <b>Running</b> include every tip since 5 November, including those of retired Meisters (none since 9 November), so they can differ slightly from TOM + NCM + NCMR.</p>';
+      "</tbody></table></div>" + '<p class="rec-key">By the day each game was played (UK time), so a late finish counts on the day it started. <b>Tips</b> are settled tips only; games still to run are added when they finish. <b>Day P/L</b> and <b>Running</b> include every tip since 5 November, including early test tips (none since 9 November), so they can differ slightly from TOM + NCM + NCMR.</p>';
   }
   function todayStrip(el) {
     var today = dayKey(new Date().toISOString()), L = p2().filter(function (t) { return dayKey(t.start) === today && !isRetired(t); }); /* retired FMM not on today's card */ /* Owner 12 Nov 15:14: every number here is TODAY'S EVENTS (games starting today, Kampala), never when the tip was published */
