@@ -146,3 +146,17 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
   .ph-r.w { background: rgba(110,231,160,.18); color: #7EE2A8; }
   .ph-r.l { background: rgba(255,147,132,.16); color: #FF9384; }
 }
+.ph-st { display: none; }
+@media (min-width: 981px) {
+  .page-head.ph-big .ph-st { display: flex; flex-wrap: wrap; gap: 18px 40px; margin-top: 22px; }
+  .ph-st b { display: block; font: 800 clamp(28px, 3.4vw, 38px)/1 var(--f-display); color: #fff; }
+  .ph-st b.g { color: #7EE2A8; }
+  .ph-st span { font-size: 14px; color: #9FB0D2; }
+}
+
+/* next-step link at the bottom of Home / Tips / Results (Owner 23 Nov 17:58) */
+.nx-step { display: grid; gap: 2px; text-decoration: none; background: var(--navy); color: #fff; border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); border-left: 5px solid var(--yellow); }
+.nx-step .nx-k { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--yellow); }
+.nx-step b { font: 800 clamp(22px, 3vw, 28px)/1.15 var(--f-body); color: #fff; }
+.nx-step .nx-d { font-size: 15px; color: #C9D2E6; }
+.nx-step:hover b { text-decoration: underline; }

@@ -81,9 +81,27 @@
     var side = document.createElement('aside'); side.className = 'mh-next ph-side'; side.innerHTML = html;
     var left = document.createElement('div'); left.className = 'ph-l';
     while (w.firstChild) left.appendChild(w.firstChild);
+    if (pg === 'results' && f && f.record) {
+      var r = f.record, c = f.clv, sgn = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2); };
+      var st = document.createElement('div'); st.className = 'st ph-st';
+      st.innerHTML = '<div><b class="' + (r.pts >= 0 ? 'g' : '') + '">' + sgn(r.pts) + '</b><span>points since 5 Nov</span></div><div><b>' + r.tips + '</b><span>settled tips</span></div><div><b>' + (r.roi >= 0 ? '+' : '−') + Math.abs(r.roi).toFixed(1) + '%</b><span>return on stakes</span></div>' + (c ? '<div><b>' + c.pct + '%</b><span>beat the closing price</span></div>' : '');
+      left.appendChild(st);
+    }
     w.appendChild(left); w.appendChild(side); head.classList.add('ph-big');
   }
   if (/^(tips|results)$/.test(document.body.getAttribute('data-page') || '')) fetch('tips_feed.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(sidePanel).catch(function () { sidePanel(null); });
+  /* Owner 23 Nov 17:58: a 'next step' link at the bottom of the three main pages (Home -> Tips -> Results -> Meisters) */
+  (function nextStep() {
+    var pg = document.body.getAttribute('data-page');
+    var N = { home: ['/tips', 'See today\'s tips', 'Every open tip with its price, chance and edge.'],
+      tips: ['/results', 'See how they did', 'Every result, winners and losers, on the record.'],
+      results: ['/meisters', 'Meet the Meisters', 'Who picks the tips, and each Meister\'s own record.'] }[pg];
+    var main = document.querySelector('[data-page-root] main') || document.querySelector('main');
+    if (!N || !main || main.querySelector('.nx-step')) return;
+    var a = document.createElement('a'); a.className = 'nx-step'; a.href = N[0];
+    a.innerHTML = '<span class="nx-k">Next</span><b>' + N[1] + ' →</b><span class="nx-d">' + N[2] + '</span>';
+    var box = document.getElementById('about-record'); if (box) main.insertBefore(a, box); else main.appendChild(a);
+  })();
   if (home) fetch('tips_feed.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(hero).catch(function () { hero(null); });
   details();
   new MutationObserver(function () { details(); }).observe(document.body, { childList: true, subtree: true });
