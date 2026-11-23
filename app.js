@@ -1811,7 +1811,7 @@
       var S = p2().filter(function (t) { return t.result !== "open"; }), dk = function (t) { return dayKey(t.start); };
       var td = dayKey(new Date().toISOString()), yd = dayKey(new Date(Date.now() - 864e5).toISOString());
       var line = function (lab, l) { var p = 0, w = 0, lo = 0; l.forEach(function (t) { p += profit(t); if (/won|placed/.test(t.result)) w++; else if (/lost/.test(t.result)) lo++; }); return '<span><b>' + lab + '</b> <b class="pts ' + cls(p) + '">' + pts(p) + "</b> \u00b7 " + w + "\u2013" + lo + " (" + l.length + " settled)</span>"; };
-      var m = $("main.wrap"); if (m && !$(".res-sum")) { var d = document.createElement("div"); d.className = "res-sum"; d.innerHTML = line("Today", S.filter(function (t) { return dk(t) === td; })) + line("Yesterday", S.filter(function (t) { return dk(t) === yd; })); m.insertBefore(d, m.firstChild); }
+      var m = $("main.wrap"); if (m && !$(".res-sum")) { var d = document.createElement("div"); d.className = "res-sum"; d.innerHTML = line("Today", S.filter(function (t) { return dk(t) === td; })) + line("Yesterday", S.filter(function (t) { return dk(t) === yd; })); var rt = $("#res-table"); if (rt) rt.parentNode.insertBefore(d, rt); else m.insertBefore(d, m.firstChild); } /* Owner 23 Nov 18:14: filters straight under the header like Tips; the Today/Yesterday line sits above the results list */
     }
   })();
   var liveCount = live().length;

@@ -187,3 +187,16 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 .trow.mxrow .tr-sel b{white-space:nowrap}
 @media (max-width:600px){.trow.mxrow .tr-tags{display:none}.trow.mxrow .tr-ev{white-space:normal}}
 @media (max-width:600px){.trow.mxrow .tr-sel{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;display:block}}
+
+/* Keith 23 Nov 18:15: mobile flow on Tips/Results - header tabs and filters as single swipeable rows, smaller pills, less dead space */
+@media (max-width:600px){
+  .page-head{padding-top:22px!important;padding-bottom:22px!important}
+  .page-head .sub-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:0 -16px 12px;padding:0 16px 2px;scrollbar-width:none}
+  .page-head .sub-tabs::-webkit-scrollbar{display:none}
+  .page-head .sub-tabs a{flex:0 0 auto;font-size:12.5px;padding:6px 12px}
+  #tip-filters .filters,#res-filters .filters{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin-left:-16px;margin-right:-16px;padding:2px 16px 4px;scrollbar-width:none;align-items:center}
+  #tip-filters .filters::-webkit-scrollbar,#res-filters .filters::-webkit-scrollbar{display:none}
+  #tip-filters .filters .pill,#res-filters .filters .pill{flex:0 0 auto;font-size:13px;padding:6px 12px;min-height:0}
+  #tip-filters .filters .seg-label,#res-filters .filters .seg-label{flex:0 0 auto;margin-right:2px}
+  section[aria-label="Filters"]{margin-top:14px;margin-bottom:6px}
+}
