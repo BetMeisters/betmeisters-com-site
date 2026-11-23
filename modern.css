@@ -200,3 +200,15 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
   #tip-filters .filters .seg-label,#res-filters .filters .seg-label{flex:0 0 auto;margin-right:2px}
   section[aria-label="Filters"]{margin-top:14px;margin-bottom:6px}
 }
+@media (max-width:600px){
+  #m-tabs .filters,#ac-filters .filters{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto;gap:6px;margin-left:-16px;margin-right:-16px;padding:2px 16px 4px;scrollbar-width:none;align-items:center}
+  #m-tabs .filters::-webkit-scrollbar,#ac-filters .filters::-webkit-scrollbar{display:none}
+  #m-tabs .filters .pill,#ac-filters .filters .pill{flex:0 0 auto;font-size:13px;padding:6px 12px;min-height:0;width:auto}
+}
+@media (max-width:600px){
+  #m-tabs .filters .seg-label,#ac-filters .filters .seg-label{flex:0 0 auto!important;width:auto!important;margin:0 2px 0 0}
+  #ac-stats.ac-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
+  #ac-stats .ac-stat{padding:8px 6px!important;min-height:0!important}
+  #ac-stats .ac-stat b,#ac-stats .ac-stat strong{font-size:17px!important}
+  #ac-stats .ac-stat span{font-size:9.5px!important;letter-spacing:.03em!important;line-height:1.25!important}
+}
