@@ -129,3 +129,13 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
   .mx-band nav.sections a { white-space: nowrap; }
   .mx-d { font-size: 15.5px; }
 }
+/* Owner 23 Nov 18:18: util bar and free banner identical to betmeisters.com */
+.mx-util .mx-wrap{align-items:center;padding-block:6px}
+.mx-odds{display:flex;align-items:center;gap:8px}
+.mx-ol{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.mx-seg{display:inline-flex;border:1.5px solid #0B1A3A;border-radius:999px;overflow:hidden}
+.mx-seg button{font:700 12px/1 var(--f-body);letter-spacing:.04em;padding:6px 10px;min-height:28px;border:0;background:transparent;color:#0B1A3A;cursor:pointer}
+.mx-seg button[aria-pressed="true"]{background:#0B1A3A;color:#FFC629}
+.mx-pro{display:inline-block;background:#0B1A3A;color:#FFC629;font-weight:800;font-size:12px;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+@media (max-width:600px){.mx-ol{display:none}.mx-util .mx-wrap>span:first-child{font-size:12.5px}}
+@media (max-width:600px){.mx-util .mx-wrap>span:first-child{font-size:12px;white-space:nowrap}.mx-seg button{padding:6px 8px;font-size:11.5px}}

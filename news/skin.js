@@ -44,17 +44,20 @@
       });
     }
   })();
+  /* Owner 23 Nov 18:18: news util bar matches .com (odds switch, same saved setting as the tips pages) */
+  var mxOdds = 'dec'; try { mxOdds = localStorage.getItem('bm-odds2') || 'dec'; } catch (e) {}
   var hdr = document.getElementById('hdr');
   var secNav = hdr && hdr.querySelector('nav.sections');
   if (hdr) {
     var keep = secNav ? secNav.outerHTML : '';
-    hdr.innerHTML = '<div class="mx-util"><div class="mx-wrap"><span>18+ only · Bet responsibly</span><a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a></div></div>' +
-      '<div class="mx-free"><div class="mx-wrap"><b>FREE UNTIL 1 JANUARY</b><span>Every tip, Free and Pro, is open to everyone until 1 January. <a href="/tips">See today\'s tips →</a></span></div></div>' +
+    hdr.innerHTML = '<div class="mx-util"><div class="mx-wrap"><span>18+ only · Bet responsibly</span><span class="mx-odds"><span class="mx-ol">Odds</span><span class="mx-seg" role="group" aria-label="Odds format">' + [['dec','Decimal'],['frac','Fractional'],['us','US']].map(function (o) { return '<button type="button" data-mxodds="' + o[0] + '" aria-pressed="' + (o[0] === mxOdds ? 'true' : 'false') + '">' + o[1] + '</button>'; }).join('') + '</span></span></div></div>' +
+      '<div class="mx-free"><div class="mx-wrap"><b>FREE UNTIL 1 JANUARY</b><span>Let the Meisters prove themselves. Every tip, Free and <span class="mx-pro">PRO</span>, is open to everyone until 1 January. After that, Pro tips are for subscribers.</span></div></div>' +
       '<header class="mx-mast" id="mx-mast"><div class="mx-wrap"><a class="mx-brand" href="/" aria-label="BetMeisters home"><img src="/favicon.svg" alt="" width="34" height="38"><span><b>BET</b>MEISTERS</span></a>' +
       '<button type="button" class="mx-btn" aria-expanded="false" aria-controls="mx-nav" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<nav class="mx-nav" id="mx-nav" aria-label="Main">' + nav + '</nav></div></header>' +
       mxBand(keep);
     var b = hdr.querySelector('.mx-btn'), m = hdr.querySelector('.mx-mast');
+    Array.prototype.forEach.call(hdr.querySelectorAll('[data-mxodds]'), function (x) { x.addEventListener('click', function () { mxOdds = x.getAttribute('data-mxodds'); try { localStorage.setItem('bm-odds2', mxOdds); } catch (e) {} Array.prototype.forEach.call(hdr.querySelectorAll('[data-mxodds]'), function (y) { y.setAttribute('aria-pressed', y === x ? 'true' : 'false'); }); }); });
     if (b) b.addEventListener('click', function () { var o = m.getAttribute('data-open') === 'true'; m.setAttribute('data-open', String(!o)); b.setAttribute('aria-expanded', String(!o)); });
   }
   var ftr = document.getElementById('ftr');
