@@ -163,3 +163,27 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 
 /* Keith 23 Nov 18:04: empty fold groups (none to back) are not needed */
 .ac-fold.empty{display:none}
+
+/* Keith 23 Nov 18:05: compact combo/acca rows on Results, clearly marked */
+.mres-sec{margin-top:36px}
+.mres-line{color:var(--ink-3);font-size:14px;margin:-6px 0 14px}
+.trow.mxrow{box-shadow:inset 4px 0 0 var(--mk)}
+.trow.mxrow .mk-tag{display:inline-block;font:800 10px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;background:var(--mk);color:#0B1630;vertical-align:2px;margin-right:4px}
+.trow.mxrow .tr-sel b{color:var(--ink-2);font-weight:700}
+.trow.mxrow .mk-badge{background:var(--mk)!important;color:#0B1630!important}
+.trow.mxrow .tr-body{padding:4px 14px 14px}
+.trow.mxrow .tr-body .acca-legs{margin:0;padding:0;list-style:none}
+.trow.mxrow .tr-body .acca-legs{list-style:none;margin:0;padding:2px 0 2px 12px;border-left:3px solid var(--mk);display:flex;flex-direction:column}
+.trow.mxrow .acca-legs li{display:grid;grid-template-columns:5.4em minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px dashed var(--line)}
+.trow.mxrow .acca-legs li:first-child{border-top:0}
+.trow.mxrow .acca-legs .res{font-size:10.5px;padding:4px 7px;justify-self:start}
+.trow.mxrow .acca-legs .sel{display:block;font-weight:700}
+.trow.mxrow .acca-legs .sub{display:block;font-size:12.5px;color:var(--ink-3)}
+.trow.mxrow .acca-legs .num{text-align:right;font-weight:800}
+.trow.mxrow .acca-legs .num small{display:block;font-size:11px;font-weight:600;color:var(--ink-3)}
+.trow.mxrow .acca-legs .num .leg-edge.pos{color:var(--won)}.trow.mxrow .acca-legs .num .leg-edge.neg{color:var(--lost)}
+.trow.mxrow .acca-note{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
+@media (max-width:600px){.trow.mxrow .acca-legs li{grid-template-columns:minmax(0,1fr) auto}.trow.mxrow .acca-legs li>.res{display:none}.trow.mxrow .tr-sel{white-space:normal}}
+.trow.mxrow .tr-sel b{white-space:nowrap}
+@media (max-width:600px){.trow.mxrow .tr-tags{display:none}.trow.mxrow .tr-ev{white-space:normal}}
+@media (max-width:600px){.trow.mxrow .tr-sel{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;display:block}}

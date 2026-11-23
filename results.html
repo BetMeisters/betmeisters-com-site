@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261123180609">
-<link rel="stylesheet" href="modern.css?v=20261123180609">
+<link rel="stylesheet" href="styles.css?v=20261123181038">
+<link rel="stylesheet" href="modern.css?v=20261123181038">
 <style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
 <link rel="canonical" href="https://betmeisters.com/results">
 </head>
@@ -35,23 +35,55 @@
     <div id="res-table"></div>
   </section>
   <div id="pp-line"></div>
-  <section aria-labelledby="h-acca-res">
-    <div class="sec-head"><div><p class="eyebrow">Acca Meister · separate record, not in the totals above</p><h2 class="sec-title" id="h-acca-res">Settled accas</h2></div><a class="more" href="/acca">Acca record and charts</a></div>
-    <section class="pf-panel" style="border-top-color:#FF5FA2"><div class="pf-hd"><h3>Acca Meister</h3><p id="res-acca-line"></p></div><div class="pf-body"><div id="res-accas"></div></div></section>
+  <section aria-labelledby="h-combo-res" class="mres-sec">
+    <div class="sec-head"><div><p class="eyebrow">Combo Meisters · separate record, not in the tip totals</p><h2 class="sec-title" id="h-combo-res">Settled combos</h2></div><a class="more" href="/combo">Combo record</a></div>
+    <p class="mres-line" id="res-combo-line"></p><div id="res-combos"></div>
+  </section>
+  <section aria-labelledby="h-acca-res" class="mres-sec">
+    <div class="sec-head"><div><p class="eyebrow">Acca Meisters · separate record, not in the tip totals</p><h2 class="sec-title" id="h-acca-res">Settled accas</h2></div><a class="more" href="/acca">Acca record</a></div>
+    <p class="mres-line" id="res-acca-line"></p><div id="res-accas"></div>
   </section>
   <p class="pf-note" style="margin:0" id="res-note">Every settled tip and acca, winners and losers, newest first. Tap a tip to open its card. Charts and stats are on <a href="/performance">Performance</a>.</p>
 </main>
 <div id="bm-footer"></div>
 <script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
-<script src="data.js?v=20261123180609"></script>
-<script src="news_feed.js?v=20261123180609"></script>
-<script src="app.js?v=20261123180609"></script>
-<script src="consent.js?v=20261123180609"></script>
-<script src="modern.js?v=20261123180609"></script>
+<script src="data.js?v=20261123181038"></script>
+<script src="news_feed.js?v=20261123181038"></script>
+<script src="app.js?v=20261123181038"></script>
+<script src="consent.js?v=20261123181038"></script>
+<script src="modern.js?v=20261123181038"></script>
 <script>
-(function () { var U = BM.accaUI; if (!U) return; var R = U.record();
-  document.getElementById("res-acca-line").textContent = R.n ? (R.n + " settled · " + R.won + " won · " + U.ptsFmt(R.pts) + " pts · " + R.open + " open. Tap “Show all” on an acca to see every leg.") : ("No settled accas yet · " + R.open + " open. Every acca is listed here when it settles, winners and losers.");
-  document.getElementById("res-accas").innerHTML = R.n ? U.list(R.settled.slice().sort(function (x, y) { return new Date(y.publishedAt) - new Date(x.publishedAt); })) : "";
+/* Owner 23 Nov 18:05: combos and accas on Results use the same compact rows as the tips, clearly marked, each in its own section; tap a row for every leg */
+(function () { var U = BM.accaUI; if (!U) return;
+  var KIND = { combo: ["Combo Meister", "#7FD3FF", "CM"], tom: ["Original Combo Meister", "#9A6BD1", "OC"], rcm: ["Racing Combo Meister", "#B5651D", "RC"], acca: ["Acca Meister", "#FF5FA2", "AM"], oam: ["Original Acca Meister", "#D99A00", "OA"] };
+  function kindOf(a, isAcca) { if (isAcca) return (a.meister === "tom" || a.meister === "meister") ? KIND.oam : KIND.acca; return KIND[a.meister] || KIND.combo; }
+  function first(a) { return a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); }); }
+  function row(a, isAcca) {
+    var k = kindOf(a, isAcca), st = U.state(a), P = U.price(a), p = U.pts(a), L = first(a), tm = U.time(L[0].start);
+    var won = a.legs.filter(function (l) { return /won|void/.test(l.result || ""); }).length;
+    return '<details class="trow mxrow" id="' + U.esc(a.id) + '" style="--mk:' + k[1] + '"><summary>' +
+      '<span class="tr-time">' + tm.eat + ' UK</span>' +
+      '<span class="tr-main"><span class="tr-sel"><span class="mk-tag">' + (isAcca ? "Acca" : "Combo") + '</span> ' + U.esc(a.title || (L.length + "-fold")) + ' <b>@ ' + U.odds(P) + '</b></span><span class="tr-ev">' + U.esc(k[0]) + ' · ' + won + ' of ' + L.length + ' legs landed · ' + a.stake + ' pt</span></span>' +
+      '<span class="tr-tags"><span class="badge mk-badge" title="' + U.esc(k[0]) + '">' + k[2] + '</span></span>' +
+      '<span class="tr-right"><span class="res ' + st + '">' + st + '</span><span class="tr-pl pts ' + U.cls(p) + '">' + U.ptsFmt(p) + '</span></span><span class="tr-chev" aria-hidden="true"></span></summary>' +
+      '<div class="tr-body"><ol class="acca-legs">' + L.map(U.legRow).join("") + '</ol>' + (a.note ? '<p class="acca-note">' + U.esc(a.note) + '</p>' : '') + '</div></details>';
+  }
+  function block(list, isAcca, listEl, lineEl, word) {
+    var set = list.filter(function (a) { return U.state(a) !== "open"; }).sort(function (x, y) { return new Date(first(y)[0].start) - new Date(first(x)[0].start); });
+    var w = set.filter(function (a) { return U.state(a) === "won"; }).length, P = set.reduce(function (m, a) { return m + U.pts(a); }, 0);
+    lineEl.textContent = set.length ? (set.length + " settled · " + w + " won · " + U.ptsFmt(P) + " pts. Newest first; tap one to see every leg.") : ("No settled " + word + " yet.");
+    var lim = 15;
+    function draw() {
+      var rows = set.slice(0, lim), groups = [], cur = null;
+      rows.forEach(function (a) { var key = U.dayKey(first(a)[0].start); if (!cur || cur.k !== key) { cur = { k: key, items: [] }; groups.push(cur); } cur.items.push(a); });
+      listEl.innerHTML = groups.map(function (g) { return '<section class="tday"><h3 class="tday-h">' + U.esc(U.dayLabel(g.k)) + ' <span class="count">' + g.items.length + " " + (g.items.length === 1 ? word.replace(/s$/, "") : word) + '</span></h3><div class="tlist">' + g.items.map(function (a) { return row(a, isAcca); }).join("") + "</div></section>"; }).join("") +
+        (set.length > lim ? '<p style="text-align:center;margin-top:14px"><button type="button" class="pill mres-more">Show ' + Math.min(15, set.length - lim) + ' more (' + (set.length - lim) + ' hidden)</button></p>' : "");
+      var mb = listEl.querySelector(".mres-more"); if (mb) mb.addEventListener("click", function () { lim += 15; draw(); });
+    }
+    draw();
+  }
+  block((BM.COMBOS || []).filter(function (a) { return a.legs && !a.hidden; }), false, document.getElementById("res-combos"), document.getElementById("res-combo-line"), "combos");
+  block((BM.ACCAS || []).filter(function (a) { return a.legs && !a.hidden; }), true, document.getElementById("res-accas"), document.getElementById("res-acca-line"), "accas");
 })();
 </script>
 </body>

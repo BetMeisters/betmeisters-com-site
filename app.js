@@ -569,7 +569,7 @@
     var w = set.filter(function (a) { return accaState(a) === "won"; }).length, P = set.reduce(function (m, a) { return m + accaPts(a); }, 0), S = set.reduce(function (m, a) { return m + a.stake; }, 0);
     return { settled: set, n: set.length, won: w, pts: P, staked: S, open: (BM.ACCAS || []).filter(function (a) { return accaState(a) === "open"; }).length };
   }
-  BM.accaUI = { dayKey: function (d) { return dayKey(d); }, dayLabel: function (k) { return dayLabel(k); }, list: accaList, record: accaRecord, state: accaState, pts: accaPts, price: accaPrice, chance: accaChance, ptsFmt: function (x) { return pts(x); } };
+  BM.accaUI = { dayKey: function (d) { return dayKey(d); }, dayLabel: function (k) { return dayLabel(k); }, list: accaList, record: accaRecord, state: accaState, pts: accaPts, price: accaPrice, chance: accaChance, ptsFmt: function (x) { return pts(x); }, legRow: accaLegRow, odds: function (x) { return accaOdds(x); }, time: function (d) { return fmtTime(d); }, esc: esc, cls: cls }; /* Owner 23 Nov 18:05: compact combo/acca rows on Results */
 
   /* ---------- results list + chart ---------- */
   function resultsList(list) {
