@@ -3,7 +3,7 @@
   var GA = "G-B5H2QLP7RB", KEY = "bm_consent";
   window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } window.gtag = gtag;
   gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied" });
-  function load() { if (!GA || window.__ga) return; window.__ga = 1; var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA; document.head.appendChild(s); gtag("js", new Date()); gtag("config", GA, { anonymize_ip: true }); }
+  function load() { if (!GA || window.__ga) return; window.__ga = 1; var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA; document.head.appendChild(s); gtag("js", new Date()); gtag("config", GA, { anonymize_ip: true, content_group: (location.pathname.indexOf("/news/") === 0 ? "News" : "Tips") }); }
   function set(v) { try { localStorage.setItem(KEY, v); } catch (e) {} if (v === "yes") { gtag("consent", "update", { analytics_storage: "granted" }); load(); } var b = document.getElementById("cc"); if (b) b.remove(); }
   window.bmCookies = function () { try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); };
   var v = null; try { v = localStorage.getItem(KEY); } catch (e) {}
