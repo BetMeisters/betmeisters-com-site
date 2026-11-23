@@ -198,12 +198,12 @@
   function comboLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
     var won = a.legs.filter(function (l) { return /won|void/.test(l.result || ""); }).length, playing = a.legs.filter(function (l) { return (!l.result || l.result === "open") && new Date(l.start).getTime() <= now; }).length, toCome = a.legs.filter(function (l) { return new Date(l.start).getTime() > now; }).length;
-    return '<a class="ip-acca ip-combo" href="combo.html#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
+    return '<a class="ip-acca ip-combo" href="/combo#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
   }
   function accaLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
     var won = a.legs.filter(function (l) { return /won|void/.test(l.result || ""); }).length, playing = a.legs.filter(function (l) { return (!l.result || l.result === "open") && new Date(l.start).getTime() <= now; }).length, toCome = a.legs.filter(function (l) { return new Date(l.start).getTime() > now; }).length;
-    return '<a class="ip-acca" href="acca.html#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + a.legs.length + "-fold acca @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge acca" title="Acca Meister">AM</span><span class="ip-a-go">Every leg →</span></a>';
+    return '<a class="ip-acca" href="/acca#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + a.legs.length + "-fold acca @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge acca" title="Acca Meister">AM</span><span class="ip-a-go">Every leg →</span></a>';
   }
   function inPlaySection(sec, el, countEl, max) {
     /* Owner 13 Nov 09:46: accas in play live on the Accas page only; home and Tips show tips in play */
@@ -286,7 +286,7 @@
   }
   function whoTag(id) {
     var m = meisterById(id);
-    return '<a class="who" href="meisters.html#' + m.id + '"><span class="badge ' + m.id + '">' + esc(m.initials) + "</span>" + esc(m.short || m.name) + "</a>";
+    return '<a class="who" href="/meisters#' + m.id + '"><span class="badge ' + m.id + '">' + esc(m.initials) + "</span>" + esc(m.short || m.name) + "</a>";
   }
   function locked(t) { return t.tier === "pro" && t.result === "open" && !isRemoved(t) && !hasAccess(t.meister); }
   function shareText(t) {
@@ -628,10 +628,10 @@
   }
 
   /* ---------- header & footer ---------- */
-  var NAV = [["home", "index.html", "Home"], ["tips", "tips.html", "Tips"], ["acca", "acca.html", "Accas"], /* Combos tab added below once the first combo exists (Owner 16 Nov 10:17) */ ["results", "results.html", "Results"], ["performance", "performance.html", "Performance"], ["meisters", "meisters.html", "Meisters"], ["newsx", ((window.BM && BM.NEWSFEED && BM.NEWSFEED.base) || "#"), "News ↗"]];
-  if ((BM.COMBOS || []).length || document.body.getAttribute("data-page") === "combo") NAV.splice(2, 0, ["combo", "combo.html", "Combos"]); /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
+  var NAV = [["home", "/", "Home"], ["tips", "/tips", "Tips"], ["acca", "/acca", "Accas"], /* Combos tab added below once the first combo exists (Owner 16 Nov 10:17) */ ["results", "/results", "Results"], ["performance", "/performance", "Performance"], ["meisters", "/meisters", "Meisters"], ["newsx", ((window.BM && BM.NEWSFEED && BM.NEWSFEED.base) || "#"), "News ↗"]];
+  if ((BM.COMBOS || []).length || document.body.getAttribute("data-page") === "combo") NAV.splice(2, 0, ["combo", "/combo", "Combos"]); /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
   var activeNav = { article: "news", review: "reviews", propicks: "tips" }[page] || page;
-  function brand() { return '<a class="brand" href="index.html" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
+  function brand() { return '<a class="brand" href="/" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
   function header() {
     var seg = function (key, opts, cur) { return '<span class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</span>"; };
     return '<div class="utility"><div class="wrap util-grid"><span class="rg">18+ only · Bet responsibly</span>' +
@@ -650,8 +650,8 @@
   function footer() {
     return '<footer class="foot"><div class="wrap"><div class="foot-grid"><div>' + brand() +
       '<p>Independent tips from two Meisters: The Original Meister picks by eye, the Number Cruncher picks by the numbers. Every tip is published before the event, priced, and kept on the record whether it wins or loses.</p><p class="foot-contact">Contact: <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></p></div>' +
-      '<div><h4>Tips</h4><ul><li><a href="tips.html">All open tips</a></li><li><a href="tips.html#nap">NAP of the day</a></li><li><a href="propicks.html">Pro Picks</a></li><li><a href="results.html">Results & record</a></li><li><a href="performance.html">Performance</a></li></ul></div>' +
-      '<div><h4>BetMeisters</h4><ul><li><a href="meisters.html">The Meisters</a></li><li><a href="acca.html">Acca Meister (separate record)</a></li><li><a href="article-price-first.html">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="privacy.html">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
+      '<div><h4>Tips</h4><ul><li><a href="/tips">All open tips</a></li><li><a href="/tips#nap">NAP of the day</a></li><li><a href="/propicks">Pro Picks</a></li><li><a href="/results">Results & record</a></li><li><a href="/performance">Performance</a></li></ul></div>' +
+      '<div><h4>BetMeisters</h4><ul><li><a href="/meisters">The Meisters</a></li><li><a href="/acca">Acca Meister (separate record)</a></li><li><a href="/article-price-first">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="/privacy">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
       '<div class="foot-rev"><h4>BetMeisters.news</h4><ul><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">News, previews and guides ↗</a></li><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">Bookmaker reviews ↗</a></li></ul></div></div>' +
       '<div class="rg-box"><span class="age">18+</span><p>Only bet what you can afford to lose. Our tips are opinions, not guarantees, and past results do not predict future ones. If gambling stops being fun, get free, confidential help from <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">GambleAware.org</a> or the National Gambling Helpline on <span class="mono">0808 8020 133</span> (UK).</p></div>' +
       '<div class="foot-small"><span>© 2026 BetMeisters. No bookmaker commissions, no paid placements.</span><span>' + (window.BM_PUBLIC ? "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK." : "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK.") + '</span><span>Contact <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></span></div></div></footer>';
@@ -734,15 +734,15 @@
     var SHOW = legs.length <= 6 ? (legs.length <= 5 ? legs.length : 4) : 4;
     return '<article class="hero-card acca-half" aria-label="' + lab[0] + ': ' + esc(a.title) + '">' +
       '<div class="hc-top"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + lab[0] + '<small>' + lab[1] + '</small></p>' +
-      '<a class="who hc-who" href="acca.html#' + esc(a.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>' +
-      '<div class="ah-title"><h2 class="hc-sel"><a href="acca.html#' + esc(a.id) + '">' + legs.length + '-fold</a><small>' + esc(a.type.replace(/ \(.*\)$/, "")) + '</small></h2><span class="ah-price">' + accaOdds(P) + '</span></div>' +
+      '<a class="who hc-who" href="/acca#' + esc(a.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>' +
+      '<div class="ah-title"><h2 class="hc-sel"><a href="/acca#' + esc(a.id) + '">' + legs.length + '-fold</a><small>' + esc(a.type.replace(/ \(.*\)$/, "")) + '</small></h2><span class="ah-price">' + accaOdds(P) + '</span></div>' +
       '<dl class="hc-stats ah-stats"><div><dt>' + (started ? "Next leg" : "First leg") + '</dt><dd>' + tm.eat + ' <small>UK</small>' + ALT(tm, '<small class="hc-uk">', "</small>") + '</dd></div>' +
       '<div><dt>Our chance</dt><dd>1 in ' + Math.round(1 / C).toLocaleString("en-GB") + '</dd></div><div><dt>Edge</dt><dd class="' + cls(P * C - 1) + '">' + pct(P * C - 1, true) + '</dd></div>' +
       '<div><dt>Stake</dt><dd>' + a.stake + ' pt</dd></div><div><dt>\u00a310 returns</dt><dd class="price">\u00a3' + Math.round(10 * P).toLocaleString("en-GB") + '</dd></div></dl>' +
       '<ul class="ac-mini">' + legs.slice(0, SHOW).map(function (l) { return '<li><span><small class="t">' + fmtTime(l.start).eat + '</small>' + esc(l.sel) + '</span><b>' + fmtOdds(l.price) + '</b></li>'; }).join("") +
       (legs.length > SHOW ? '<li class="more"><span>+ ' + (legs.length - SHOW) + ' more legs</span></li>' : '') + '</ul>' +
       '<div class="cd-row"><p class="countdown hc-count" data-acca-start="' + first.start + '" data-acca-pre="' + pre + '">' + cd + '</p>' + (started ? wonTally(legs) : "") + '</div>' +
-      '<div class="ah-foot"><a class="aw-cta" href="acca.html#' + esc(a.id) + '">See every leg and the acca record \u2192</a>' +
+      '<div class="ah-foot"><a class="aw-cta" href="/acca#' + esc(a.id) + '">See every leg and the acca record \u2192</a>' +
       '<p class="ac-sep">Separate record \u00b7 not part of the main BetMeisters totals</p>' +
       '<div class="hc-share">' + shareButtons(share) + '</div></div></article>';
   }
@@ -752,7 +752,7 @@
   function homeTip(t, o) {
     o = o || {};
     var lock = locked(t), tm = fmtTime(t.start), e = edgeOf(t), m = meisterById(t.meister);
-    var badge = '<a class="who hc-who" href="meisters.html#' + m.id + '" title="' + esc(m.name) + '" aria-label="' + esc(m.name) + '"><span class="badge ' + m.id + '">' + esc(m.initials) + "</span></a>"; /* Owner 12 Nov 15:24: one circle per Meister, no repeated code beside it */
+    var badge = '<a class="who hc-who" href="/meisters#' + m.id + '" title="' + esc(m.name) + '" aria-label="' + esc(m.name) + '"><span class="badge ' + m.id + '">' + esc(m.initials) + "</span></a>"; /* Owner 12 Nov 15:24: one circle per Meister, no repeated code beside it */
     var left = o.label ? '<span class="shield">' + shield(o.col) + '</span><p class="hc-label" style="color:' + o.col + '">' + o.label + "<small>" + o.sub + "</small></p>" : tierPill(t);
     var tags = secTag(t) + extraTags(t).replace(o.label === "Meister Special" ? /<span class="mini-tag special">Meister Special<\/span>/ : /$^/, "") + (o.label ? '<span class="tier-mini">' + tierWord(t) + "</span>" : "");
     var where = esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "");
@@ -815,13 +815,13 @@
     var labOf = function (a) { for (var i = 0; i < picks.length; i++) if (picks[i].a === a) { var sl = SLOTS.filter(function (x) { return x[0] === picks[i].lab; })[0];
       /* Owner 12 Nov 12:59: dark header band like the old acca boxes */
       var dayA = dayKey(new Date(Math.min.apply(null, a.legs.map(function (l) { return new Date(l.start).getTime(); }))).toISOString()) === dayKey(new Date().toISOString()) ? "Today" : "Tomorrow";
-      return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + picks[i].lab + '<small>' + dayA + ' \u00b7 ' + a.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="acca.html#' + esc(a.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; } return ""; };
-    var boxes = picks.length ? '<div class="sec-head acca-home-head"><div><p class="eyebrow">Acca Meister \u00b7 separate record</p><h2 class="sec-title">Accas with edge</h2></div><a class="more" href="acca.html">All accas (' + nOpenA + ' to back)</a></div>' + accaList(picks.map(function (p) { return p.a; }), "two home-accas", labOf) : "";
+      return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + picks[i].lab + '<small>' + dayA + ' \u00b7 ' + a.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(a.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; } return ""; };
+    var boxes = picks.length ? '<div class="sec-head acca-home-head"><div><p class="eyebrow">Acca Meister \u00b7 separate record</p><h2 class="sec-title">Accas with edge</h2></div><a class="more" href="/acca">All accas (' + nOpenA + ' to back)</a></div>' + accaList(picks.map(function (p) { return p.a; }), "two home-accas", labOf) : "";
     var heroTips = g.map(function (x) { return x.list[0]; }).filter(Boolean);
     /* Owner 16 Nov 07:30 sweep: no featured tips open -> one slim strip instead of three empty boxes */
     /* Owner 22 Nov 14:08: no empty placeholder boxes (same as Pro Picks): only boxes with a tip are shown */
     el.innerHTML = (heroTips.length ? '<ul class="htips hero-row" aria-label="Featured tips">' + g.filter(function (x) { return x.list && x.list.length; }).map(function (x) { var h = heroCard(x).replace(/^<li /, '<li style="border-top-color:' + (TIER_COLOR[x.kind] || TIER_COLOR.special) + '" '); return /^<li/.test(h) ? h : "<li class=\"htip dark empty\">" + h + "</li>"; }).join("") + "</ul>" :
-      '<div class="hero-none"><span class="shield">' + shield(TIER_COLOR.special) + '</span><p><b>NAP, Meister Specials and Pro Picks</b><small>None open right now. New ones are added at the next pass.</small></p><a class="more" href="tips.html">All open tips</a></div>') +
+      '<div class="hero-none"><span class="shield">' + shield(TIER_COLOR.special) + '</span><p><b>NAP, Meister Specials and Pro Picks</b><small>None open right now. New ones are added at the next pass.</small></p><a class="more" href="/tips">All open tips</a></div>') +
       '<div class="home-bar">' + tipsBar(heroTips, "the " + heroTips.length + " featured tips") + "</div>" +
       "";
     /* Owner 22 Nov 18:21: ONE "Combos & Accas" row on the home page: combos and accas mixed, soonest first leg first (off time decides), up to five boxes (three in view, swipe/scroll for more); links to All combos and All accas. Pages for each are unchanged. */
@@ -836,18 +836,18 @@
       var isT = function (x) { return x.meister === "tom" || x.meister === "meister"; };
       var dlOf = function (x) { var d = dayKey(new Date(fsC(x)).toISOString()); return d === dayKey(new Date().toISOString()) ? "Today" : dayLabel(d).split(" \u00b7 ")[0]; };
       var labC = function (x) {
-        if (!isC(x) && isT(x)) return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">OAM ' + x.legs.length + '-fold<small>' + dlOf(x) + ' \u00b7 Original Acca Meister \u00b7 not tips</small></p><a class="who hc-who" href="acca.html#' + esc(x.id) + '"><span class="badge acca tom" title="Original Acca Meister">OA</span></a></div>'; /* Owner 22 Nov 19:30 */
+        if (!isC(x) && isT(x)) return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">OAM ' + x.legs.length + '-fold<small>' + dlOf(x) + ' \u00b7 Original Acca Meister \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca tom" title="Original Acca Meister">OA</span></a></div>'; /* Owner 22 Nov 19:30 */
         if (!isC(x)) { var sl = SLOTS.filter(function (z) { return x.legs.length >= z[1] && x.legs.length <= z[2]; })[0];
-          return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + (sl ? sl[0] : "Acca") + '<small>' + dlOf(x) + ' \u00b7 ' + x.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="acca.html#' + esc(x.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; }
-        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="combo.html#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
+          return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + (sl ? sl[0] : "Acca") + '<small>' + dlOf(x) + ' \u00b7 ' + x.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; }
+        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="/combo#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
       var items = MX.map(function (x) {
         var h = accaList([x], "", labC).replace(/^<ul[^>]*>/, "").replace(/<\/ul>$/, "");
-        if (isC(x)) h = h.split("acca.html#").join("combo.html#").replace(/<span class="badge acca" title="Acca Meister">AM<\/span>/g, "");
+        if (isC(x)) h = h.split("/acca#").join("/combo#").replace(/<span class="badge acca" title="Acca Meister">AM<\/span>/g, "");
         return h; }).join("");
-      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="combo.html">All combos (' + CL.length + ')</a><a class="more" href="acca.html">All accas (' + AL.length + ')</a></span></div>' +
+      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="/combo">All combos (' + CL.length + ')</a><a class="more" href="/acca">All accas (' + AL.length + ')</a></span></div>' +
           '<ul class="res-list acca-list two home-accas">' + items + "</ul></section>" +
           '<div class="home-bar">' + accaBar(MX, isC) + "</div>" :
-        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos &amp; Accas</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="combo.html">All combos</a><a class="more" href="acca.html">All accas</a></span></div>';
+        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos &amp; Accas</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="/combo">All combos</a><a class="more" href="/acca">All accas</a></span></div>';
     }
   }
   function heroIds() { return heroPicks().map(function (g) { return g.list[0] && g.list[0].id; }).filter(Boolean); }
@@ -905,7 +905,7 @@
     }).join("");
     el.innerHTML = groups.length || acc.length ? groups.map(function (g) { return '<h3 class="dp-group">' + g[0] + '</h3><div class="data-rows">' + g[1].map(priceRowHTML).join("") + "</div>"; }).join("") +
       (acc.length ? '<h3 class="dp-group">Accas</h3><div class="data-rows dp-accas">' + accaHTML + "</div>" : "") + PRICE_LEGEND +
-      '<p class="dp-more"><a href="tips.html">Every open tip, day by day, on the Tips page →</a></p>' : '<p class="empty">The numbers appear with the next tips.</p>';
+      '<p class="dp-more"><a href="/tips">Every open tip, day by day, on the Tips page →</a></p>' : '<p class="empty">The numbers appear with the next tips.</p>';
   }
   function dataPanel(el) {
     var cmUp = BM.CLOSE.filter(function (t) { return t.result === "open" && isP2(t) && new Date(t.start) > Date.now(); }).sort(byStart);
@@ -937,7 +937,7 @@
       '<div class="legend"><span><i style="background:var(--navy-3)"></i>Chance implied by the price</span><span><i style="background:var(--orange)"></i>Our chance (shown on live tips)</span><span><b class="edge-chip pos">+3.0%</b> <b class="edge-chip neg">−9.8%</b> Edge</span></div>' +
       '<dl class="explain"><div><dt>Implied chance</dt><dd>1 ÷ decimal price. A 2.00 price says 50%. It includes the bookmaker\'s margin, so it runs a little high.</dd></div>' +
       '<div><dt>Our chance</dt><dd>Our own estimate, written down before we look at the odds and kept for checking later.</dd></div>' +
-      '<div><dt>Edge</dt><dd>Our chance × price − 1. From 20 Nov every Number Cruncher tip has an edge of +5% to +14%, the band where our record shows real value; +14% or more is treated as a price error and not tipped. NCM Pro = prices 2.00 to 5.99, our strongest range; NCM Free = everything else, open to everyone. <a href="article-price-first.html">How it works</a>.</dd></div></dl>';
+      '<div><dt>Edge</dt><dd>Our chance × price − 1. From 20 Nov every Number Cruncher tip has an edge of +5% to +14%, the band where our record shows real value; +14% or more is treated as a price error and not tipped. NCM Pro = prices 2.00 to 5.99, our strongest range; NCM Free = everything else, open to everyone. <a href="/article-price-first">How it works</a>.</dd></div></dl>';
     $$("[data-dp]", el).forEach(function (sel) { sel.addEventListener("change", function () { dp[sel.getAttribute("data-dp")] = sel.value; dp.all = false; dataPanel(el); }); });
     var mb = $("[data-dp-all]", el); if (mb) mb.addEventListener("click", function () { dp.all = !dp.all; dataPanel(el); });
   }
@@ -1236,13 +1236,13 @@
     var Y = L.filter(function (t) { return dayKey(t.start) === yk; }), sy = cnt(Y), sa = cnt(L);
     var pts = function (x) { return (x >= 0 ? "+" : "\u2212") + Math.abs(x).toFixed(2) + " pts"; };
     var ys = !Y.length ? "none picked" : sy.settled ? sy.won + " won, " + sy.lost + " lost" + (sy.void ? ", " + sy.void + " void" : "") + ', <b class="' + (sy.pts >= 0 ? "pos" : "neg") + '">' + pts(sy.pts) + "</b>" + (sy.open ? " (" + sy.open + " still running)" : "") : Y.length + " still running";
-    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="propicks.html">Pro Picks record \u2192</a></p>';
+    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="/propicks">Pro Picks record \u2192</a></p>';
   }
   function proPicksStrip(el) {
     /* Owner 17 Nov 10:32: same boxes as the NAP / Specials row, rows of three, soonest off first; started picks drop off like the Specials */
     if (!el) return;
     var T = todaysProPicks().filter(function (t) { return t.result === "open" && new Date(t.start) > new Date(); });
-    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="propicks.html">Pro Picks record</a></div>';
+    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="/propicks">Pro Picks record</a></div>';
     el.innerHTML = '<section class="pp-home" aria-labelledby="h-pp">' + head + (T.length ? '<ul class="htips hero-row pp-hero">' + T.slice(0, 3).map(function (t, i) {
         /* Owner 17 Nov 10:35: one row of 3 like the Specials; the rest queue behind and move in as each one starts ("Next up" on the third box) */
         var q = i === 2 ? T.slice(3) : [], nx = q.length ? '<p class="htip-sm hc-next">Next up: <b>' + (locked(q[0]) ? "Pro tip" : esc(q[0].selection)) + "</b> \u00b7 " + esc(q[0].event) + " \u00b7 " + fmtTime(q[0].start).eat + " UK" + (q.length > 1 ? " \u00b7 then " + (q.length - 1) + " more" : "") + "</p>" : "";
@@ -1437,8 +1437,8 @@
       (function () { var D = p2Set().filter(function (t) { return dayKey(t.start) === today; }), d = stats(D), op = p2().filter(function (t) { return t.result === "open" && dayKey(t.start) === today; }).length;
         return '<div><p class="hl-label">Today so far</p><p class="ts-big pts ' + cls(d.profit) + '">' + (D.length ? pts(d.profit) : "–") + '</p><p class="hl-sub">' + D.filter(function (t) { return /won|placed/.test(t.result); }).length + " won · " + D.filter(function (t) { return /lost/.test(t.result); }).length + " lost" + (D.filter(function (t) { return t.result === "void"; }).length ? " · " + D.filter(function (t) { return t.result === "void"; }).length + " void" : "") + "<br>" + op + " to finish</p></div>"; })() +
       /* Owner 16 Nov 10:32: site Meisters together first; then the separate records at the end: Combo (blue), then Acca (pink) */
-      (function () { var C = (BM.COMBOS || []).filter(function (a) { var f = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); })[0]; return f && dayKey(f.start) === today; }); return '<div><p class="hl-label"><span class="mdot" style="background:#7FD3FF"></span>Combo</p><p class="ts-big">' + C.length + '</p><p class="hl-sub ts-one"><a href="combo.html">Doubles and trebles</a></p></div>'; })() +
-      (function () { var A = (BM.ACCAS || []).filter(function (a) { var f = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); })[0]; return f && dayKey(f.start) === today; }); /* accas whose first leg is today */ return '<div><p class="hl-label"><span class="mdot" style="background:#FF5FA2"></span>Acca</p><p class="ts-big">' + A.length + '</p><p class="hl-sub ts-one"><a href="acca.html">With edge, not tips</a></p></div>'; })() + "</div>";
+      (function () { var C = (BM.COMBOS || []).filter(function (a) { var f = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); })[0]; return f && dayKey(f.start) === today; }); return '<div><p class="hl-label"><span class="mdot" style="background:#7FD3FF"></span>Combo</p><p class="ts-big">' + C.length + '</p><p class="hl-sub ts-one"><a href="/combo">Doubles and trebles</a></p></div>'; })() +
+      (function () { var A = (BM.ACCAS || []).filter(function (a) { var f = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); })[0]; return f && dayKey(f.start) === today; }); /* accas whose first leg is today */ return '<div><p class="hl-label"><span class="mdot" style="background:#FF5FA2"></span>Acca</p><p class="ts-big">' + A.length + '</p><p class="hl-sub ts-one"><a href="/acca">With edge, not tips</a></p></div>'; })() + "</div>";
   }
 
   function leadTable() {
@@ -1607,7 +1607,7 @@
           var lost = a.legs.some(function (l) { return l.result === "lost"; }), ret = lost ? 0 : a.legs.reduce(function (m, l) { return m * lr(l); }, 1), pt = lost ? -a.stake : a.stake * ret - a.stake;
           var P = a.legs.reduce(function (m, l) { return m * l.price; }, 1), d = dayLabel(dayKey(new Date(last(a)).toISOString())).split(" \u00b7 ")[0];
           return '<a class="ls-multi ' + kind + '" href="' + href + "#" + esc(a.id) + '"><span class="ls-m-k">' + lab + '</span><span class="ls-m-t">' + esc(a.title || (a.legs.length + "-fold")) + " @ " + accaOdds(P) + "<small>" + d + " · " + (lost ? "Lost" : "Won") + '</small></span><b class="pts ' + cls(pt) + '">' + pts(pt) + "</b></a>"; };
-        var h = line(pick(BM.COMBOS), "combo", "combo.html", "Latest combo") + line(pick(BM.ACCAS), "acca", "acca.html", "Latest acca");
+        var h = line(pick(BM.COMBOS), "combo", "/combo", "Latest combo") + line(pick(BM.ACCAS), "acca", "/acca", "Latest acca");
         if (h) $("#latest-list").insertAdjacentHTML("beforeend", '<div class="ls-multis">' + h + "</div>");
       })();
       p2Total($("#latest-chart"));
@@ -1714,9 +1714,9 @@
           sportCards(["F", "T", "B", "U", "O", "E"]);
         var upAll = inPlay.concat(nextUp), upShow = upAll.slice(0, ROWS);
         var upList = upShow.length ? '<ul class="res-list up-list">' + upShow.map(function (t) { return isLive(t) ? upRow(t).replace('<span class="up-when">', '<span class="up-when"><span class="res live">In play</span>') : upRow(t); }).join("") + "</ul>" : '<p class="empty">No open tips right now.</p>';
-        upList += '<p class="m-more">' + (upAll.length > ROWS ? '<a href="tips.html">+ ' + (upAll.length - ROWS) + " more open tips</a>" : "&nbsp;") + "</p>";
+        upList += '<p class="m-more">' + (upAll.length > ROWS ? '<a href="/tips">+ ' + (upAll.length - ROWS) + " more open tips</a>" : "&nbsp;") + "</p>";
         var resList = recent.length ? '<ul class="res-list up-list">' + recent.slice(0, ROWS).map(resRow).join("") + "</ul>" : '<p class="empty">No settled tips yet.</p>';
-        resList += '<p class="m-more">' + (recent.length > ROWS ? '<a href="results.html">All ' + recent.length + " results</a>" : "&nbsp;") + "</p>";
+        resList += '<p class="m-more">' + (recent.length > ROWS ? '<a href="/results">All ' + recent.length + " results</a>" : "&nbsp;") + "</p>";
         var mc = MCOLOR[m.id], P = function (t, sub, body, extra) { return '<section class="pf-panel' + (extra || "") + '" style="border-top-color:' + mc + '"><div class="pf-hd"><h3>' + t + "</h3>" + (sub ? "<p>" + sub + "</p>" : "") + '</div><div class="pf-body">' + body + "</div></section>"; };
         return '<section class="m-tab" id="' + m.id + '" data-mtab="' + m.id + '" aria-labelledby="h-' + m.id + '" style="--mc:' + mc + '">' +
           '<div class="m-hero" style="border-top-color:' + mc + '"><span class="avatar ' + m.id + '" aria-hidden="true">' + esc(m.initials) + '</span><div class="m-hero-t"><h2 id="h-' + m.id + '">' + esc(m.name) + '</h2><p>' + esc(m.who) + " \u00b7 " + esc(m.role) + '</p></div><div class="m-hero-r"><span class="m-hero-l">Record</span><b>' + s.won + "\u2013" + s.lost + '</b><b class="pts ' + cls(s.profit) + '">' + pts(s.profit) + ' pts</b><span>ROI ' + pct(s.roi, true) + "</span></div></div>" +

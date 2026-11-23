@@ -70,6 +70,7 @@
 .badge.combo{background:#7FD3FF!important;color:#0B1630!important}.badge.combo.tom{background:#9A6BD1!important;color:#fff!important;font-size:9px!important}.cm-by td,.cm-by th{padding:8px 6px}.cm-by .badge{display:inline-grid;place-items:center;min-width:30px;height:22px;border-radius:11px;font:800 10px/1 var(--f-body);padding:0 5px}.cm-leg{font-size:12px;color:var(--ink-3);margin:6px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}.cm-leg span{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:-6px}.cm-leg span.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)}
 .cm-mini{display:inline-grid;place-items:center;min-width:30px;height:18px;border-radius:9px;font:800 9px/1 var(--f-body);padding:0 4px;vertical-align:2px;margin-right:4px}
 </style>
+<link rel="canonical" href="https://betmeisters.com/combo">
 </head>
 <body data-page="combo">
 <div id="bm-header"></div>
@@ -297,7 +298,7 @@
   /* Combo page: reuse the acca card renderer, then relabel AM -> CM and point links at this page */
   (function () { var fixUp = function () { Array.prototype.forEach.call(document.querySelectorAll(".badge.acca"), function (b) { var li = b.closest("li[id]"), c = li && A.filter(function (x) { return x.id === li.id; })[0], tom = c && cmOf(c) === "tom", rc = c && cmOf(c) === "rcm", lab = tom ? "OC" : rc ? "RC" : "CM";
       if (b.textContent !== lab) b.textContent = lab; b.title = tom ? "Original Combo Meister (The Original Meister's own combos)" : rc ? "Racing Combo Meister (racing only)" : "Combo Meister"; b.classList.add("combo"); if (tom) b.classList.add("tom"); if (rc) b.classList.add("rcm"); });
-    Array.prototype.forEach.call(document.querySelectorAll('a[href^="acca.html#"]'), function (a) { a.setAttribute("href", a.getAttribute("href").replace("acca.html", "combo.html")); });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="/acca#"]'), function (a) { a.setAttribute("href", a.getAttribute("href").replace("/acca", "/combo")); });
      };
     fixUp(); new MutationObserver(fixUp).observe(document.querySelector("main"), { childList: true, subtree: true }); })();
 })();

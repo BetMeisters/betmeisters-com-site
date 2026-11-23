@@ -11,7 +11,7 @@
   if (v === "no" || !GA) return;
   function show() {
     var d = document.createElement("div"); d.id = "cc"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Cookies");
-    d.innerHTML = '<p>We would like to use Google Analytics cookies to count visits and see which pages people read. They are only set if you accept. <a href="privacy.html">Privacy policy</a></p><div><button type="button" data-v="no">Reject</button><button type="button" data-v="yes">Accept</button></div>';
+    d.innerHTML = '<p>We would like to use Google Analytics cookies to count visits and see which pages people read. They are only set if you accept. <a href="/privacy">Privacy policy</a></p><div><button type="button" data-v="no">Reject</button><button type="button" data-v="yes">Accept</button></div>';
     d.addEventListener("click", function (e) { var x = e.target.getAttribute("data-v"); if (x) set(x); });
     document.body.appendChild(d);
   }

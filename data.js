@@ -1743,7 +1743,7 @@ BM.NEWS = [
     readMins: 3
   },
   {
-    id: "price-first", href: "article-price-first.html", date: "2026-10-28", category: "Method",
+    id: "price-first", href: "/article-price-first", date: "2026-10-28", category: "Method",
     title: "Price first: how we decide a tip is worth backing",
     standfirst: "We put a chance on every selection before we look at the odds. Here is the arithmetic, with a worked example.",
     readMins: 4
