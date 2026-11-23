@@ -264,7 +264,7 @@
   function isNF(t) { return t.tier === "free" && t.meister === "cruncher"; }
   function isNP(t) { return t.tier === "pro" && t.meister === "cruncher"; }
   function tierPill(t) { return '<span class="tier ' + t.tier + (t.meister === "ncmr" ? " ncmr" : "") + '">' + miniShield() + tierWord(t) + "</span>"; }
-  /* Owner 5 Nov 10:42: show the Meister section (e.g. TOMT) and the sport clearly on every Phase 2 tip */
+  /* Owner 5 Nov 10:42: show the Meister section (e.g. TOMT) and the sport clearly on every tip since 5 November */
   var SEC_SPORT = { F: "Football", R: "Racing", T: "Tennis", B: "Basketball", U: "US sports", O: "Other sports", E: "eSports" };
   var SEC_PRE = { ncmrold: "NCMROLD", tomold: "AHT", meister: "TOM", cruncher: "NCM", ncmr: "NCM", margins: "FMM" };
   function secOf(t) {
@@ -328,7 +328,7 @@
     /* Owner 5 Nov 16:51: every open tip shows an Exchange line (keeps the cards aligned and says where the chance comes from) */
     var lqS = lq ? ' · <span class="lq ' + t.liquidity + '">' + lq + "</span>" : "";
     if (t.fairSrc === "Exchanges") return '<p class="tip-market exch-line"><b>Exchange:</b> chance from Smarkets + Matchbook; bet at the bookmaker price' + lqS + "</p>";
-    /* Owner 9 Nov 14:16: checked on Betfair Exchange via odds-api.io; exchNone = no current exchange price for this market */
+    /* Owner 9 Nov 14:16: checked on Betfair Exchange via the sharp market; exchNone = no current exchange price for this market */
     if (t.exchNone) return '<p class="tip-market exch-line"><b>Exchange:</b> no current Betfair Exchange price; chance from ' + esc(t.fairSrc || "the bookmakers") + ", bookmakers only" + lqS + "</p>";
     if (t.fairSrc) return '<p class="tip-market exch-line"><b>Exchange:</b> not checked; chance from ' + esc(t.fairSrc) + ", bookmakers only" + lqS + "</p>";
     return '<p class="tip-market exch-line"><b>Exchange:</b> no exchange market, bookmakers only' + lqS + "</p>";
@@ -1417,7 +1417,7 @@
       days.map(function (k) { var l = S.filter(function (t) { return pk(t) === k; }), s = stats(l); run += s.profit;
         var by = function (id) { var p = 0; l.forEach(function (t) { if (t.meister === id) p += profit(t); }); return '<td class="n pts ' + cls(p) + '">' + pts(p) + "</td>"; };
         return "<tr><td>" + dayLabel(k) + '</td><td class="n">' + l.length + '</td><td class="n">' + s.won + "–" + s.lost + "</td>" + by("meister") + by("cruncher") + by("ncmr") + '<td class="n pts ' + cls(s.profit) + '"><b>' + pts(s.profit) + '</b></td><td class="n pts ' + cls(run) + '">' + pts(run) + "</td></tr>"; }).join("") +
-      "</tbody></table></div>" + '<p class="rec-key">By the day each game was played (UK time), so a late finish counts on the day it started. <b>Tips</b> are settled tips only; games still to run are added when they finish. <b>Day P/L</b> and <b>Running</b> include every Phase 2 tip, including those of retired Meisters (none since 9 November), so they can differ slightly from TOM + NCM + NCMR.</p>';
+      "</tbody></table></div>" + '<p class="rec-key">By the day each game was played (UK time), so a late finish counts on the day it started. <b>Tips</b> are settled tips only; games still to run are added when they finish. <b>Day P/L</b> and <b>Running</b> include every tip since 5 November, including those of retired Meisters (none since 9 November), so they can differ slightly from TOM + NCM + NCMR.</p>';
   }
   function todayStrip(el) {
     var today = dayKey(new Date().toISOString()), L = p2().filter(function (t) { return dayKey(t.start) === today && !isRetired(t); }); /* retired FMM not on today's card */ /* Owner 12 Nov 15:14: every number here is TODAY'S EVENTS (games starting today, Kampala), never when the tip was published */
@@ -1552,7 +1552,7 @@
     var compTop = pfBars(byComp.slice(0, 8)), compBot = pfBars(byComp.slice(-8).reverse());
     var msBars = pfBars([].concat.apply([], P2M.map(function (id) { return SPK.map(function (k) { var l = A.filter(function (t) { return t.meister === id && sportK(t) === k; }); if (!l.length) return null; var s = stats(l); return { label: MCODE[id] + " · " + SPORTN[k], v: s.profit, sub: l.length + " tips" }; }).filter(Boolean); })).sort(function (a, b) { return b.v - a.v; }));
     el.innerHTML =
-      pfPanel("Stat board", "Phase 2, every settled tip, advised stakes at the published price", '<div class="pf-boxes">' + boxes + "</div>", "#FFC629") +
+      pfPanel("Stat board", "Every settled tip since 5 November, advised stakes at the published price", '<div class="pf-boxes">' + boxes + "</div>", "#FFC629") +
       pfPanel("Actual v expected v closing price", "Running points: what we made, what our edges said we should make, and the same tips at the closing price", ch1, "#22356b") +
       '<div class="pf-two">' + pfPanel("Beating the closing price", "Share of tips whose price was bigger than the close, as it builds up", ch2, "#119C93") + pfPanel("Every Meister", "Running points by Meister", ch3, "#D99A00") + "</div>" +
       pfPanel("Every sport", "Running points by sport", ch4, "#2E9E5B") +
