@@ -153,3 +153,13 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
 .mx-about h2{font-size:20px;margin:0 0 12px}
 .mx-about .mx-note,.mx-about .desk-note{margin:0 0 14px}
 @media (max-width:900px){ .mx-tabs{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch} .mx-tabs .dd > :not(a){display:none!important} }
+/* Keith 23 Nov 19:18: "New today" tidy - label then chips; one swipeable line on phones */
+.newtoday{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 0;margin-top:12px}
+.newtoday b{flex:0 0 auto;margin-right:4px}
+.newtoday a{display:inline-flex;align-items:center;max-width:100%;padding:6px 12px;border:1px solid var(--mx-line,#E2E7F0);border-radius:999px;background:var(--mx-card,#fff);font-size:13.5px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.newtoday a:hover{border-color:var(--gold,#FFC629);text-decoration:none}
+@media (max-width:720px){
+  .newtoday{flex-wrap:nowrap;overflow-x:auto;margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .newtoday::-webkit-scrollbar{display:none}
+  .newtoday a{flex:0 0 auto;max-width:78vw}
+}
