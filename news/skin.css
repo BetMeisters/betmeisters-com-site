@@ -139,3 +139,10 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
 .mx-pro{display:inline-block;background:#0B1A3A;color:#FFC629;font-weight:800;font-size:12px;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
 @media (max-width:600px){.mx-ol{display:none}.mx-util .mx-wrap>span:first-child{font-size:12.5px}}
 @media (max-width:600px){.mx-util .mx-wrap>span:first-child{font-size:12px;white-space:nowrap}.mx-seg button{padding:6px 8px;font-size:11.5px}}
+/* Keith 23 Nov 18:27: web dropdowns fit content, stay inside the screen, keep hover */
+@media (min-width:901px){
+  .mx-menu{min-width:0;width:max-content;max-width:min(320px,calc(100vw - 32px))}
+  .mx-menu a{white-space:nowrap}
+  .mx-gn:last-child .mx-menu,.mx-gn:nth-last-child(2) .mx-menu{left:auto;right:0}
+  .mx-menu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+}

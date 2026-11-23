@@ -212,3 +212,11 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
   #ac-stats .ac-stat b,#ac-stats .ac-stat strong{font-size:17px!important}
   #ac-stats .ac-stat span{font-size:9.5px!important;letter-spacing:.03em!important;line-height:1.25!important}
 }
+
+/* Keith 23 Nov 18:27: web dropdowns - fit their content, never run off the right edge, and stay open while the mouse moves onto them */
+@media (min-width:981px){
+  .gn-menu{min-width:0;width:max-content;max-width:min(320px,calc(100vw - 32px))}
+  .gn-menu a{white-space:nowrap}
+  .gn:last-child .gn-menu,.gn:nth-last-child(2) .gn-menu{left:auto;right:0}
+  .gn-menu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+}
