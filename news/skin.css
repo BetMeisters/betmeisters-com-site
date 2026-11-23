@@ -102,3 +102,4 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
 .bmf-mrow a.tot { background: #FFC629 !important; color: #0B1A3A !important; }
 .bmf li a, #bm-feed .bmf a { background: var(--mx-card) !important; border-color: var(--mx-line) !important; color: var(--ink) !important; border-radius: 10px !important; }
 .signup { border-top: 0 !important; border-bottom: 0 !important; background: var(--mx-card); border-radius: 14px; box-shadow: var(--mx-shadow); }
+@media (max-width: 900px) { .mx-sub-k { display: none; } }
