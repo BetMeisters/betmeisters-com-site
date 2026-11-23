@@ -288,7 +288,7 @@
     var LIC = ["All", "UKGC", "US states", "MGA", "Curaçao", "Other"], PROD = ["All", "Sportsbook", "Casino", "Sweepstakes", "Prediction market", "Crypto"];
     var chips = function (name, list) { return '<div class="chips" data-f="' + name + '">' + list.map(function (x, i) { return '<button type="button" class="chip' + (i ? "" : " on") + '" data-v="' + x + '">' + x + "</button>"; }).join("") + "</div>"; };
     return '<div class="rank-wrap"><div class="rank-head">' + chips("lic", LIC) + '</div><div class="rank-body"></div>' +
-      '<p class="meta" style="margin-top:8px">Ranked by our score only. No ranking can be bought with commission or fees. <a href="how-we-score.html">How we score</a> · <a href="disclosure.html">Affiliate disclosure</a></p></div>';
+      '<p class="meta" style="margin-top:8px">Ranked by our score only. No ranking can be bought with commission or fees. <a href="how-we-score.html">How we score</a></p></div>';
   }
   function wireRank(cat) {
     var W = $(".rank-wrap"); if (!W) return; var F = { lic: "All", tag: cat || "All" };

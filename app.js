@@ -1699,7 +1699,7 @@
         /* Owner 20 Nov 18:48: every Meister page uses the same order as the Performance page: NAP first (the most premium tip), then the other specials,
            Premium Leagues, the Pro / Free tiers, then each sport (or, for NCMR, the publish-time boxes). Only the Meister's live record is used. */
         var C = function (t, f, o) { return scoreCard(t, mine.filter(f), o); };
-        var sportCards = function (keys) { return keys.map(function (k) { return C(SPORTN[k] + " \u00b7 " + MCODE[m.id], function (t) { return sportK(t) === k; }, { color: SPORTC[k], sub: m.name + ", " + SPORTN[k].toLowerCase() }); }).join(""); };
+        var sportCards = function (keys) { return keys.map(function (k) { return C(SPORTN[k] + " \u00b7 " + MCODE[m.id], function (t) { return sportK(t) === k; }, { color: SPORTC[k], sub: m.name + ", " + (/^(US|eS)/.test(SPORTN[k]) ? SPORTN[k] : SPORTN[k].toLowerCase()) }); }).join(""); };
         var cards = m.id === "ncmr" ?
           C("Racing NAP", function (t) { return t.nap; }, { tier: "nap", sub: "When one qualifies" }) +
           C("Racing Pro Picks", function (t) { return t.proPick; }, { tier: "propick", sub: "Up to 3 a day" }) +
