@@ -107,3 +107,21 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 .mh-all { display: inline-block; margin-top: 12px; color: #fff; font-weight: 700; text-decoration: none; }
 @media (max-width: 980px) { .mh.has-next .in { display: block; } .mh-next { display: none; } }
 .mh .mh-nk { font-size: 13px; margin: 0 0 4px; max-width: none; }
+
+/* grouped menu: Home · Tips ▾ · Results ▾ · News ▾ (merge, Owner 23 Nov) */
+.gn { position: relative; display: inline-flex; }
+.gn-c { font-size: 11px; opacity: .7; margin-left: 2px; }
+.gn-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 60; min-width: 210px; padding: 8px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgba(14,22,48,.18); }
+.gn:hover .gn-menu, .gn:focus-within .gn-menu { display: block; }
+.nav .gn-menu a { display: block; color: var(--ink); padding: 9px 12px; border-radius: 8px; font-size: 15px; background: none; }
+.nav .gn-menu a:hover, .nav .gn-menu a.on { background: var(--surface-2); color: var(--ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gn-menu { background: var(--surface); } }
+:root[data-theme="dark"] .gn-menu { background: var(--surface); }
+@media (max-width: 900px) {
+  .gn { display: block; }
+  .gn-top { display: block; }
+  .gn-c { display: none; }
+  .gn-menu { display: block; position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
+  .nav .gn-menu a { color: #C9D2E6; border-top: 0; padding: 8px 8px; font-size: 15px; }
+  .nav .gn-menu a:hover, .nav .gn-menu a.on { background: rgba(255,255,255,.08); color: #fff; }
+}

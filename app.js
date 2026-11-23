@@ -630,7 +630,12 @@
   /* ---------- header & footer ---------- */
   var NAV = [["home", "/", "Home"], ["tips", "/tips", "Tips"], ["acca", "/acca", "Accas"], /* Combos tab added below once the first combo exists (Owner 16 Nov 10:17) */ ["results", "/results", "Results"], ["performance", "/performance", "Performance"], ["meisters", "/meisters", "Meisters"], ["newsx", ((window.BM && BM.NEWSFEED && BM.NEWSFEED.base) || "#"), "News ↗"]];
   if ((BM.COMBOS || []).length || document.body.getAttribute("data-page") === "combo") NAV.splice(2, 0, ["combo", "/combo", "Combos"]); /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
-  var activeNav = { article: "news", review: "reviews", propicks: "tips" }[page] || page;
+  /* Owner 23 Nov 15:53-16:08: one site, menu Home · Tips · Results · News (BM_MERGE) */
+  var GNAV = [["home", "/", "Home", []],
+    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ["Combos", "/combo", "combo"], ["Accas", "/acca", "acca"], ["Pro Picks", "/propicks", "propicks"]]],
+    ["results", "/results", "Results", [["Results", "/results", "results"], ["Performance", "/performance", "performance"], ["The Meisters", "/meisters", "meisters"]]],
+    ["news", "/news/", "News", [["News home", "/news/", "nhome"], ["Previews", "/news/previews.html", "nprev"], ["Bookmaker reviews", "/news/reviews.html", "nrev"], ["Guides", "/news/guides.html", "nguide"], ["Industry news", "/news/news.html", "nnews"]]]];
+  var activeNav = window.BM_MERGE ? page : ({ article: "news", review: "reviews", propicks: "tips" }[page] || page);
   function brand() { return '<a class="brand" href="/" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
   function header() {
     var seg = function (key, opts, cur) { return '<span class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</span>"; };
@@ -643,7 +648,11 @@
       /* Owner 23 Nov 09:37: everything free until 1 January, Pro still labelled */ '<div class="free-banner"><div class="wrap"><b>FREE UNTIL 1 JANUARY</b><span>Let the Meisters prove themselves. Every tip, Free and <span class="fb-pro">PRO</span>, is open to everyone until 1 January. After that, Pro tips are for subscribers.</span></div></div>' +
       '<header class="mast" id="mast"><div class="wrap">' + brand() +
       '<button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">' + ICON.menu + "</button>" +
-      '<nav class="nav" id="site-nav" aria-label="Main">' + NAV.map(function (n) { return '<a href="' + n[1] + '"' + (n[0] === activeNav ? ' aria-current="page"' : "") + (n[0] === "newsx" ? ' target="_blank" rel="noopener"' : "") + ">" + n[2] + "</a>"; }).join("") + "</nav>" +
+      '<nav class="nav" id="site-nav" aria-label="Main">' + (window.BM_MERGE ? GNAV.map(function (g) {
+        var on = g[3].some(function (c) { return c[2] === activeNav; }) || g[0] === activeNav;
+        if (!g[3].length) return '<a href="' + g[1] + '"' + (on ? ' aria-current="page"' : "") + ">" + g[2] + "</a>";
+        return '<span class="gn"><a class="gn-top" href="' + g[1] + '"' + (on ? ' aria-current="page"' : "") + ' aria-haspopup="true">' + g[2] + ' <span class="gn-c" aria-hidden="true">▾</span></a><span class="gn-menu">' + g[3].map(function (c) { return '<a href="' + c[1] + '"' + (c[2] === activeNav ? ' class="on"' : "") + ">" + c[0] + "</a>"; }).join("") + "</span></span>";
+      }).join("") : NAV.map(function (n) { return '<a href="' + n[1] + '"' + (n[0] === activeNav ? ' aria-current="page"' : "") + (n[0] === "newsx" ? ' target="_blank" rel="noopener"' : "") + ">" + n[2] + "</a>"; }).join("")) + "</nav>" +
       (window.BM_PUBLIC ? "" : '<a class="join" href="#join" data-join>Join now</a>') + '</div></header>' +
       (SITE.sampleMode && !window.BM_PUBLIC ? '<div class="sample-bar"><div class="wrap"><strong>Test site</strong><span>' + esc(SITE.sampleNote) + "</span></div></div>" : "");
   }
@@ -652,7 +661,7 @@
       '<p>Independent tips from two Meisters: The Original Meister picks by eye, the Number Cruncher picks by the numbers. Every tip is published before the event, priced, and kept on the record whether it wins or loses.</p><p class="foot-contact">Contact: <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></p></div>' +
       '<div><h4>Tips</h4><ul><li><a href="/tips">All open tips</a></li><li><a href="/tips#nap">NAP of the day</a></li><li><a href="/propicks">Pro Picks</a></li><li><a href="/results">Results & record</a></li><li><a href="/performance">Performance</a></li></ul></div>' +
       '<div><h4>BetMeisters</h4><ul><li><a href="/meisters">The Meisters</a></li><li><a href="/acca">Acca Meister (separate record)</a></li><li><a href="/article-price-first">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="/privacy">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
-      '<div class="foot-rev"><h4>BetMeisters.news</h4><ul><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">News, previews and guides ↗</a></li><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">Bookmaker reviews ↗</a></li></ul></div></div>' +
+      '' + (window.BM_MERGE ? '<div class="foot-rev"><h4>News</h4><ul><li><a href="/news/">News home</a></li><li><a href="/news/previews.html">Previews</a></li><li><a href="/news/reviews.html">Bookmaker reviews</a></li><li><a href="/news/guides.html">Guides</a></li></ul></div>' : '<div class="foot-rev"><h4>BetMeisters.news</h4><ul><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">News, previews and guides ↗</a></li><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">Bookmaker reviews ↗</a></li></ul></div>') + '</div>' +
       '<div class="rg-box"><span class="age">18+</span><p>Only bet what you can afford to lose. Our tips are opinions, not guarantees, and past results do not predict future ones. If gambling stops being fun, get free, confidential help from <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">GambleAware.org</a> or the National Gambling Helpline on <span class="mono">0808 8020 133</span> (UK).</p></div>' +
       '<div class="foot-small"><span>© 2026 BetMeisters. No bookmaker commissions, no paid placements.</span><span>' + (window.BM_PUBLIC ? "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK." : "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK.") + '</span><span>Contact <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></span></div></div></footer>';
   }
@@ -958,8 +967,8 @@
   var FEED_COL = { Guide: "#FFC629", News: "#A9B4C8", "Racing card": "#7CE38B", Football: "#5AA9FF", "Other sports": "#FF9F5A", "Big match preview": "#C79BFF", FPL: "#38E1C6", Preview: "#7CE38B" };
   function feedCard(a) {
     var col = FEED_COL[a.label] || "#A9B4C8", d = new Date(a.date), ds = d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: SITE_TZ });
-    return '<li class="ccard nf" style="border-top-color:' + col + '"><a class="ccard-a" href="' + esc(a.href) + '" target="_blank" rel="noopener"><div class="ccard-hd"><p class="hc-label" style="color:' + col + '">' + esc(a.label) + "<small>" + ds + (a.read ? " · " + a.read + " min read" : "") + "</small></p></div>" +
-      '<h3 class="ccard-t">' + esc(a.title) + '</h3><p class="ccard-p">' + esc(a.dek) + '</p><span class="ccard-go">Read on BetMeisters.news ↗</span></a></li>';
+    return '<li class="ccard nf" style="border-top-color:' + col + '"><a class="ccard-a" href="' + esc(a.href) + '"><div class="ccard-hd"><p class="hc-label" style="color:' + col + '">' + esc(a.label) + "<small>" + ds + (a.read ? " · " + a.read + " min read" : "") + "</small></p></div>" +
+      '<h3 class="ccard-t">' + esc(a.title) + '</h3><p class="ccard-p">' + esc(a.dek) + '</p><span class="ccard-go">' + (window.BM_MERGE ? "Read →" : "Read on BetMeisters.news ↗") + '</span></a></li>';
   }
   function feedNews(el) {
     var F = BM.NEWSFEED || { articles: [] }, L = F.articles || [];
@@ -968,7 +977,7 @@
   }
   function feedReviews(el) {
     var F = BM.NEWSFEED || {}, R = F.reviews || [];
-    el.innerHTML = R.length ? '<ul class="ccards c3">' + R.map(function (r) { return '<li class="ccard rv" style="border-top-color:var(--yellow)"><a class="ccard-a" href="' + esc(r.href) + '" target="_blank" rel="noopener"><div class="ccard-hd"><p class="hc-label" style="color:var(--yellow)">' + esc(r.name) + '<small>Bookmaker review</small></p></div><p class="ccard-p">' + esc(r.summary) + '</p><span class="ccard-go">Read on BetMeisters.news ↗</span></a></li>'; }).join("") + "</ul>" :
+    el.innerHTML = R.length ? '<ul class="ccards c3">' + R.map(function (r) { return '<li class="ccard rv" style="border-top-color:var(--yellow)"><a class="ccard-a" href="' + esc(r.href) + '"><div class="ccard-hd"><p class="hc-label" style="color:var(--yellow)">' + esc(r.name) + '<small>' + esc(r.kind || "Bookmaker review") + '</small></p></div><p class="ccard-p">' + esc(r.summary) + '</p><span class="ccard-go">' + (window.BM_MERGE ? "Read the review →" : "Read on BetMeisters.news ↗") + '</span></a></li>'; }).join("") + "</ul>" :
       '<div class="nf-soon"><p><b>Bookmaker reviews are coming to BetMeisters.news.</b> Every operator scored on evidence: licence, prices, payments and safer gambling tools. No commissions, no paid placements.</p><a class="more" href="' + esc(F.base || "#") + '" target="_blank" rel="noopener">Visit BetMeisters.news ↗</a></div>';
   }
   function reviewRegion(r) { var t = r.summary + " " + r.name; return /crypto|Curaçao|Anjouan/i.test(t) ? "Crypto" : /US states|US sportsbook|Big US/i.test(t) ? "US" : /South Africa/i.test(t) ? "South Africa" : "UK & Ireland"; }

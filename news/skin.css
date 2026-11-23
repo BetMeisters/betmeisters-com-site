@@ -1,0 +1,104 @@
+/* BetMeisters News at betmeisters.com/news: the .com modern look (Owner 23 Nov 16:08 merge; 'less keen on the font').
+   Loaded after the old .news styles.css: swaps the newspaper serif and cream paper for the .com navy, Barlow and white cards. */
+:root {
+  --paper: #F4F6FA; --paper-2: #EEF2F8; --ink: #0E1630; --ink-2: #39445E; --ink-3: #66718A; --rule: #D5DCE8; --hair: #E2E7F0;
+  --gold: #8A6300; --gold-bright: #FFC629; --won: #1E8A4C; --lost: #C0392B; --navy: #0B1A3A; --navy-2: #13285A;
+  --f-head: "Barlow", "Segoe UI", system-ui, sans-serif; --f-data: "Barlow", "Segoe UI", system-ui, sans-serif; --f-mono: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --mx-line: #E2E7F0; --mx-card: #FFFFFF; --mx-link: #2B5BD7; --mx-shadow: 0 1px 2px rgba(14,22,48,.04), 0 6px 20px rgba(14,22,48,.05);
+  --wrap: 1180px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #08122B; --paper-2: #0F1D3F; --ink: #EAF0FB; --ink-2: #BAC6DE; --ink-3: #91A0BF; --rule: #22386A; --hair: #22386A; --gold: #FFC629; --won: #6EE7A0; --lost: #FF9384; --mx-line: #22386A; --mx-card: #0F1D3F; --mx-link: #8FB0FF; --mx-shadow: none; color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #08122B; --paper-2: #0F1D3F; --ink: #EAF0FB; --ink-2: #BAC6DE; --ink-3: #91A0BF; --rule: #22386A; --hair: #22386A; --gold: #FFC629; --won: #6EE7A0; --lost: #FF9384; --mx-line: #22386A; --mx-card: #0F1D3F; --mx-link: #8FB0FF; --mx-shadow: none; color-scheme: dark; }
+
+body { background: var(--paper); font-size: 16.5px; }
+h1, h2, h3 { font-family: var(--f-head); font-weight: 800; letter-spacing: 0; }
+.wrap { max-width: var(--wrap); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mx-wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* header (same as betmeisters.com) */
+.mx-util { background: #FFC629; color: #0B1A3A; font: 700 13px var(--f-body); }
+.mx-util .mx-wrap { display: flex; justify-content: space-between; gap: 12px; padding-block: 8px; }
+.mx-util a { color: #0B1A3A; }
+.mx-free { background: #FFF1C7; color: #0B1A3A; font-size: 14px; }
+.mx-free .mx-wrap { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; padding-block: 7px; }
+.mx-free b { font-size: 15px; letter-spacing: .02em; }
+.mx-free a { color: #0B1A3A; font-weight: 700; }
+.mx-mast { background: var(--navy); color: #fff; }
+.mx-mast .mx-wrap { display: flex; align-items: center; gap: 16px; padding-block: 14px; }
+.mx-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font: 800 26px/1 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .02em; }
+.mx-brand b { color: #FFC629; font-weight: 800; }
+.mx-nav { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.mx-nav > a, .mx-top { font: 600 15.5px var(--f-body); color: #D5DDF0; text-decoration: none; padding: 8px 12px; border-radius: 8px; display: inline-block; }
+.mx-nav > a:hover, .mx-top:hover { background: rgba(255,255,255,.08); color: #fff; }
+.mx-top[aria-current="page"] { background: rgba(255,255,255,.12); color: #fff; }
+.mx-gn { position: relative; display: inline-flex; }
+.mx-c { font-size: 11px; opacity: .7; }
+.mx-menu { display: none; position: absolute; top: 100%; left: 0; z-index: 60; min-width: 210px; padding: 8px; background: #fff; border: 1px solid #E2E7F0; border-radius: 12px; box-shadow: 0 12px 32px rgba(14,22,48,.18); }
+.mx-gn:hover .mx-menu, .mx-gn:focus-within .mx-menu { display: block; }
+.mx-menu a { display: block; color: #0E1630; text-decoration: none; padding: 9px 12px; border-radius: 8px; font: 500 15px var(--f-body); }
+.mx-menu a:hover { background: #EEF2F8; }
+.mx-btn { display: none; margin-left: auto; background: transparent; border: 1.5px solid #2A4478; color: #fff; border-radius: 8px; width: 46px; height: 44px; cursor: pointer; align-items: center; justify-content: center; }
+.mx-sub { background: var(--mx-card); border-bottom: 1px solid var(--mx-line); }
+.mx-sub .mx-wrap { display: flex; align-items: center; gap: 14px; }
+.mx-sub-k { font: 800 13px var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); flex: none; }
+.mx-sub nav.sections { border: 0; padding: 10px 0; gap: 2px 16px; text-transform: none; letter-spacing: 0; font: 600 14.5px var(--f-body); }
+.mx-sub nav.sections a { color: var(--ink-2); }
+.mx-sub nav.sections a.on, .mx-sub nav.sections a:hover { color: var(--ink); border-bottom-color: #FFC629; }
+.mx-sub .dd-menu { background: var(--mx-card); border-color: var(--mx-line); border-radius: 10px; }
+@media (max-width: 900px) {
+  .mx-btn { display: inline-flex; }
+  .mx-mast .mx-wrap { flex-wrap: wrap; }
+  .mx-nav { display: none; order: 3; width: 100%; flex-direction: column; align-items: stretch; margin: 4px 0 0; }
+  .mx-mast[data-open="true"] .mx-nav { display: flex; }
+  .mx-gn { display: block; }
+  .mx-c { display: none; }
+  .mx-menu { display: block; position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
+  .mx-menu a { color: #C9D2E6; padding: 8px; }
+  .mx-menu a:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .mx-sub .mx-wrap { overflow-x: auto; }
+  .mx-sub nav.sections { flex-wrap: nowrap; white-space: nowrap; }
+  .mx-sub .dd-menu { display: none !important; }
+  .mx-free span { font-size: 13.5px; }
+  .mx-brand { font-size: 23px; }
+}
+
+/* cards and lists: white cards on the light page */
+.card, .today-tile, .tw-item, .lead, .rank, .tbl, .bx, .tip, .desk-note, .verdict, .facts, .proscons > div { border-radius: 14px; }
+.card { background: var(--mx-card); border: 1px solid var(--mx-line); box-shadow: var(--mx-shadow); padding: 18px; }
+.kick, .eyebrow { letter-spacing: .06em; }
+.sec-h { border-top: 0 !important; border-bottom: 1px solid var(--mx-line) !important; }
+.sec-h h2 { font-size: clamp(24px, 3vw, 30px); text-transform: none; }
+.sec-h a { color: var(--mx-link); font-weight: 700; }
+.chip { border-radius: 99px; }
+.chip.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+/* article reading layout: one comfortable column */
+body[data-page="article"] #main article, body[data-page="article"] .art { max-width: 760px; margin-left: auto; margin-right: auto; }
+body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height: 1.08; }
+.body p, .art-body p, article .body p { font-size: 18px; line-height: 1.7; }
+.body h2, article h2 { font-size: 25px; margin-top: 28px; }
+.body a, article .body a { color: var(--mx-link); }
+
+/* honesty note on reviews */
+.mx-note { margin: 18px 0 6px; padding: 12px 16px; background: var(--mx-card); border: 1px solid var(--mx-line); border-left: 4px solid #FFC629; border-radius: 10px; font-size: 15px; }
+
+/* footer (same columns as betmeisters.com) */
+.mx-foot { background: var(--navy); color: #C9D2E6; margin-top: 56px; padding-block: 40px 28px; font-size: 15px; }
+.mx-fcols { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 28px; }
+.mx-fcols > div { min-width: 0; }
+.mx-foot h4 { margin: 0 0 10px; color: #fff; font: 700 15px var(--f-body); }
+.mx-foot .mx-fcols a:not(.mx-brand) { display: block; color: #C9D2E6; text-decoration: none; padding: 4px 0; }
+.mx-foot .mx-fcols a:not(.mx-brand):hover { color: #fff; text-decoration: underline; }
+.mx-foot p { margin: 10px 0 0; }
+.mx-honest { border-top: 1px solid #22386A; padding-top: 18px; margin-top: 26px !important; }
+.mx-honest b { color: #fff; }
+.mx-rg { display: flex; gap: 14px; align-items: flex-start; margin-top: 16px; }
+.mx-rg p { margin: 0; }
+.mx-rg a { color: #FFC629; }
+.mx-age { flex: none; border: 2px solid #FFC629; color: #FFC629; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; font-weight: 800; }
+.mx-small { font-size: 13px; color: #91A0BF; }
+@media (max-width: 900px) { .mx-fcols { grid-template-columns: 1fr 1fr; } .mx-fcols > div:first-child { grid-column: 1 / -1; } }
+.bmf-mrow a { background: var(--navy) !important; border-radius: 10px !important; }
+.bmf-mrow a.tot { background: #FFC629 !important; color: #0B1A3A !important; }
+.bmf li a, #bm-feed .bmf a { background: var(--mx-card) !important; border-color: var(--mx-line) !important; color: var(--ink) !important; border-radius: 10px !important; }
+.signup { border-top: 0 !important; border-bottom: 0 !important; background: var(--mx-card); border-radius: 14px; box-shadow: var(--mx-shadow); }
