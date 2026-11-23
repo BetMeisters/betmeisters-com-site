@@ -178,7 +178,7 @@
     var PA = A.filter(function (a) { return a.section === "previews"; }), PL = PA.filter(function (a) { return pn ? ptOf(a) === sk : !sn || (a.sports || []).indexOf(sn) >= 0; });
     if (pn) sn = null;
     var cnt = function (n) { return PA.filter(function (a) { return (a.sports || []).indexOf(n) >= 0; }).length; };
-    document.title = (pn || (sn ? sn + " previews" : "Previews")) + " · BetMeisters.news";
+    document.title = (pn || (sn ? sn + " previews" : "Previews")) + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(pn || (sn ? sn + " previews" : "Previews")) + '</h2><span class="meta">' + PL.length + (PL.length === 1 ? " preview" : " previews") + "</span></div>" +
       '<p class="meta" style="margin:-6px 0 10px">Daily racing cards, football and other-sports previews, event previews and the weekend football preview. Every preview links to BetMeisters.com, and any tip in it is copied exactly as published there (no affiliate deals, adverts or sponsorship). The numbers show how many we have written.</p>' + ppTeaser() +
       '<nav class="chips topic-menu" aria-label="Preview types"><a class="chip' + (sk ? "" : " on") + '" href="previews.html">All · ' + PA.length + "</a>" + PTYPES.map(function (t) { var n = PA.filter(function (a) { return ptOf(a) === t[0]; }).length; return '<a class="chip' + (t[0] === sk ? " on" : "") + (n ? "" : " zero") + '" href="previews.html#' + t[0] + '">' + t[1] + " · " + n + "</a>"; }).join("") + "</nav>" +
@@ -199,7 +199,7 @@
         '<div class="of-foot"><a class="of-rev" href="review.html#' + esc(f.op) + '">Our review: ' + (o.score != null ? o.score.toFixed(1) + " / 10" : o.provisional != null ? "provisional " + o.provisional.toFixed(1) + " (not yet published)" : "not yet scored") + " →</a>" +
         '<span class="meta">Checked ' + esc(f.checked) + (f.source ? ' · <a href="' + esc(f.source) + '" rel="noopener">source</a>' : "") + "</span></div>" +
         '<p class="meta of-rg">18+ · T&amp;Cs apply · ' + esc(f.countries.join(", ")) + " only · BeGambleAware.org</p></div>"; };
-    document.title = "Bonuses and promotions · BetMeisters.news";
+    document.title = "Bonuses and promotions · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(bt ? bt + " offers" : "Bonuses and promotions") + "</h2></div>" +
       '<nav class="chips topic-menu"><a class="chip' + (bt ? "" : " on") + '" href="bonuses.html">All</a><a class="chip' + (bk === "sports-betting" ? " on" : "") + '" href="bonuses.html#sports-betting">Sports betting</a><a class="chip' + (bk === "online-casino" ? " on" : "") + '" href="bonuses.html#online-casino">Online casino</a></nav>' +
       '<div class="firewall" id="how-it-works"><div class="kick" style="color:var(--ink)">How offers are chosen</div><div class="fw-cols"><p><b>Every offer must be approved where it is shown:</b> the operator is licensed in that country and the offer meets its rules (in the UK, 10x wagering at most and no mixed sports and casino offers). Each card says which countries it is for, and we only show it there.</p><p><b>Operators can pay for a featured spot.</b> Paid placements are labelled, sit in their own block, and always show our real review score with a link to the review. Payment never changes a score, a review ranking or the order of the unpaid list, which follows our score. <a href="disclosure.html">How we make money</a></p></div></div>' +
@@ -210,7 +210,7 @@
   if (page === "fpl") {
     var fk = hashId(), fn = (FPLT.filter(function (t) { return t[0] === fk; })[0] || [])[1];
     var FA = A.filter(function (a) { return a.section === "fpl"; }), FL = FA.filter(function (a) { return !fn || a.fplType === fk; });
-    document.title = (fn || "Fantasy Premier League") + " · BetMeisters.news";
+    document.title = (fn || "Fantasy Premier League") + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(fn || "FPL") + '</h2><span class="meta">Fantasy Premier League</span></div>' +
       '<p class="meta" style="margin:-6px 0 10px">A deadline preview before every gameweek and a review after it, built on the official FPL data and our own match probabilities. FPL is free to play; nothing here is a bet.</p>' +
       '<nav class="chips topic-menu"><a class="chip' + (fn ? "" : " on") + '" href="fpl.html">All · ' + FA.length + "</a>" + FPLT.map(function (t) { var n = FA.filter(function (a) { return a.fplType === t[0]; }).length; return '<a class="chip' + (t[0] === fk ? " on" : "") + (n ? "" : " zero") + '" href="fpl.html#' + t[0] + '">' + t[1] + " · " + n + "</a>"; }).join("") + "</nav>" +
@@ -219,21 +219,21 @@
   if (page === "news") {
     var tk = hashId(), tn = (TOPICS.filter(function (t) { return t[0] === tk; })[0] || [])[1];
     var NL = A.filter(function (a) { return a.section === "news"; }) /* Keith 17 Nov 11:56: News page = news only; previews, guides and FPL have their own pages */.filter(function (a) { return !tn || (a.topics || []).indexOf(tn) >= 0; });
-    document.title = (tn || "News") + " · BetMeisters.news";
+    document.title = (tn || "News") + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(tn || "All news") + '</h2><span class="meta">' + NL.length + (NL.length === 1 ? " story" : " stories") + "</span></div>" +
       '<nav class="chips topic-menu" aria-label="Topics"><a class="chip' + (tn ? "" : " on") + '" href="news.html">All</a>' + TOPICS.map(function (t) { return '<a class="chip' + (t[0] === tk ? " on" : "") + '" href="news.html#' + t[0] + '">' + t[1] + "</a>"; }).join("") + "</nav>" +
       (NL.length ? '<div class="cards">' + NL.map(function (a) { return card(a); }).join("") + "</div>" : '<p class="empty">No stories in this topic yet. New ones are added every day.</p>');
   }
   if (page === "section") {
     var k = hashId() || "news", L = A.filter(function (a) { return a.section === k; });
-    document.title = secName(k) + " · BetMeisters.news";
+    document.title = secName(k) + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(secName(k)) + "</h2><span class=\"meta\">" + L.length + " stories</span></div>" +
       (L.length ? '<div class="cards">' + L.map(function (a) { return card(a); }).join("") + "</div>" : '<p class="empty">No stories here yet. New ones are added every day.</p>');
   }
   if (page === "article") {
     var a = D.articles.filter(function (x) { return x.id === hashId(); })[0];
     if (!a) { $("#main").innerHTML = '<div class="page"><h1>Story not found</h1><p><a href="index.html">Back to the front page</a></p></div>'; return; }
-    document.title = a.title + " · BetMeisters.news";
+    document.title = a.title + " · BetMeisters News";
     $("#main").innerHTML = '<article class="art"><div class="kick"><a href="section.html#' + a.section + '" style="text-decoration:none">' + esc(secName(a.section)) + "</a> · " + esc(a.kicker.split(" · ").slice(1).join(" · ")) + "</div><h1>" + esc(a.title) + '</h1><p class="dek">' + esc(a.dek) + "</p>" +
       ((a.topics || []).length || (a.sports || []).length ? '<div class="chips topic-menu">' + (a.sports || []).map(function (t) { return '<a class="chip" href="previews.html#' + sportSlug(t) + '">' + esc(t) + "</a>"; }).join("") + (a.topics || []).map(function (t) { return '<a class="chip" href="news.html#' + topicSlug(t) + '">' + esc(t) + "</a>"; }).join("") + "</div>" : "") +
       '<div class="byline"><span>By the BetMeisters desk</span><span>' + dateOnly(a.date) + "</span><span>" + a.read + " min read</span></div>" +
@@ -245,7 +245,7 @@
   }
   if (page === "reviews") {
     var rk = hashId() || "bookies", RC = REVCATS.filter(function (c) { return c[0] === rk; })[0] || REVCATS[0];
-    document.title = RC[1] + " · BetMeisters.news";
+    document.title = RC[1] + " · BetMeisters News";
     var inprog = (D.operators || []).filter(function (o) { return opTags(o).indexOf(RC[2]) >= 0 && !o.example && !o.desk && (o.draft || o.score == null); });
     var real = inprog.filter(function (o) { return !o.demo; }), demos = inprog.filter(function (o) { return o.demo; });
     $("#main").innerHTML = '<div class="page" style="max-width:none"><div class="kick">Reviews · scored, ranked, never for sale</div><h1>' + esc(RC[1]) + '</h1>' +
@@ -260,7 +260,7 @@
   if (page === "review") {
     var o = (D.operators || []).filter(function (x) { return x.id === (hashId() || window.BMN_ID); })[0];
     if (!o) { $("#main").innerHTML = '<div class="page"><h1>Review not found</h1><p><a href="reviews.html">All reviews</a></p></div>'; return; }
-    document.title = o.name + " review · BetMeisters.news";
+    document.title = o.name + " review · BetMeisters News";
     var CORE = ["Licence", "Safety", "Payments", "Terms", "Safer gambling", "Support", "Design and experience", "Reputation"];
     var mods = CORE.concat(o.products.filter(function (p) { return (o.modules || {})[p] !== undefined; }));
     var pct = Math.round((o.coverage || 0) * 100);

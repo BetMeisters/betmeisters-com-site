@@ -160,3 +160,6 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 .nx-step b { font: 800 clamp(22px, 3vw, 28px)/1.15 var(--f-body); color: #fff; }
 .nx-step .nx-d { font-size: 15px; color: #C9D2E6; }
 .nx-step:hover b { text-decoration: underline; }
+
+/* Keith 23 Nov 18:04: empty fold groups (none to back) are not needed */
+.ac-fold.empty{display:none}
