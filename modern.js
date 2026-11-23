@@ -51,6 +51,39 @@
   }
   moveNotes();
   new MutationObserver(function () { moveNotes(); }).observe(document.body, { childList: true, subtree: true });
+  /* Owner 23 Nov 17:55: Tips and Results headers as big as the home hero on wide screens, with a side panel
+     (Tips: next tips; Results: latest results). Phones unchanged. */
+  function sidePanel(f) {
+    var pg = document.body.getAttribute('data-page');
+    if (pg !== 'tips' && pg !== 'results') return;
+    var head = document.querySelector('.page-head'), w = head && head.querySelector('.wrap');
+    if (!w || head.querySelector('.ph-side')) return;
+    var esc = function (x) { return String(x == null ? '' : x).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); };
+    var uk = function (iso) { try { return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso)); } catch (e) { return ''; } };
+    var html = '';
+    if (pg === 'tips') {
+      var nx = ((f && f.next) || []).slice(0, 3); if (!nx.length) return;
+      html = '<p class="mh-nk">Up next · free to read</p>' + nx.map(function (t) {
+        return '<a class="mh-nt" href="#next"><span class="mh-nm">' + uk(t.start) + ' UK · ' + esc(t.sport) + ' · ' + esc(t.who) + '</span><b>' + esc(t.sel) + ' <em>@ ' + Number(t.price).toFixed(2) + '</em></b><span class="mh-ne">' + esc(t.event) + (t.chance ? ' · our chance ' + Math.round(t.chance * 100) + '%' : '') + '</span></a>';
+      }).join('');
+    } else {
+      var T = ((window.BM && BM.TIPS) || []).filter(function (t) { return t.phase === 2 && !t.hidden && /^(won|lost|void|placed|half-won|half-lost)$/.test(t.result) && (t.meister === 'meister' || t.meister === 'cruncher' || t.meister === 'ncmr'); })
+        .sort(function (a, b) { return (b.settledAt || b.start) > (a.settledAt || a.start) ? 1 : -1; }).slice(0, 3);
+      if (!T.length) return;
+      var pts = function (t) { var s = t.stake || 1, p = t.price; return t.result === 'won' ? s * (p - 1) : t.result === 'lost' ? -s : t.result === 'half-won' ? s / 2 * (p - 1) : t.result === 'half-lost' ? -s / 2 : 0; };
+      var sg = function (v) { return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2); };
+      var who = { meister: 'The Original Meister', cruncher: 'Number Cruncher', ncmr: 'NCM Racing' };
+      html = '<p class="mh-nk">Latest results</p>' + T.map(function (t) {
+        var v = pts(t), w = /won/.test(t.result) ? 'Won' : /lost/.test(t.result) ? 'Lost' : t.result === 'placed' ? 'Placed' : 'Void';
+        return '<div class="mh-nt"><span class="mh-nm">' + esc(t.sport) + ' · ' + esc(who[t.meister] || '') + '</span><b>' + esc(t.selection) + ' <em>@ ' + Number(t.price).toFixed(2) + '</em> <i class="ph-r ' + (v > 0 ? 'w' : v < 0 ? 'l' : '') + '">' + w + ' ' + sg(v) + '</i></b><span class="mh-ne">' + esc(t.event) + '</span></div>';
+      }).join('');
+    }
+    var side = document.createElement('aside'); side.className = 'mh-next ph-side'; side.innerHTML = html;
+    var left = document.createElement('div'); left.className = 'ph-l';
+    while (w.firstChild) left.appendChild(w.firstChild);
+    w.appendChild(left); w.appendChild(side); head.classList.add('ph-big');
+  }
+  if (/^(tips|results)$/.test(document.body.getAttribute('data-page') || '')) fetch('tips_feed.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(sidePanel).catch(function () { sidePanel(null); });
   if (home) fetch('tips_feed.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(hero).catch(function () { hero(null); });
   details();
   new MutationObserver(function () { details(); }).observe(document.body, { childList: true, subtree: true });
