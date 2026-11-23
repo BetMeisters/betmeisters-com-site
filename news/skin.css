@@ -103,3 +103,29 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
 .bmf li a, #bm-feed .bmf a { background: var(--mx-card) !important; border-color: var(--mx-line) !important; color: var(--ink) !important; border-radius: 10px !important; }
 .signup { border-top: 0 !important; border-bottom: 0 !important; background: var(--mx-card); border-radius: 14px; box-shadow: var(--mx-shadow); }
 @media (max-width: 900px) { .mx-sub-k { display: none; } }
+@media (max-width: 720px) { .mx-sub nav.sections { margin: 0 !important; padding: 10px 0 !important; } .mx-sub .mx-wrap { overflow-x: auto; } }
+
+/* News section band (Owner 23 Nov 17:40: news header looked small and weak) */
+.mx-band { background: linear-gradient(135deg, #0B1A3A 0%, #13285A 100%); color: #fff; border-top: 1px solid rgba(255,255,255,.08); }
+.mx-band .mx-wrap { padding-block: 34px 22px; }
+.mx-band.slim .mx-wrap { padding-block: 14px 12px; }
+.mx-k { margin: 0 0 6px; font: 700 13px var(--f-body); letter-spacing: .08em; text-transform: uppercase; color: #FFC629; }
+.mx-band.slim .mx-k { margin-bottom: 8px; }
+.mx-h { margin: 0; font: 800 clamp(36px, 5.4vw, 56px)/1.02 var(--f-body); color: #fff; letter-spacing: 0; }
+.mx-h span { color: #FFC629; }
+.mx-d { margin: 10px 0 0; max-width: 640px; font-size: 17px; color: #C9D2E6; }
+.mx-tabs { margin-top: 18px; }
+.mx-band.slim .mx-tabs { margin-top: 0; }
+.mx-band nav.sections { border: 0 !important; margin: 0 !important; padding: 0 !important; gap: 8px !important; font: 600 14.5px var(--f-body) !important; text-transform: none !important; letter-spacing: 0 !important; display: flex; flex-wrap: wrap; }
+.mx-band nav.sections > a, .mx-band nav.sections .dd > a { color: #D5DDF0 !important; border: 1px solid rgba(255,198,41,.45) !important; border-radius: 99px; padding: 6px 14px !important; text-decoration: none; }
+.mx-band nav.sections > a.on, .mx-band nav.sections .dd > a.on, .mx-band nav.sections a:hover { background: #FFC629; color: #0B1A3A !important; border-color: #FFC629 !important; }
+.mx-band nav.sections .caret { display: none; }
+.mx-band nav.sections .dd-menu { display: none !important; }
+.mx-sub { display: none; }
+@media (max-width: 720px) {
+  .mx-band .mx-wrap { padding-block: 24px 16px; }
+  .mx-band.slim .mx-wrap { padding-block: 12px 10px; }
+  .mx-band nav.sections { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px !important; }
+  .mx-band nav.sections a { white-space: nowrap; }
+  .mx-d { font-size: 15.5px; }
+}

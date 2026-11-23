@@ -14,6 +14,22 @@
     return '<span class="mx-gn"><a class="mx-top" href="' + g[1] + '"' + (on ? ' aria-current="page"' : '') + '>' + g[0] + ' <span class="mx-c" aria-hidden="true">▾</span></a><span class="mx-menu">' +
       g[2].map(function (c) { return '<a href="' + c[1] + '">' + c[0] + '</a>'; }).join('') + '</span></span>';
   }).join('');
+  function mxBand(keep) {
+    /* Owner 23 Nov 17:40: News gets a proper section band like Tips/Results (big on section pages, slim on articles) */
+    var big = /^(home|news|previews|reviews|fpl|section|bonuses)$/.test(page);
+    var T = { home: ['BetMeisters <span>News</span>', 'Previews, news, guides and honest bookmaker reviews, with the real chances behind the prices.'],
+      news: ['Industry <span>news</span>', 'Betting and sports industry news, with the numbers behind each story.'],
+      previews: ['Match and race <span>previews</span>', 'Football, racing and other sports, with fair chances from the sharp market.'],
+      reviews: ['Bookmaker <span>reviews</span>', 'Scored on a published method. No score is for sale.'],
+      fpl: ['Fantasy <span>Premier League</span>', 'Deadlines, chips, captains and transfers, with the market behind every call.'],
+      section: ['Betting <span>guides</span>', 'Plain-English guides: odds, margins, handicaps, each way and more.'],
+      bonuses: ['BetMeisters <span>News</span>', ''] };
+    var t = T[page] || ['BetMeisters <span>News</span>', ''];
+    var kick = { article: 'BetMeisters News', review: 'Bookmaker review', plain: 'BetMeisters News' }[page] || 'BetMeisters News';
+    return '<div class="mx-band' + (big ? '' : ' slim') + '"><div class="mx-wrap">' +
+      (big ? (page === 'home' ? '' : '<p class="mx-k">BetMeisters News</p>') + '<h1 class="mx-h">' + t[0] + '</h1>' + (t[1] ? '<p class="mx-d">' + t[1] + '</p>' : '') : '<p class="mx-k">' + kick + '</p>') +
+      (keep ? '<div class="mx-tabs">' + keep + '</div>' : '') + '</div></div>';
+  }
   var hdr = document.getElementById('hdr');
   var secNav = hdr && hdr.querySelector('nav.sections');
   if (hdr) {
@@ -23,7 +39,7 @@
       '<header class="mx-mast" id="mx-mast"><div class="mx-wrap"><a class="mx-brand" href="/" aria-label="BetMeisters home"><img src="/favicon.svg" alt="" width="34" height="38"><span><b>BET</b>MEISTERS</span></a>' +
       '<button type="button" class="mx-btn" aria-expanded="false" aria-controls="mx-nav" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<nav class="mx-nav" id="mx-nav" aria-label="Main">' + nav + '</nav></div></header>' +
-      (keep ? '<div class="mx-sub"><div class="mx-wrap"><span class="mx-sub-k">News</span>' + keep + '</div></div>' : '');
+      mxBand(keep);
     var b = hdr.querySelector('.mx-btn'), m = hdr.querySelector('.mx-mast');
     if (b) b.addEventListener('click', function () { var o = m.getAttribute('data-open') === 'true'; m.setAttribute('data-open', String(!o)); b.setAttribute('aria-expanded', String(!o)); });
   }
