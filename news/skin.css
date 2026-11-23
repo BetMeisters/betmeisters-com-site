@@ -146,3 +146,10 @@ body[data-page="article"] h1 { font-size: clamp(32px, 4.6vw, 46px); line-height:
   .mx-gn:last-child .mx-menu,.mx-gn:nth-last-child(2) .mx-menu{left:auto;right:0}
   .mx-menu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
 }
+/* boxes moved to the bottom (Owner 23 Nov) */
+.mx-line{font-size:13px;color:var(--ink-3,#5B6785);margin:0 0 10px}
+.mx-line a{font-weight:700}
+.mx-about{margin-top:36px;padding-top:18px;border-top:1px solid var(--rule,#E2E7F0)}
+.mx-about h2{font-size:20px;margin:0 0 12px}
+.mx-about .mx-note,.mx-about .desk-note{margin:0 0 14px}
+@media (max-width:900px){ .mx-tabs{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch} .mx-tabs .dd > :not(a){display:none!important} }

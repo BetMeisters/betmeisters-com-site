@@ -75,5 +75,18 @@
     if (main && !main.querySelector('.mx-note')) { var n = document.createElement('p'); n.className = 'mx-note';
       n.innerHTML = '<b>No score is for sale.</b> We have no affiliate deals at present. If we ever earn commission from an operator, its review will say so, and the score will still come only from our published checks.';
       main.insertBefore(n, main.firstChild); }
+    /* Owner 23 Nov 17:50 + 18:33 sweep: explanation boxes go to the bottom of the page; a one-line pointer stays at the top */
+    if (main && !document.getElementById('about-review')) {
+      var boxes = Array.prototype.slice.call(main.querySelectorAll('.mx-note, .desk-note'));
+      if (boxes.length) {
+        var sec = document.createElement('section'); sec.id = 'about-review'; sec.className = 'mx-about';
+        sec.innerHTML = '<h2>About this ' + (page === 'review' ? 'review' : 'page') + '</h2>';
+        boxes.forEach(function (x) { sec.appendChild(x); });
+        var host = main.querySelector('.page') || main; host.appendChild(sec);
+        var line = document.createElement('p'); line.className = 'mx-line';
+        line.innerHTML = (page === 'review' ? 'Desk review · ' : '') + 'No score is for sale · <a href="#about-review">how we did this ↓</a>';
+        var h1 = main.querySelector('h1'); if (h1 && h1.parentNode) h1.parentNode.insertBefore(line, h1); else main.insertBefore(line, main.firstChild);
+      }
+    }
   }
 })();

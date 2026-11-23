@@ -101,7 +101,7 @@
         '<p class="bmf-rec"><b>All Meisters since 5 November:</b> ' + sg(rec.pts) + ' pts from ' + rec.tips + ' settled tips (' + (rec.roi >= 0 ? '+' : '−') + Math.abs(rec.roi).toFixed(1) + '% return), every loser counted. <b>Every tip is free to read until 1 January.</b></p>' +
         ((f.next || []).length ? '<div class="bmf-h">Next tips, free to read</div><ul class="bmf">' + f.next.map(function (t) {
           return '<li><a href="' + U + '"><span class="bmf-t">' + e(when(t.start)) + ' · ' + e(t.tier) + ' · ' + e(t.who) + '</span><b>' + e(t.sel) + ' @ ' + (+t.price).toFixed(2) + '</b><span class="bmf-e">' + e(t.event) + (t.chance ? ' · chance ' + Math.round(t.chance * 100) + '%' : '') + '</span></a></li>'; }).join('') + '</ul>' : '<p>No open tips right now: new tips are published through the day.</p>') +
-        '<p class="bmf-f">From BetMeisters.com, our sister tips site. Tips are opinions, not guarantees. 18+ only.</p>';
+        '<p class="bmf-f">From the BetMeisters tips pages. Tips are opinions, not guarantees. 18+ only.</p>';
     }).catch(function () {});
   })();
   fix();
