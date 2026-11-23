@@ -30,6 +30,27 @@
       if (cd && cd.parentNode === t) cd.insertAdjacentElement('afterend', b); else t.appendChild(b);
     });
   }
+  /* Owner 23 Nov 17:44: long explainer boxes move to the bottom of the page (still visible, nothing hidden);
+     a one-line pointer stays where the box was. Applies to the separate-record notes and the Meister change note. */
+  function moveNotes() {
+    var main = document.querySelector('[data-page-root] main') || document.querySelector('main');
+    if (!main) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.ac-note, .change-note'), function (n) {
+      if (n.getAttribute('data-moved')) return;
+      n.setAttribute('data-moved', '1');
+      var acca = /Acca Meister results/.test(n.textContent), combo = /Combo Meister results/.test(n.textContent);
+      var box0 = document.getElementById('about-record');
+      if (box0) { box0.appendChild(n); return; }
+      var line = document.createElement('p'); line.className = 'mv-line';
+      line.innerHTML = (acca || combo ? '<b>Separate record:</b> not part of the main BetMeisters totals. ' : '<b>Record notes:</b> how the Meister records changed. ') + '<a href="#about-record">Why ↓</a>';
+      n.parentNode.insertBefore(line, n);
+      var box = document.getElementById('about-record');
+      if (!box) { box = document.createElement('section'); box.id = 'about-record'; box.className = 'mv-box'; box.innerHTML = '<h2 class="sec-title">About this record</h2>'; main.appendChild(box); }
+      box.appendChild(n);
+    });
+  }
+  moveNotes();
+  new MutationObserver(function () { moveNotes(); }).observe(document.body, { childList: true, subtree: true });
   if (home) fetch('tips_feed.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(hero).catch(function () { hero(null); });
   details();
   new MutationObserver(function () { details(); }).observe(document.body, { childList: true, subtree: true });

@@ -125,3 +125,9 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
   .nav .gn-menu a { color: #C9D2E6; border-top: 0; padding: 8px 8px; font-size: 15px; }
   .nav .gn-menu a:hover, .nav .gn-menu a.on { background: rgba(255,255,255,.08); color: #fff; }
 }
+
+/* long explainer notes moved to the bottom; one-liner left in place (Owner 23 Nov 17:44) */
+.mv-line { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+.mv-line a { color: #2B5BD7; font-weight: 700; text-decoration: none; }
+.mv-box { scroll-margin-top: 20px; }
+.mv-box .sec-title { font-size: clamp(24px, 3vw, 30px); margin-bottom: 12px; }
