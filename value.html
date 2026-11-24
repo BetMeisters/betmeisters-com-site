@@ -19,209 +19,169 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261124202809">
-<link rel="stylesheet" href="modern.css?v=20261124202809">
+<link rel="stylesheet" href="styles.css?v=20261124203127">
+<link rel="stylesheet" href="modern.css?v=20261124203127">
 <style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
 <link rel="canonical" href="https://betmeisters.com/value">
 </head>
 <body data-page="value">
 <div id="bm-header"></div>
 <style>
-.vx-hero{padding-block:18px 0}
-.vx-hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,54px);line-height:.95;text-transform:uppercase;margin:4px 0 8px;text-wrap:balance}
-.vx-hero h1 span{color:var(--open)}
-.vx-kick{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-.vx-lede{color:var(--ink-2);max-width:66ch;margin:0}
-.vx-tabs{display:flex;gap:6px;margin:10px 0 12px}
-.vx-tab{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:7px 16px;font:700 14px var(--f-body,inherit);cursor:pointer}
-.vx-tab[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
-.vx-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:start}
-@media(max-width:860px){.vx-grid{grid-template-columns:minmax(0,1fr)}}
-.vx-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
-.vx-card h2{font-family:var(--f-display);font-size:21px;text-transform:uppercase;margin:0 0 10px;letter-spacing:.02em}
-.vx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.vx-chip{border:1px solid var(--line);background:var(--bg-2);color:var(--ink-2);border-radius:999px;padding:4px 11px;font:600 12.5px inherit;cursor:pointer}
-.vx-chip[aria-pressed=true]{background:var(--yellow);color:var(--on-accent);border-color:var(--yellow)}
-.vx-legend{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
-.vx-legend b{color:var(--ink-2)}
-.vx-q{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:15px}
-.vx-q:focus,.vx-num:focus{outline:2px solid var(--yellow);outline-offset:1px}
-.vx-list{margin-top:10px;display:flex;flex-direction:column;gap:8px}
-.vx-moreb{border:1px solid var(--line);background:var(--surface);color:var(--open);border-radius:10px;padding:10px;font-weight:800;cursor:pointer}
-.vx-ev{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--bg-2)}
-.vx-ev .t{font-weight:700}.vx-ev .l{color:var(--ink-3);font-size:12.5px}
-.vx-mk{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
-.vx-ml{width:100%;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.vx-sel{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 9px;font:500 13px inherit;cursor:pointer;display:flex;gap:8px;align-items:baseline;text-align:left}
-.vx-sel .eg{font-family:var(--f-data);font-size:11.5px;font-weight:700}
-.vx-sel:hover{border-color:var(--open)}.vx-sel .fp{font-family:var(--f-data);color:var(--open);font-size:12.5px}
-.vx-sel[disabled]{opacity:.4;cursor:not-allowed}
-.vx-empty{color:var(--ink-3);padding:12px 2px}
-.vx-leg{border-bottom:1px solid var(--line);padding:10px 0;display:grid;grid-template-columns:minmax(0,1fr) 92px 26px;gap:10px;align-items:center}
-.vx-leg .s{font-weight:700}.vx-leg .e{color:var(--ink-3);font-size:12.5px}.vx-leg .f{font-family:var(--f-data);font-size:12.5px;color:var(--ink-2)}
-.vx-leg label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
-.vx-num{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:500 14px var(--f-data)}
-.vx-x{border:0;background:none;color:var(--ink-3);font-size:20px;cursor:pointer}.vx-x:hover{color:var(--lost)}
-.vx-res{margin-top:12px;border-radius:12px;padding:14px;background:var(--bg-2);border:1px solid var(--line);border-left:8px solid var(--ink-3)}
-.vx-res.good{border-left-color:var(--won)}.vx-res.ok{border-left-color:var(--amber-ink)}.vx-res.bad{border-left-color:var(--lost)}
-.vx-big{font-family:var(--f-display);font-weight:800;font-size:38px;line-height:1}
-.vx-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
-.vx-stats span{display:block;font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase;font-weight:700}
-.vx-stats b{font-family:var(--f-data);font-size:19px}
-.vx-verdict{margin-top:10px;color:var(--ink-2)}
-.vx-cta{display:inline-block;margin-top:10px;font-weight:800;color:var(--open);text-decoration:none}
-.vx-g{color:var(--won)}.vx-a{color:var(--amber-ink)}.vx-r{color:var(--lost)}
-.vx-ours{margin-top:22px}
-.vx-ours h2{font-family:var(--f-display);font-size:24px;text-transform:uppercase;margin:0 0 4px}
-.vx-ours p.sub{color:var(--ink-3);margin:0 0 10px}
-.vx-oul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
-.vx-oul li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
-.vx-oul .w{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.vx-oul .s{font-weight:700;margin-top:2px}.vx-oul .e{font-size:12.5px;color:var(--ink-3)}
-.vx-oul .n{font-family:var(--f-data);font-size:13px;margin-top:6px}
-.vx-note{color:var(--ink-3);font-size:13px;max-width:80ch;margin-top:18px}
-.vx-grid.single{grid-template-columns:minmax(0,1fr)}.vx-grid.single #slip{display:none}
-.vx-sel.on{border-color:var(--open);background:var(--open-bg);box-shadow:0 0 0 2px var(--open) inset}
-.vx-inline{margin-top:10px;border:2px solid var(--open);border-radius:12px;background:var(--surface);padding:12px 14px}
-.vx-inline .h{font-weight:800;font-size:16px}
-.vx-inline .fair{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.05;margin-top:4px}
-.vx-inline .fair small{font-family:var(--f-body,inherit);font-size:14px;font-weight:600;color:var(--ink-3)}
-.vx-inline .rule{color:var(--ink-2);margin:2px 0 10px}
-.vx-inline .ask{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
-.vx-inline .ask label{font-weight:700;color:var(--ink-2);font-size:14px}
-.vx-inline .ask input{width:110px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font:600 17px var(--f-data)}
-.vx-inline .ask input:focus{outline:2px solid var(--yellow);outline-offset:1px}
-.vx-inline .out{margin-top:8px;font-weight:700}
-.vx-inline .out.good{color:var(--won)}.vx-inline .out.ok{color:var(--amber-ink)}.vx-inline .out.bad{color:var(--lost)}
-.vx-inline .tip{margin-top:6px;font-size:12.5px;color:var(--ink-3)}
-.vx-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
-.vx-tiles>div{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
-.vx-tiles span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.vx-tiles b{display:block;font-family:var(--f-data);font-size:20px;color:var(--ink)}
-.vx-tiles b.vx-g{color:var(--won)}.vx-tiles b.vx-a{color:var(--amber-ink)}.vx-tiles b.vx-r{color:var(--lost)}
-.vx-tiles small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:500}
-.vx-res .vx-tiles{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
-@media(max-width:420px){.vx-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.vx-tiles>div:first-child{grid-column:1/-1}}
-.vx-verd{margin-top:10px;font-weight:700}
-.vx-le{font-size:12px;font-weight:700;margin-top:3px;min-height:1em}
-.vx-num::placeholder{color:var(--ink-3);font-family:inherit;font-size:12.5px}
-.vx-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);color:#fff;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;justify-content:space-between;box-shadow:0 -4px 14px rgba(0,0,0,.2)}
-.vx-bar b{color:var(--yellow)}.vx-bar button{background:var(--yellow);color:var(--on-accent);border:0;border-radius:9px;padding:8px 14px;font-weight:800;cursor:pointer}
-body.has-bar{padding-bottom:64px}
+.vt-head{padding-block:18px 4px}
+.vt-head h1{font-family:var(--f-display);font-weight:800;font-size:clamp(32px,5vw,48px);line-height:.95;text-transform:uppercase;margin:2px 0 6px}
+.vt-head h1 span{color:var(--open)}
+.vt-kick{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.vt-lede{color:var(--ink-2);max-width:70ch;margin:0}
+.vt-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;margin-top:14px}
+@media(max-width:960px){.vt-grid{grid-template-columns:minmax(0,1fr)}.vt-side{display:none}}
+.vt-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.vt-q{flex:1 1 260px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:15px}
+.vt-q:focus,.vt-in:focus{outline:2px solid var(--yellow);outline-offset:1px}
+.vt-sel{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}
+.vt-chk{display:flex;gap:6px;align-items:center;font-weight:700;font-size:14px;color:var(--ink-2);cursor:pointer}
+.vt-game{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.vt-gh{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;padding:9px 12px;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.vt-gh b{font-size:15px}.vt-gh span{font-size:12.5px;color:var(--ink-3)}
+.vt-tbl{width:100%;border-collapse:collapse;font-size:14px}
+.vt-tbl th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700;text-align:right;padding:6px 12px 4px}
+.vt-tbl th:first-child{text-align:left}
+.vt-tbl td{padding:7px 12px;border-top:1px solid var(--line);text-align:right;font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.vt-tbl td:first-child{text-align:left;font-family:inherit;font-weight:600}
+.vt-row{cursor:pointer}.vt-row:hover td{background:var(--bg-2)}
+.vt-row.on td{background:var(--open-bg)}
+.vt-pill{display:inline-block;min-width:62px;text-align:center;border-radius:999px;padding:2px 8px;font-weight:700;font-size:13px}
+.vt-pill.g{background:var(--won-bg);color:var(--won)}.vt-pill.a{background:#FFF1D6;color:var(--amber-ink)}.vt-pill.r{background:var(--lost-bg);color:var(--lost)}.vt-pill.n{color:var(--ink-3)}
+.vt-add{border:1px solid var(--line);background:var(--surface);color:var(--open);border-radius:8px;padding:3px 8px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap}
+.vt-add.in{background:var(--open);color:#fff;border-color:var(--open)}
+.vt-add[disabled]{opacity:.35;cursor:not-allowed}
+.vt-det td{background:var(--open-bg);text-align:left;font-family:inherit;font-weight:400}
+.vt-calc{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:14px}
+.vt-in{width:76px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:600 14px var(--f-data)}
+.vt-res{font-weight:700}.vt-res .g{color:var(--won)}.vt-res .r{color:var(--lost)}.vt-res .a{color:var(--amber-ink)}
+.vt-more{display:block;width:100%;border:1px solid var(--line);background:var(--surface);color:var(--open);border-radius:10px;padding:10px;font-weight:800;cursor:pointer}
+.vt-empty{color:var(--ink-3);padding:12px 2px}
+.vt-side{position:sticky;top:12px}
+.vt-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.vt-box h2{font-family:var(--f-display);font-size:20px;text-transform:uppercase;margin:0 0 8px}
+.vt-box p{margin:0 0 6px;color:var(--ink-2);font-size:14px}
+.vt-leg{display:grid;grid-template-columns:minmax(0,1fr) 70px 18px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}
+.vt-leg small{display:block;color:var(--ink-3);font-size:12px}
+.vt-x{border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:16px}
+.vt-sum{margin-top:8px;display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:14px}
+.vt-sum dt{color:var(--ink-3)}.vt-sum dd{margin:0;text-align:right;font-family:var(--f-data);font-weight:700}
+.vt-verd{margin-top:8px;font-weight:700;font-size:14px}
+.vt-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);color:#fff;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));display:none;gap:10px;align-items:center;justify-content:space-between}
+.vt-bar b{color:var(--yellow)}.vt-bar button{background:var(--yellow);color:var(--on-accent);border:0;border-radius:9px;padding:8px 14px;font-weight:800;cursor:pointer}
+@media(max-width:960px){body.has-acca .vt-bar{display:flex}body.has-acca{padding-bottom:64px}}
+.vt-sheet{position:fixed;inset:auto 0 0 0;z-index:30;max-height:80vh;overflow:auto;background:var(--surface);border-radius:16px 16px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.3);padding:14px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px))}
+.vt-ours{margin-top:20px}
+.vt-ours h2{font-family:var(--f-display);font-size:22px;text-transform:uppercase;margin:0 0 4px}
+.vt-oul{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.vt-oul li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+.vt-oul .w{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.vt-note{color:var(--ink-3);font-size:13px;max-width:80ch;margin-top:16px}
+@media(max-width:520px){.vt-tbl .hide-s{display:none}.vt-tbl td,.vt-tbl th{padding-left:8px;padding-right:8px}}
 </style>
 <main class="wrap">
-  <section class="vx-hero">
-    <div class="vx-kick">Free tool</div>
+  <section class="vt-head">
+    <div class="vt-kick">Free tool</div>
     <h1>Bet value <span>checker</span></h1>
-    <p class="vx-lede">Is the price you've been offered any good? Find your bet and tap it: we show the <b>fair price</b> from the sharp market with the bookmaker margin taken out. If your bookmaker offers <b>more</b> than the fair price, it's value. Building an acca? Switch to Acca.</p>
+    <p class="vt-lede">Every bet with its <b>available price</b>, its <b>fair price</b> (the sharp market with the bookmaker margin taken out) and the <b>edge</b>: green beats the fair price, red is below it. Click a bet to see what your stake returns. Add bets to build an acca.</p>
   </section>
-  <div class="vx-bar" id="bar" hidden></div>
-  <div class="vx-tabs" role="tablist"><button class="vx-tab" role="tab" id="t-single" aria-selected="true">Single</button><button class="vx-tab" role="tab" id="t-acca" aria-selected="false">Acca</button></div>
-  <div id="pick"></div>
-  <div class="vx-grid single" id="grid">
-    <section class="vx-card" aria-label="Find a selection">
-      <h2 id="find-h">Find your bet and tap it</h2>
-      <div class="vx-chips" id="chips"></div>
-      <input type="search" class="vx-q" id="q" placeholder="Search a team or league, e.g. Arsenal, NBA, Bayern" autocomplete="off">
-      <p class="vx-legend">Each bet shows the <b>best available price</b> we track and its <b>edge</b> against the fair price: <span class="vx-g">green = value</span>, <span class="vx-a">amber = about fair</span>, <span class="vx-r">red = below fair</span>. Tap one for the detail.</p>
-      <div class="vx-list" id="list"></div>
+  <div class="vt-grid">
+    <section aria-label="Bets">
+      <div class="vt-tools">
+        <input type="search" class="vt-q" id="q" placeholder="Search a team or league, e.g. Arsenal, NBA, Bayern" autocomplete="off">
+        <select class="vt-sel" id="sp" aria-label="Sport"></select>
+        <label class="vt-chk"><input type="checkbox" id="vonly"> Value only</label>
+      </div>
+      <div id="pick"></div>
+      <div id="list"></div>
     </section>
-    <section class="vx-card" aria-label="Your acca" id="slip">
-      <h2 id="slip-h">2 · Your bet</h2>
-      <div id="legs"><div class="vx-empty">Tap selections in the list to add legs.</div></div>
-      <div id="res"></div>
-    </section>
+    <aside class="vt-side" id="side"></aside>
   </div>
-  <section class="vx-ours" aria-labelledby="ours-h">
-    <h2 id="ours-h">Already value-checked: our open picks</h2>
-    <p class="sub">Every Number Cruncher tip, Combo Meister combo and Acca Meister acca is only published when its price beats the fair price.</p>
-    <ul class="vx-oul" id="ours"></ul>
+  <section class="vt-ours" aria-labelledby="ours-h">
+    <h2 id="ours-h">Our open picks: all beat the fair price</h2>
+    <p class="vt-lede" style="font-size:14px">Number Cruncher tips, Combo Meister combos and Acca Meister accas are only published when the price beats the fair price.</p>
+    <ul class="vt-oul" id="ours"></ul>
   </section>
-  <p class="vx-note" id="stamp"></p>
-  <p class="vx-note"><b>How it works.</b> The fair chance comes from the sharp market's prices with the bookmaker margin removed. Fair price = 1 ÷ fair chance. Value = your price × fair chance − 1: above 0% the price beats the market's view, below 0% the bookmaker keeps that share of your stake over many bets like it. An acca multiplies the chances, so it multiplies the margin too. Two legs from the same game are linked, so the checker takes one leg per game. A guide, not a tip: prices and chances move. Enter decimal prices (2.50 = 6/4).</p>
-  <p class="vx-note">18+ · No affiliate links · BetMeisters does not take bets. If betting stops being fun: BeGambleAware.org · National Gambling Helpline 0808 8020 133 (UK) · 1-800-GAMBLER (US).</p>
+  <p class="vt-note" id="stamp"></p>
+  <p class="vt-note"><b>How it works.</b> Fair price = 1 ÷ the sharp market's chance with the margin removed. Edge = your price × fair chance − 1. "Available price" is the best price among the bookmakers we track at the time of our last scan, checked for data errors the same way as our tips; prices move, so check yours before you bet. An acca multiplies the chances, so it multiplies the margin too; one leg per game. Decimal odds: 6/4 = 2.50, evens = 2.00, 1/2 = 1.50. A guide, not a tip.</p>
+  <p class="vt-note">18+ · No affiliate links · BetMeisters does not take bets. If betting stops being fun: BeGambleAware.org · National Gambling Helpline 0808 8020 133 (UK) · 1-800-GAMBLER (US).</p>
 </main>
+<div class="vt-bar" id="bar"></div>
 <div id="bm-footer"></div>
 <script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
-<script src="data.js?v=20261124202809"></script>
-<script src="news_feed.js?v=20261124202809"></script>
-<script src="app.js?v=20261124202809"></script>
-<script src="consent.js?v=20261124202809"></script>
-<script src="modern.js?v=20261124202809"></script>
+<script src="data.js?v=20261124203127"></script>
+<script src="news_feed.js?v=20261124203127"></script>
+<script src="app.js?v=20261124203127"></script>
+<script src="consent.js?v=20261124203127"></script>
+<script src="modern.js?v=20261124203127"></script>
 <script>
 (function(){
 var SP={'football':'Football','basketball':'Basketball','american-football':'NFL & college','ice-hockey':'Ice hockey','tennis':'Tennis','handball':'Handball','volleyball':'Volleyball'};
 var TOP=[/UEFA Champions League$/,/England - Premier League/,/NBA$/,/NFL$/,/EuroLeague/,/UEFA Europa League$/,/Conference League$/,/Spain - La ?Liga$/,/Italy - Serie A$/,/Germany - Bundesliga$/,/France - Ligue 1$/,/England - Championship/,/NHL$/,/Scotland - Premiership/,/NCAA/,/MLS/];
-var D=null, sport='all', mode='single', legs=[], show=12, vonly=false;
+var D=null,sport='all',vonly=false,show=10,open=null,acca=[],stake=10,sheet=false;
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
 function when(s){try{return new Date(s).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return s}}
-function lg(l){return l.replace(/^International Clubs - /,'')}
+function lg(l){return l.replace(/^International Clubs - /,'').replace(/^International - /,'')}
 function rank(e){for(var i=0;i<TOP.length;i++)if(TOP[i].test(e.lg))return i;return 99}
-function pc(x,s){var r=Math.round(x*1000)/10;return (s&&r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1)+'%'}
-function chips(){var c=['all'].concat(Object.keys(SP).filter(function(k){return D.ev.some(function(e){return e.sp===k})}));
- $('chips').innerHTML=c.map(function(k){return '<button class="vx-chip" data-k="'+k+'" aria-pressed="'+(k===sport)+'">'+(k==='all'?'All sports':SP[k])+'</button>'}).join('')+'<button class="vx-chip" id="vonly" aria-pressed="'+vonly+'">\u2714 Value now only</button>'}
+function pc(x){var r=Math.round(x*1000)/10;return (r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1)+'%'}
+function money(x){return (x<0?'−':'')+'£'+Math.abs(x).toFixed(2)}
+function cl(v){return v==null?'n':v>=0.02?'g':v>=-0.02?'a':'r'}
+function name(m,sel){return m[0]==='Result'?(sel==='Draw'?'Draw':sel+' to win'):sel}
+function key(ei,mi,si){return ei+'-'+mi+'-'+si}
+function inAcca(ev){return acca.some(function(l){return l.e===ev})}
+function fill(){var ks=['all'].concat(Object.keys(SP).filter(function(k){return D.ev.some(function(e){return e.sp===k})}));$('sp').innerHTML=ks.map(function(k){return '<option value="'+k+'">'+(k==='all'?'All sports':SP[k])+'</option>'}).join('')}
+function calcLine(p,ch){if(!(p>1))return '';var v=p*ch-1,c=cl(v);return 'returns <b>'+money(stake*p)+'</b> if it wins · value <b class="'+c+'">'+(v>=0?'+':'')+money(stake*v)+'</b> per £'+stake+' on average · edge <b class="'+c+'">'+pc(v)+'</b>'}
 function list(){var q=$('q').value.trim().toLowerCase(),now=Date.now();
- var ev=D.ev.filter(function(e){return Date.parse(e.s)>now&&(sport==='all'||e.sp===sport)&&(!vonly||e.m.some(function(m){return m[2].some(function(x){return x[2]&&x[2]*x[1]-1>=0})}))&&(!q||e.e.toLowerCase().indexOf(q)>=0||e.lg.toLowerCase().indexOf(q)>=0)});
+ var ev=D.ev.map(function(e,i){e._i=i;return e}).filter(function(e){return Date.parse(e.s)>now&&(sport==='all'||e.sp===sport)&&(!q||e.e.toLowerCase().indexOf(q)>=0||e.lg.toLowerCase().indexOf(q)>=0)&&(!vonly||e.m.some(function(m){return m[2].some(function(x){return x[2]&&x[2]*x[1]-1>=0})}))});
  if(!q)ev.sort(function(a,b){return rank(a)-rank(b)||a.s.localeCompare(b.s)});
- var n=ev.length;ev=ev.slice(0,show);var used={};legs.forEach(function(l){used[l.e]=1});
- $('list').innerHTML=ev.length?ev.map(function(e){var i=D.ev.indexOf(e);return '<div class="vx-ev"><div class="t">'+esc(e.e)+'</div><div class="l">'+esc(lg(e.lg))+' · '+when(e.s)+'</div>'+
-  e.m.map(function(m,j){return '<div class="vx-mk"><span class="vx-ml">'+(m[0]==='Result'?'Result':m[0]==='Total'?'Total '+m[1]:'Handicap')+'</span>'+m[2].map(function(s,k){var v=s[2]?s[2]*s[1]-1:null;return '<button class="vx-sel" data-e="'+i+'" data-m="'+j+'" data-s="'+k+'"'+(mode==='acca'&&used[e.e]?' disabled':'')+'><span>'+esc(s[0])+'</span>'+(s[2]?'<span class="fp">'+(+s[2]).toFixed(2)+'</span><span class="eg '+(v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r')+'">'+pc(v,true)+'</span>':'<span class="fp" style="color:var(--ink-3)">fair '+(1/s[1]).toFixed(2)+'</span>')+'</button>'}).join('')+'</div>'}).join('')+'</div>'}).join('')+(n>show?'<button class="vx-moreb" id="more" type="button">Show more games ('+(n-show)+' more)</button>':''):'<div class="vx-empty">No games found. Try another team or sport.</div>'}
-var cur=null;
-function inline(btn,leg){document.querySelectorAll('.vx-inline').forEach(function(x){x.remove()});document.querySelectorAll('.vx-sel.on').forEach(function(x){x.classList.remove('on')});
- btn.classList.add('on');cur=leg;var fair=1/leg.p,ev=btn.closest('.vx-ev'),d=document.createElement('div');d.className='vx-inline';
- var v0=leg.b?leg.b*leg.p-1:null,c0=v0==null?'':v0>=0.02?'vx-g':v0>=-0.02?'vx-a':'vx-r';
- d.innerHTML='<div class="h">'+esc(leg.sel)+' <span style="font-weight:500;color:var(--ink-3)">· '+esc(leg.e)+'</span></div>'+
-  '<div class="vx-tiles" style="margin:8px 0"><div><span>Available price</span><b>'+(leg.b?(+leg.b).toFixed(2):'\u2013')+'</b><small>'+(leg.b?'best we track':'no checked price yet')+'</small></div><div><span>Fair price</span><b>'+fair.toFixed(2)+'</b><small>'+(leg.p*100).toFixed(1)+'% chance</small></div><div><span>Edge now</span><b class="'+c0+'">'+(v0==null?'\u2013':pc(v0,true))+'</b><small>'+(v0==null?'type your price':v0>=0.02?'value':v0>=-0.02?'about fair':'below fair')+'</small></div></div>'+
-  '<p class="rule">Any price <b>above '+fair.toFixed(2)+'</b> is value. Got a different price? Type it below.</p>'+
-  '<div class="ask"><label for="ip">What price are you offered?</label><input id="ip" type="number" inputmode="decimal" step="0.01" min="1.01" placeholder="e.g. '+(fair*0.95).toFixed(2)+'"><label for="stk">Stake \u00a3</label><input id="stk" type="number" inputmode="decimal" step="1" min="1" value="10" style="width:80px"></div><div class="out" id="iout"></div><p class="tip">Decimal odds: 6/4 = 2.50, evens = 2.00, 1/2 = 1.50.</p>';
- ev.appendChild(d);if(leg.b){$('ip').value=(+leg.b).toFixed(2);judge(+leg.b)}var r=d.getBoundingClientRect();if(r.bottom>window.innerHeight)d.scrollIntoView({behavior:'smooth',block:'nearest'})}
-function money(x){return (x<0?'\u2212':'')+'\u00a3'+Math.abs(x).toFixed(2)}
-function tiles(st,ret,val,v,extra){var c=v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r';return '<div class="vx-tiles"><div><span>\u00a3'+st+' returns</span><b>'+money(ret)+'</b><small>if it wins</small></div><div><span>Value</span><b class="'+c+'">'+(val>=0?'+':'')+money(val)+'</b><small>per \u00a3'+st+' on average</small></div><div><span>Edge</span><b class="'+c+'">'+pc(v,true)+'</b><small>v the fair price</small></div>'+(extra||'')+'</div>'}
-function stake(){var s=parseFloat(($('stk')||{}).value);return s>0?s:10}
-function judge(p){var o=$('iout');if(!(p>1)){o.className='out';o.innerHTML='';return}var v=p*cur.p-1,st=stake(),c=v>=0.02?'good':v>=-0.02?'ok':'bad';o.className='out '+c;
- o.innerHTML=tiles(st,st*p,st*v,v)+'<div class="vx-verd">'+(v>=0.02?'\u2714 Value. This price beats the fair price. <a href="/tips">Our tips only go out when they do \u2192</a>':v>=-0.02?'About fair. No real edge either way.':'\u2716 Below fair. Over many bets like this you lose about '+money(-st*v)+' per \u00a3'+st+'. Look for a bigger price.')+'</div>';if(!o.dataset.seen){o.dataset.seen=1;var r=o.getBoundingClientRect();if(r.bottom>window.innerHeight)o.scrollIntoView({behavior:'smooth',block:'end'})}}
-function add(ei,mi,si,btn){var e=D.ev[ei],m=e.m[mi],s=m[2][si];var leg={e:e.e,s:e.s,sel:s[0],p:s[1],b:s[2]||null,your:s[2]||''};
- if(mode==='single'){inline(btn,leg);return}
- if(legs.some(function(l){return l.e===e.e}))return;legs.push(leg);slip();list()}
-function bar(){var b=$('bar');if(mode!=='acca'||!legs.length){b.hidden=true;document.body.classList.remove('has-bar');return}var ch=legs.reduce(function(a,l){return a*l.p},1);b.hidden=false;document.body.classList.add('has-bar');b.innerHTML='<span>Your acca: <b>'+legs.length+' leg'+(legs.length>1?'s':'')+'</b> \u00b7 fair price <b>'+(1/ch).toFixed(2)+'</b></span><button id="barbtn" type="button">See your acca \u2193</button>'}
-function legEdge(l){if(!(+l.your>1))return '';var v=l.your*l.p-1;return '<span class="'+(v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r')+'">edge '+pc(v,true)+'</span>'}
-function slip(){bar();if(!legs.length){$('legs').innerHTML='<div class="vx-empty">Tap selections in the list to add legs.</div>';$('res').innerHTML='';return}
- $('legs').innerHTML=legs.map(function(l,i){return '<div class="vx-leg"><div><div class="s">'+esc(l.sel)+'</div><div class="e">'+esc(l.e)+' · '+when(l.s)+'</div><div class="f">'+(l.b?'available '+(+l.b).toFixed(2)+' · ':'')+'fair price '+(1/l.p).toFixed(2)+' ('+(l.p*100).toFixed(1)+'%)</div></div><div><label for="p'+i+'">Your price</label><input class="vx-num" type="number" id="p'+i+'" data-i="'+i+'" step="0.01" min="1.01" inputmode="decimal" placeholder="type odds" value="'+(l.your||'')+'"><div class="vx-le" id="le'+i+'">'+legEdge(l)+'</div></div><button class="vx-x" data-x="'+i+'" aria-label="Remove">×</button></div>'}).join('');calc()}
-function calc(){var ch=legs.reduce(function(a,l){return a*l.p},1),fair=1/ch,all=legs.every(function(l){return +l.your>1});
- var st=window._ast||10,sbox='<div class="ask" style="margin-top:12px"><label for="astk" style="font-weight:700;color:var(--ink-2)">Stake \u00a3</label> <input id="astk" class="vx-num" type="text" inputmode="decimal" value="'+st+'" style="width:90px"></div>';
- if(!all){var done=legs.filter(function(l){return +l.your>1}),part=done.reduce(function(a,l){return a*(+l.your)},1);
-  $('res').innerHTML='<div class="vx-res"><div class="vx-tiles"><div><span>Fair acca price</span><b>'+fair.toFixed(2)+'</b><small>value above this</small></div><div><span>True chance</span><b>'+(ch*100).toFixed(ch<0.01?2:1)+'%</b><small>about 1 in '+Math.round(1/ch)+'</small></div><div><span>Your acca price</span><b>'+(done.length?part.toFixed(2):'\u2013')+'</b><small>'+done.length+' of '+legs.length+' legs priced</small></div></div><div class="vx-verdict">Type the odds you\u2019re offered for '+(done.length?'the other '+(legs.length-done.length)+' leg'+(legs.length-done.length>1?'s':''):'each leg')+' to see what you get, the value and the edge.</div></div>';return}
- var yours=legs.reduce(function(a,l){return a*(+l.your)},1),v=yours*ch-1,c=v>=0.02?'good':v>=-0.02?'ok':'bad';
- var extra='<div><span>True chance</span><b>'+(ch*100).toFixed(ch<0.01?2:1)+'%</b><small>about 1 in '+Math.round(1/ch)+'</small></div><div><span>Your acca price</span><b>'+yours.toFixed(2)+'</b><small>all legs multiplied</small></div><div><span>Fair acca price</span><b>'+fair.toFixed(2)+'</b><small>value above this</small></div>';
- var verdict=v>=0.02?'<span class="vx-g">\u2714 Value.</span> This acca beats the fair price. That\u2019s what our Meisters look for every day.':v>=-0.02?'<span class="vx-a">About fair.</span> No real edge either way.':'<span class="vx-r">\u2716 Below fair.</span> Over many accas like this you lose about '+money(-st*v)+' per \u00a3'+st+'. Each leg adds its own margin.';
- $('res').innerHTML='<div class="vx-res '+c+'">'+tiles(st,st*yours,st*v,v,extra)+'<div class="vx-verdict">'+verdict+'</div>'+sbox+'<a class="vx-cta" href="/tips">See today\u2019s tips that beat the fair price \u2192</a></div>'}
+ var n=ev.length;ev=ev.slice(0,show);
+ $('list').innerHTML=ev.length?ev.map(function(e){var used=inAcca(e.e);
+  return '<div class="vt-game"><div class="vt-gh"><b>'+esc(e.e)+'</b><span>'+esc(lg(e.lg))+' · '+when(e.s)+'</span></div><table class="vt-tbl"><thead><tr><th>Bet</th><th>Available</th><th class="hide-s">Fair</th><th>Edge</th><th></th></tr></thead><tbody>'+
+  e.m.map(function(m,mi){return m[2].map(function(x,si){var k=key(e._i,mi,si),v=x[2]?x[2]*x[1]-1:null,isIn=acca.some(function(l){return l.k===k});
+   if(vonly&&!(v!=null&&v>=0))return '';
+   var row='<tr class="vt-row'+(open===k?' on':'')+'" data-k="'+k+'"><td>'+esc(name(m,x[0]))+'</td><td>'+(x[2]?(+x[2]).toFixed(2):'–')+'</td><td class="hide-s">'+(1/x[1]).toFixed(2)+'</td><td><span class="vt-pill '+cl(v)+'">'+(v==null?'no price':pc(v))+'</span></td><td><button class="vt-add'+(isIn?' in':'')+'" data-add="'+k+'"'+(used&&!isIn?' disabled title="One leg per game"':'')+'>'+(isIn?'✓ Acca':'+ Acca')+'</button></td></tr>';
+   if(open===k){var pr=x._your||x[2]||'';row+='<tr class="vt-det"><td colspan="5"><div class="vt-calc">£<input class="vt-in" id="stk" type="text" inputmode="decimal" value="'+stake+'" aria-label="Stake"> at <input class="vt-in" id="ip" type="text" inputmode="decimal" value="'+pr+'" placeholder="odds" aria-label="Price"><span class="vt-res" id="cres">'+calcLine(+pr,x[1])+'</span></div></td></tr>'}
+   return row}).join('')}).join('')+'</tbody></table></div>'}).join('')+(n>show?'<button class="vt-more" id="more">Show more games ('+(n-show)+' more)</button>':''):'<div class="vt-empty">No games found. Try another team or sport.</div>'}
+function find(k){var a=k.split('-').map(Number),e=D.ev[a[0]],m=e.m[a[1]],x=m[2][a[2]];return {e:e,m:m,x:x}}
+function side(){var ch=acca.reduce(function(a,l){return a*l.p},1),yours=acca.reduce(function(a,l){return a*(+l.your||0)},1),all=acca.every(function(l){return +l.your>1});
+ var h;
+ if(!acca.length)h='<div class="vt-box"><h2>How to read it</h2><p><b>Available</b>: the best price we track.</p><p><b>Fair</b>: the price with the bookmaker’s margin taken out.</p><p><b>Edge</b>: <span style="color:var(--won);font-weight:700">green</span> = the price beats fair (value), <span style="color:var(--lost);font-weight:700">red</span> = below fair.</p><p>Click a bet for what your stake returns. Press <b>+ Acca</b> to build an acca.</p></div>';
+ else{var v=all?yours*ch-1:null,c=cl(v);
+  h='<div class="vt-box"><h2>Your acca · '+acca.length+' leg'+(acca.length>1?'s':'')+'</h2>'+acca.map(function(l,i){return '<div class="vt-leg"><div>'+esc(l.sel)+'<small>'+esc(l.e)+' · fair '+(1/l.p).toFixed(2)+'</small></div><input class="vt-in" data-leg="'+i+'" type="text" inputmode="decimal" value="'+(l.your||'')+'" placeholder="odds" aria-label="Price for '+esc(l.sel)+'"><button class="vt-x" data-rm="'+i+'" aria-label="Remove">×</button></div>'}).join('')+
+  '<dl class="vt-sum"><dt>Your acca price</dt><dd>'+(all?yours.toFixed(2):'–')+'</dd><dt>Fair acca price</dt><dd>'+(1/ch).toFixed(2)+'</dd><dt>True chance</dt><dd>'+(ch*100).toFixed(ch<0.01?2:1)+'% (1 in '+Math.round(1/ch)+')</dd><dt>£'+stake+' returns</dt><dd>'+(all?money(stake*yours):'–')+'</dd><dt>Value per £'+stake+'</dt><dd class="'+c+'" style="color:var(--'+(c==='g'?'won':c==='r'?'lost':'amber-ink')+')">'+(all?(v>=0?'+':'')+money(stake*v):'–')+'</dd><dt>Edge</dt><dd style="color:var(--'+(c==='g'?'won':c==='r'?'lost':'amber-ink')+')">'+(all?pc(v):'–')+'</dd></dl>'+
+  '<div class="vt-verd">'+(!all?'Add the odds for every leg.':v>=0.02?'✔ Value: this acca beats the fair price.':v>=-0.02?'About fair.':'✖ Below fair: each leg adds its own margin.')+'</div><p style="margin-top:8px"><a href="/tips" style="font-weight:800">See our tips that beat the fair price →</a></p></div>'}
+ if(window.innerWidth>960){$('side').innerHTML=h}else{$('side').innerHTML='';if(sheet&&acca.length){var s=$('sheet');if(!s){s=document.createElement('div');s.id='sheet';s.className='vt-sheet';document.body.appendChild(s)}s.innerHTML='<div style="text-align:right"><button class="vt-x" id="closesheet" style="font-size:22px">×</button></div>'+h}else{var s2=$('sheet');if(s2)s2.remove()}}
+ document.body.classList.toggle('has-acca',acca.length>0);
+ $('bar').innerHTML=acca.length?'<span>Your acca: <b>'+acca.length+' leg'+(acca.length>1?'s':'')+'</b> · '+(all?'edge <b>'+pc(yours*ch-1)+'</b>':'fair <b>'+(1/ch).toFixed(2)+'</b>')+'</span><button id="openacca">See acca</button>':''}
+document.addEventListener('click',function(ev){var t=ev.target;
+ var add=t.closest('[data-add]');if(add){var k=add.getAttribute('data-add'),i=acca.findIndex(function(l){return l.k===k});if(i>=0)acca.splice(i,1);else{var f=find(k);if(!inAcca(f.e.e))acca.push({k:k,e:f.e.e,sel:name(f.m,f.x[0]),p:f.x[1],your:f.x[2]?(+f.x[2]).toFixed(2):''})}list();side();return}
+ var rm=t.closest('[data-rm]');if(rm){acca.splice(+rm.getAttribute('data-rm'),1);list();side();return}
+ if(t.id==='more'){show+=15;list();return}
+ if(t.id==='openacca'){sheet=true;side();return}
+ if(t.id==='closesheet'){sheet=false;side();return}
+ var row=t.closest('.vt-row');if(row&&!t.closest('button')){var k=row.getAttribute('data-k');open=open===k?null:k;list();var ip=$('ip');if(ip)ip.focus();return}});
+document.addEventListener('input',function(ev){var t=ev.target;
+ if(t.id==='q'){show=10;list();return}
+ if(t.id==='stk'||t.id==='ip'){var s=parseFloat($('stk').value);stake=s>0?s:10;var f=find(open);f.x._your=$('ip').value;$('cres').innerHTML=calcLine(parseFloat($('ip').value),f.x[1]);return}
+ if(t.hasAttribute&&t.hasAttribute('data-leg')){acca[+t.getAttribute('data-leg')].your=t.value;var pos=t.selectionStart,id=t.getAttribute('data-leg');side();var n=document.querySelector('[data-leg="'+id+'"]');if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}}});
+document.addEventListener('change',function(ev){if(ev.target.id==='sp'){sport=ev.target.value;show=10;list()}if(ev.target.id==='vonly'){vonly=ev.target.checked;show=10;list()}});
+window.addEventListener('resize',function(){side()});
 function ours(){var B=window.BM||{},now=Date.now(),L=[];
- (B.TIPS||[]).forEach(function(t){if(t.result==='open'&&t.meister==='cruncher'&&t.prob&&!t.ew&&Date.parse(t.start)>now)L.push({w:'Number Cruncher'+(t.tier==='pro'?' · Pro':''),s:t.tier==='pro'?'Pro tip · subscribers':t.selection+' @ '+(+t.price).toFixed(2),e:t.event,v:t.prob*t.price-1,f:1/t.prob,h:'/tips',lock:t.tier==='pro'})});
- [['COMBOS','/combo'],['ACCAS','/acca']].forEach(function(k){(B[k[0]]||[]).forEach(function(a){if(a.human||a.meister==='tom'||a.meister==='meister')return;if(!a.legs.every(function(l){return(!l.result||l.result==='open')&&Date.parse(l.start)>now}))return;var P=a.legs.reduce(function(m,l){return m*l.price},1),C=a.legs.reduce(function(m,l){return m*l.chance},1);L.push({w:k[0]==='ACCAS'?'Acca Meister':'Combo Meister',s:a.title+' @ '+P.toFixed(2),e:a.legs.length+' legs',v:P*C-1,f:1/C,h:k[1]+'#'+a.id})})});
+ (B.TIPS||[]).forEach(function(t){if(t.result==='open'&&t.meister==='cruncher'&&t.prob&&!t.ew&&Date.parse(t.start)>now)L.push({w:'Number Cruncher',s:t.selection+' @ '+(+t.price).toFixed(2),e:t.event,v:t.prob*t.price-1,f:1/t.prob,h:'/tips'})});
+ [['COMBOS','/combo','Combo Meister'],['ACCAS','/acca','Acca Meister']].forEach(function(k){(B[k[0]]||[]).forEach(function(a){if(a.human||a.meister==='tom'||a.meister==='meister')return;if(!a.legs.every(function(l){return(!l.result||l.result==='open')&&Date.parse(l.start)>now}))return;var P=a.legs.reduce(function(m,l){return m*l.price},1),C=a.legs.reduce(function(m,l){return m*l.chance},1);L.push({w:k[2],s:a.title+' @ '+P.toFixed(2),e:a.legs.length+' legs',v:P*C-1,f:1/C,h:k[1]+'#'+a.id})})});
  L.sort(function(a,b){return b.v-a.v});
- $('ours').innerHTML=L.length?L.slice(0,9).map(function(x){return '<li><div class="w">'+x.w+'</div><div class="s"><a href="'+x.h+'">'+esc(x.s)+'</a></div><div class="e">'+esc(x.e)+'</div><div class="n">'+(x.lock?'Edge shown to subscribers':'Fair '+x.f.toFixed(2)+' · <b class="vx-g">'+pc(x.v,true)+' value</b>')+'</div></li>'}).join(''):'<li><div class="s">No open picks right now.</div><div class="e">New tips are published through the day: <a href="/tips">see the tips page</a>.</div></li>'}
-function setMode(m){mode=m;$('grid').classList.toggle('single',m==='single');document.querySelectorAll('.vx-inline').forEach(function(x){x.remove()});$('t-single').setAttribute('aria-selected',m==='single');$('t-acca').setAttribute('aria-selected',m==='acca');$('find-h').textContent=m==='single'?'Find your bet and tap it':'1 · Add your legs';$('slip-h').textContent='2 · Your acca';if(m==='single')legs=[];slip();list()}
-document.addEventListener('click',function(ev){var t=ev.target.closest('button');if(!t)return;
- if(t.id==='vonly'){vonly=!vonly;show=12;chips();list()}
- else if(t.classList.contains('vx-chip')){sport=t.getAttribute('data-k');chips();list()}
- else if(t.classList.contains('vx-sel'))add(+t.getAttribute('data-e'),+t.getAttribute('data-m'),+t.getAttribute('data-s'),t);
- else if(t.id==='more'){show+=20;list()}
- else if(t.id==='barbtn')$('slip').scrollIntoView({behavior:'smooth',block:'start'});
- else if(t.hasAttribute('data-x')){legs.splice(+t.getAttribute('data-x'),1);slip();list()}
- else if(t.id==='t-single')setMode('single');else if(t.id==='t-acca')setMode('acca')});
-document.addEventListener('input',function(ev){var t=ev.target;if(t.id==='ip'||t.id==='stk'){judge(parseFloat($('ip').value));return}if(t.id==='astk'){window._ast=parseFloat(t.value)>0?parseFloat(t.value):10;calc();var n=$('astk');n.focus();var l=n.value.length;try{n.setSelectionRange(l,l)}catch(e){}return}if(t.id==='q'){show=12;list()}else if(t.classList.contains('vx-num')){var li=+t.getAttribute('data-i');legs[li].your=parseFloat(t.value)||'';$('le'+li).innerHTML=legEdge(legs[li]);calc()}});
-ours();
-/* deep link from a tip, combo or acca card: #t-<tip id> or #m-<combo/acca id> loads our pick at our published price */
+ $('ours').innerHTML=L.length?L.slice(0,9).map(function(x){return '<li><div class="w">'+x.w+'</div><div><a href="'+x.h+'" style="font-weight:700">'+esc(x.s)+'</a></div><div style="color:var(--ink-3);font-size:12.5px">'+esc(x.e)+'</div><div style="margin-top:4px">Fair '+x.f.toFixed(2)+' · <span class="vt-pill g">'+pc(x.v)+'</span></div></li>'}).join(''):'<li>No open picks right now. New tips go up through the day: <a href="/tips">see the tips page</a>.</li>'}
 function fromHash(){var h=decodeURIComponent(location.hash.slice(1)),B=window.BM||{};if(!h)return;
- if(h.indexOf('t-')===0){var t=(B.TIPS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(t&&t.prob){setMode('single');var box=$('pick');box.innerHTML='<div class="vx-ev"><div class="l">Our pick \u00b7 published at '+(+t.price).toFixed(2)+'</div><button class="vx-sel" type="button" style="display:none"></button></div>';
-  inline(box.querySelector('.vx-sel'),{e:t.event,s:t.start,sel:t.selection,p:t.prob});var ip=$('ip');ip.value=(+t.price).toFixed(2);judge(+t.price);box.scrollIntoView({block:'start'})}}
- else if(h.indexOf('m-')===0){var a=(B.COMBOS||[]).concat(B.ACCAS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(a){setMode('acca');legs=a.legs.map(function(l){return{e:l.event,s:l.start,sel:l.sel,p:l.chance,your:l.price}});slip();list();
-  var n=document.createElement('p');n.className='vx-empty';n.style.paddingTop='0';n.innerHTML='Loaded from our '+esc(a.title)+' at our published prices. Change any price to check the one you can get.';$('legs').prepend(n);setTimeout(function(){$('slip').scrollIntoView({block:'start'})},50)}}}
-fromHash();window.addEventListener('hashchange',function(){legs=[];fromHash()});
-fetch('value_data.json').then(function(r){return r.json()}).then(function(d){D=d;chips();list();
- $('stamp').textContent='Fair chances from our price scan of '+new Date(d.at).toLocaleString([], {weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' (your time), '+d.ev.length+' games over the next three days. Refreshed with every scan.'})
- .catch(function(){$('list').innerHTML='<div class="vx-empty">Could not load the price data. Please reload.</div>'});
+ if(h.indexOf('t-')===0){var t=(B.TIPS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(t&&t.prob){var v=t.prob*t.price-1;$('pick').innerHTML='<div class="vt-game"><div class="vt-gh"><b>Our pick: '+esc(t.selection)+'</b><span>'+esc(t.event)+'</span></div><table class="vt-tbl"><thead><tr><th>Bet</th><th>Our price</th><th>Fair</th><th>Edge</th></tr></thead><tbody><tr><td>'+esc(t.selection)+'</td><td>'+(+t.price).toFixed(2)+'</td><td>'+(1/t.prob).toFixed(2)+'</td><td><span class="vt-pill '+cl(v)+'">'+pc(v)+'</span></td></tr><tr class="vt-det"><td colspan="4">£10 at '+(+t.price).toFixed(2)+' returns <b>'+money(10*t.price)+'</b> if it wins · value <b>'+money(10*v)+'</b> per £10 on average. Price any lower than '+(1/t.prob).toFixed(2)+' and it stops being value.</td></tr></tbody></table></div>'}}
+ else if(h.indexOf('m-')===0){var a=(B.COMBOS||[]).concat(B.ACCAS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(a){acca=a.legs.map(function(l,i){return{k:'h'+i,e:l.event,sel:l.sel,p:l.chance,your:(+l.price).toFixed(2)}});sheet=true;side()}}}
+ours();
+fetch('value_data.json').then(function(r){return r.json()}).then(function(d){D=d;fill();list();side();fromHash();
+ $('stamp').textContent='Prices and fair chances from our scan of '+new Date(d.at).toLocaleString([], {weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' (your time), '+d.ev.length+' games over the next three days. Refreshed with every scan.'})
+ .catch(function(){$('list').innerHTML='<div class="vt-empty">Could not load the price data. Please reload.</div>'});
 })();
 </script>
 </body>
