@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261124202644">
-<link rel="stylesheet" href="modern.css?v=20261124202644">
+<link rel="stylesheet" href="styles.css?v=20261124202809">
+<link rel="stylesheet" href="modern.css?v=20261124202809">
 <style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
 <link rel="canonical" href="https://betmeisters.com/value">
 </head>
@@ -42,6 +42,8 @@
 .vx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .vx-chip{border:1px solid var(--line);background:var(--bg-2);color:var(--ink-2);border-radius:999px;padding:4px 11px;font:600 12.5px inherit;cursor:pointer}
 .vx-chip[aria-pressed=true]{background:var(--yellow);color:var(--on-accent);border-color:var(--yellow)}
+.vx-legend{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
+.vx-legend b{color:var(--ink-2)}
 .vx-q{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:15px}
 .vx-q:focus,.vx-num:focus{outline:2px solid var(--yellow);outline-offset:1px}
 .vx-list{margin-top:10px;display:flex;flex-direction:column;gap:8px}
@@ -51,6 +53,7 @@
 .vx-mk{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
 .vx-ml{width:100%;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
 .vx-sel{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 9px;font:500 13px inherit;cursor:pointer;display:flex;gap:8px;align-items:baseline;text-align:left}
+.vx-sel .eg{font-family:var(--f-data);font-size:11.5px;font-weight:700}
 .vx-sel:hover{border-color:var(--open)}.vx-sel .fp{font-family:var(--f-data);color:var(--open);font-size:12.5px}
 .vx-sel[disabled]{opacity:.4;cursor:not-allowed}
 .vx-empty{color:var(--ink-3);padding:12px 2px}
@@ -120,6 +123,7 @@ body.has-bar{padding-bottom:64px}
       <h2 id="find-h">Find your bet and tap it</h2>
       <div class="vx-chips" id="chips"></div>
       <input type="search" class="vx-q" id="q" placeholder="Search a team or league, e.g. Arsenal, NBA, Bayern" autocomplete="off">
+      <p class="vx-legend">Each bet shows the <b>best available price</b> we track and its <b>edge</b> against the fair price: <span class="vx-g">green = value</span>, <span class="vx-a">amber = about fair</span>, <span class="vx-r">red = below fair</span>. Tap one for the detail.</p>
       <div class="vx-list" id="list"></div>
     </section>
     <section class="vx-card" aria-label="Your acca" id="slip">
@@ -139,16 +143,16 @@ body.has-bar{padding-bottom:64px}
 </main>
 <div id="bm-footer"></div>
 <script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
-<script src="data.js?v=20261124202644"></script>
-<script src="news_feed.js?v=20261124202644"></script>
-<script src="app.js?v=20261124202644"></script>
-<script src="consent.js?v=20261124202644"></script>
-<script src="modern.js?v=20261124202644"></script>
+<script src="data.js?v=20261124202809"></script>
+<script src="news_feed.js?v=20261124202809"></script>
+<script src="app.js?v=20261124202809"></script>
+<script src="consent.js?v=20261124202809"></script>
+<script src="modern.js?v=20261124202809"></script>
 <script>
 (function(){
 var SP={'football':'Football','basketball':'Basketball','american-football':'NFL & college','ice-hockey':'Ice hockey','tennis':'Tennis','handball':'Handball','volleyball':'Volleyball'};
 var TOP=[/UEFA Champions League$/,/England - Premier League/,/NBA$/,/NFL$/,/EuroLeague/,/UEFA Europa League$/,/Conference League$/,/Spain - La ?Liga$/,/Italy - Serie A$/,/Germany - Bundesliga$/,/France - Ligue 1$/,/England - Championship/,/NHL$/,/Scotland - Premiership/,/NCAA/,/MLS/];
-var D=null, sport='all', mode='single', legs=[], show=12;
+var D=null, sport='all', mode='single', legs=[], show=12, vonly=false;
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
 function when(s){try{return new Date(s).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return s}}
@@ -156,31 +160,34 @@ function lg(l){return l.replace(/^International Clubs - /,'')}
 function rank(e){for(var i=0;i<TOP.length;i++)if(TOP[i].test(e.lg))return i;return 99}
 function pc(x,s){var r=Math.round(x*1000)/10;return (s&&r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1)+'%'}
 function chips(){var c=['all'].concat(Object.keys(SP).filter(function(k){return D.ev.some(function(e){return e.sp===k})}));
- $('chips').innerHTML=c.map(function(k){return '<button class="vx-chip" data-k="'+k+'" aria-pressed="'+(k===sport)+'">'+(k==='all'?'All sports':SP[k])+'</button>'}).join('')}
+ $('chips').innerHTML=c.map(function(k){return '<button class="vx-chip" data-k="'+k+'" aria-pressed="'+(k===sport)+'">'+(k==='all'?'All sports':SP[k])+'</button>'}).join('')+'<button class="vx-chip" id="vonly" aria-pressed="'+vonly+'">\u2714 Value now only</button>'}
 function list(){var q=$('q').value.trim().toLowerCase(),now=Date.now();
- var ev=D.ev.filter(function(e){return Date.parse(e.s)>now&&(sport==='all'||e.sp===sport)&&(!q||e.e.toLowerCase().indexOf(q)>=0||e.lg.toLowerCase().indexOf(q)>=0)});
+ var ev=D.ev.filter(function(e){return Date.parse(e.s)>now&&(sport==='all'||e.sp===sport)&&(!vonly||e.m.some(function(m){return m[2].some(function(x){return x[2]&&x[2]*x[1]-1>=0})}))&&(!q||e.e.toLowerCase().indexOf(q)>=0||e.lg.toLowerCase().indexOf(q)>=0)});
  if(!q)ev.sort(function(a,b){return rank(a)-rank(b)||a.s.localeCompare(b.s)});
  var n=ev.length;ev=ev.slice(0,show);var used={};legs.forEach(function(l){used[l.e]=1});
  $('list').innerHTML=ev.length?ev.map(function(e){var i=D.ev.indexOf(e);return '<div class="vx-ev"><div class="t">'+esc(e.e)+'</div><div class="l">'+esc(lg(e.lg))+' · '+when(e.s)+'</div>'+
-  e.m.map(function(m,j){return '<div class="vx-mk"><span class="vx-ml">'+(m[0]==='Result'?'Result':m[0]==='Total'?'Total '+m[1]:'Handicap')+'</span>'+m[2].map(function(s,k){return '<button class="vx-sel" data-e="'+i+'" data-m="'+j+'" data-s="'+k+'"'+(mode==='acca'&&used[e.e]?' disabled':'')+'><span>'+esc(s[0])+'</span><span class="fp">'+(1/s[1]).toFixed(2)+'</span></button>'}).join('')+'</div>'}).join('')+'</div>'}).join('')+(n>show?'<button class="vx-moreb" id="more" type="button">Show more games ('+(n-show)+' more)</button>':''):'<div class="vx-empty">No games found. Try another team or sport.</div>'}
+  e.m.map(function(m,j){return '<div class="vx-mk"><span class="vx-ml">'+(m[0]==='Result'?'Result':m[0]==='Total'?'Total '+m[1]:'Handicap')+'</span>'+m[2].map(function(s,k){var v=s[2]?s[2]*s[1]-1:null;return '<button class="vx-sel" data-e="'+i+'" data-m="'+j+'" data-s="'+k+'"'+(mode==='acca'&&used[e.e]?' disabled':'')+'><span>'+esc(s[0])+'</span>'+(s[2]?'<span class="fp">'+(+s[2]).toFixed(2)+'</span><span class="eg '+(v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r')+'">'+pc(v,true)+'</span>':'<span class="fp" style="color:var(--ink-3)">fair '+(1/s[1]).toFixed(2)+'</span>')+'</button>'}).join('')+'</div>'}).join('')+'</div>'}).join('')+(n>show?'<button class="vx-moreb" id="more" type="button">Show more games ('+(n-show)+' more)</button>':''):'<div class="vx-empty">No games found. Try another team or sport.</div>'}
 var cur=null;
 function inline(btn,leg){document.querySelectorAll('.vx-inline').forEach(function(x){x.remove()});document.querySelectorAll('.vx-sel.on').forEach(function(x){x.classList.remove('on')});
  btn.classList.add('on');cur=leg;var fair=1/leg.p,ev=btn.closest('.vx-ev'),d=document.createElement('div');d.className='vx-inline';
- d.innerHTML='<div class="h">'+esc(leg.sel)+' <span style="font-weight:500;color:var(--ink-3)">· '+esc(leg.e)+'</span></div><div class="fair">'+fair.toFixed(2)+' <small>fair price ('+(leg.p*100).toFixed(1)+'% chance)</small></div><p class="rule">Any price <b>above '+fair.toFixed(2)+'</b> is value. Below it, the bookmaker\u2019s margin is working against you.</p>'+
+ var v0=leg.b?leg.b*leg.p-1:null,c0=v0==null?'':v0>=0.02?'vx-g':v0>=-0.02?'vx-a':'vx-r';
+ d.innerHTML='<div class="h">'+esc(leg.sel)+' <span style="font-weight:500;color:var(--ink-3)">· '+esc(leg.e)+'</span></div>'+
+  '<div class="vx-tiles" style="margin:8px 0"><div><span>Available price</span><b>'+(leg.b?(+leg.b).toFixed(2):'\u2013')+'</b><small>'+(leg.b?'best we track':'no checked price yet')+'</small></div><div><span>Fair price</span><b>'+fair.toFixed(2)+'</b><small>'+(leg.p*100).toFixed(1)+'% chance</small></div><div><span>Edge now</span><b class="'+c0+'">'+(v0==null?'\u2013':pc(v0,true))+'</b><small>'+(v0==null?'type your price':v0>=0.02?'value':v0>=-0.02?'about fair':'below fair')+'</small></div></div>'+
+  '<p class="rule">Any price <b>above '+fair.toFixed(2)+'</b> is value. Got a different price? Type it below.</p>'+
   '<div class="ask"><label for="ip">What price are you offered?</label><input id="ip" type="number" inputmode="decimal" step="0.01" min="1.01" placeholder="e.g. '+(fair*0.95).toFixed(2)+'"><label for="stk">Stake \u00a3</label><input id="stk" type="number" inputmode="decimal" step="1" min="1" value="10" style="width:80px"></div><div class="out" id="iout"></div><p class="tip">Decimal odds: 6/4 = 2.50, evens = 2.00, 1/2 = 1.50.</p>';
- ev.appendChild(d);var r=d.getBoundingClientRect();if(r.bottom>window.innerHeight)d.scrollIntoView({behavior:'smooth',block:'nearest'})}
+ ev.appendChild(d);if(leg.b){$('ip').value=(+leg.b).toFixed(2);judge(+leg.b)}var r=d.getBoundingClientRect();if(r.bottom>window.innerHeight)d.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function money(x){return (x<0?'\u2212':'')+'\u00a3'+Math.abs(x).toFixed(2)}
 function tiles(st,ret,val,v,extra){var c=v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r';return '<div class="vx-tiles"><div><span>\u00a3'+st+' returns</span><b>'+money(ret)+'</b><small>if it wins</small></div><div><span>Value</span><b class="'+c+'">'+(val>=0?'+':'')+money(val)+'</b><small>per \u00a3'+st+' on average</small></div><div><span>Edge</span><b class="'+c+'">'+pc(v,true)+'</b><small>v the fair price</small></div>'+(extra||'')+'</div>'}
 function stake(){var s=parseFloat(($('stk')||{}).value);return s>0?s:10}
 function judge(p){var o=$('iout');if(!(p>1)){o.className='out';o.innerHTML='';return}var v=p*cur.p-1,st=stake(),c=v>=0.02?'good':v>=-0.02?'ok':'bad';o.className='out '+c;
  o.innerHTML=tiles(st,st*p,st*v,v)+'<div class="vx-verd">'+(v>=0.02?'\u2714 Value. This price beats the fair price. <a href="/tips">Our tips only go out when they do \u2192</a>':v>=-0.02?'About fair. No real edge either way.':'\u2716 Below fair. Over many bets like this you lose about '+money(-st*v)+' per \u00a3'+st+'. Look for a bigger price.')+'</div>';if(!o.dataset.seen){o.dataset.seen=1;var r=o.getBoundingClientRect();if(r.bottom>window.innerHeight)o.scrollIntoView({behavior:'smooth',block:'end'})}}
-function add(ei,mi,si,btn){var e=D.ev[ei],m=e.m[mi],s=m[2][si];var leg={e:e.e,s:e.s,sel:s[0],p:s[1],your:''};
+function add(ei,mi,si,btn){var e=D.ev[ei],m=e.m[mi],s=m[2][si];var leg={e:e.e,s:e.s,sel:s[0],p:s[1],b:s[2]||null,your:s[2]||''};
  if(mode==='single'){inline(btn,leg);return}
  if(legs.some(function(l){return l.e===e.e}))return;legs.push(leg);slip();list()}
 function bar(){var b=$('bar');if(mode!=='acca'||!legs.length){b.hidden=true;document.body.classList.remove('has-bar');return}var ch=legs.reduce(function(a,l){return a*l.p},1);b.hidden=false;document.body.classList.add('has-bar');b.innerHTML='<span>Your acca: <b>'+legs.length+' leg'+(legs.length>1?'s':'')+'</b> \u00b7 fair price <b>'+(1/ch).toFixed(2)+'</b></span><button id="barbtn" type="button">See your acca \u2193</button>'}
 function legEdge(l){if(!(+l.your>1))return '';var v=l.your*l.p-1;return '<span class="'+(v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r')+'">edge '+pc(v,true)+'</span>'}
 function slip(){bar();if(!legs.length){$('legs').innerHTML='<div class="vx-empty">Tap selections in the list to add legs.</div>';$('res').innerHTML='';return}
- $('legs').innerHTML=legs.map(function(l,i){return '<div class="vx-leg"><div><div class="s">'+esc(l.sel)+'</div><div class="e">'+esc(l.e)+' · '+when(l.s)+'</div><div class="f">fair '+(l.p*100).toFixed(1)+'% · fair price '+(1/l.p).toFixed(2)+'</div></div><div><label for="p'+i+'">Your price</label><input class="vx-num" type="number" id="p'+i+'" data-i="'+i+'" step="0.01" min="1.01" inputmode="decimal" placeholder="type odds" value="'+(l.your||'')+'"><div class="vx-le" id="le'+i+'">'+legEdge(l)+'</div></div><button class="vx-x" data-x="'+i+'" aria-label="Remove">×</button></div>'}).join('');calc()}
+ $('legs').innerHTML=legs.map(function(l,i){return '<div class="vx-leg"><div><div class="s">'+esc(l.sel)+'</div><div class="e">'+esc(l.e)+' · '+when(l.s)+'</div><div class="f">'+(l.b?'available '+(+l.b).toFixed(2)+' · ':'')+'fair price '+(1/l.p).toFixed(2)+' ('+(l.p*100).toFixed(1)+'%)</div></div><div><label for="p'+i+'">Your price</label><input class="vx-num" type="number" id="p'+i+'" data-i="'+i+'" step="0.01" min="1.01" inputmode="decimal" placeholder="type odds" value="'+(l.your||'')+'"><div class="vx-le" id="le'+i+'">'+legEdge(l)+'</div></div><button class="vx-x" data-x="'+i+'" aria-label="Remove">×</button></div>'}).join('');calc()}
 function calc(){var ch=legs.reduce(function(a,l){return a*l.p},1),fair=1/ch,all=legs.every(function(l){return +l.your>1});
  var st=window._ast||10,sbox='<div class="ask" style="margin-top:12px"><label for="astk" style="font-weight:700;color:var(--ink-2)">Stake \u00a3</label> <input id="astk" class="vx-num" type="text" inputmode="decimal" value="'+st+'" style="width:90px"></div>';
  if(!all){var done=legs.filter(function(l){return +l.your>1}),part=done.reduce(function(a,l){return a*(+l.your)},1);
@@ -196,7 +203,8 @@ function ours(){var B=window.BM||{},now=Date.now(),L=[];
  $('ours').innerHTML=L.length?L.slice(0,9).map(function(x){return '<li><div class="w">'+x.w+'</div><div class="s"><a href="'+x.h+'">'+esc(x.s)+'</a></div><div class="e">'+esc(x.e)+'</div><div class="n">'+(x.lock?'Edge shown to subscribers':'Fair '+x.f.toFixed(2)+' · <b class="vx-g">'+pc(x.v,true)+' value</b>')+'</div></li>'}).join(''):'<li><div class="s">No open picks right now.</div><div class="e">New tips are published through the day: <a href="/tips">see the tips page</a>.</div></li>'}
 function setMode(m){mode=m;$('grid').classList.toggle('single',m==='single');document.querySelectorAll('.vx-inline').forEach(function(x){x.remove()});$('t-single').setAttribute('aria-selected',m==='single');$('t-acca').setAttribute('aria-selected',m==='acca');$('find-h').textContent=m==='single'?'Find your bet and tap it':'1 · Add your legs';$('slip-h').textContent='2 · Your acca';if(m==='single')legs=[];slip();list()}
 document.addEventListener('click',function(ev){var t=ev.target.closest('button');if(!t)return;
- if(t.classList.contains('vx-chip')){sport=t.getAttribute('data-k');chips();list()}
+ if(t.id==='vonly'){vonly=!vonly;show=12;chips();list()}
+ else if(t.classList.contains('vx-chip')){sport=t.getAttribute('data-k');chips();list()}
  else if(t.classList.contains('vx-sel'))add(+t.getAttribute('data-e'),+t.getAttribute('data-m'),+t.getAttribute('data-s'),t);
  else if(t.id==='more'){show+=20;list()}
  else if(t.id==='barbtn')$('slip').scrollIntoView({behavior:'smooth',block:'start'});
