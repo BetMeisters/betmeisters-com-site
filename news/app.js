@@ -23,6 +23,8 @@
   var opTags = function (o) { return o.tags || []; };
   var revCatOf = function (o) { var t = opTags(o)[0]; return REVCATS.filter(function (c) { return c[2] === t; })[0] || REVCATS[0]; };
   var hashId = function () { return window.BMN_ID || decodeURIComponent((location.hash || "").slice(1)); };
+  var revHref = function (k) { return k === "bookies" ? "bookie-reviews.html" : k === "casino" ? "casino-reviews.html" : "reviews.html#" + k; };
+  var topHref = function (k) { return k === "online-casino" ? "casino-news.html" : "news.html#" + k; };
 
   /* links like <site>#bet365 or #<article-id> open on the home page: send them to the right page */
   if (page === "home" && location.hash.length > 1) {
@@ -37,8 +39,8 @@
   var art0 = page === "article" ? (D.articles.filter(function (a) { return a.id === hashId(); })[0] || {}) : {};
   var sec = page === "section" ? hashId() : page === "article" ? ((D.articles.filter(function (a) { return a.id === hashId(); })[0] || {}).section) : page;
   var NAV = [["index.html", "Home", page === "home"],
-    ["reviews.html", "Reviews", page === "reviews" || page === "review", REVCATS.map(function (c) { return ["reviews.html#" + c[0], c[1]]; })],
-    ["news.html", "News", page === "news" || (page === "article" && art0.section !== "guides" && art0.section !== "previews"), [["news.html", "All news"]].concat(TOPICS.map(function (t) { return ["news.html#" + t[0], t[1]]; }))],
+    ["reviews.html", "Reviews", page === "reviews" || page === "review", REVCATS.map(function (c) { return [revHref(c[0]), c[1]]; })],
+    ["news.html", "News", page === "news" || (page === "article" && art0.section !== "guides" && art0.section !== "previews"), [["news.html", "All news"]].concat(TOPICS.map(function (t) { return [topHref(t[0]), t[1]]; }))],
     ["bonuses.html", "Bonuses", page === "bonuses", [["bonuses.html", "All bonuses"], ["bonuses.html#sports-betting", "Sports betting offers"], ["bonuses.html#online-casino", "Online casino offers"], ["bonuses.html#how-it-works", "How offers are chosen"]]],
     ["previews.html", "Previews", sec === "previews" || page === "previews" || (page === "article" && art0.section === "previews"), [["previews.html", "All previews"]].concat(PTYPES.map(function (t) { return ["previews.html#" + t[0], t[1]]; })).concat(SPORTS.slice(0, 8).map(function (t) { return ["previews.html#" + t[0], t[1]]; }))],
     ["fpl.html", "FPL", page === "fpl" || (page === "article" && art0.section === "fpl"), [["fpl.html", "All FPL"]].concat(FPLT.map(function (t) { return ["fpl.html#" + t[0], t[1]]; }))],
@@ -50,8 +52,8 @@
     '<nav class="sections" aria-label="Sections">' + NAV.map(function (n) { var a = '<a href="' + n[0] + '"' + (n[2] ? ' class="on"' : "") + ">" + n[1] + (n[3] ? ' <span class="caret" aria-hidden="true">▾</span>' : "") + "</a>"; return n[3] ? '<span class="dd">' + a + '<span class="dd-menu">' + n[3].map(function (m) { return '<a href="' + m[0] + '">' + m[1] + "</a>"; }).join("") + "</span></span>" : a; }).join("") + "</nav></div>";
   $("#ftr").innerHTML = '<footer class="foot"><div class="wrap"><div class="foot-cols">' +
     '<div><h4>BetMeisters.news</h4><p>News, previews and reviews for English-speaking readers worldwide. Some operators pay us commission or fees (placement or flat monthly fees). That never changes a score, a ranking or a tip.</p><p>Tips come from <a href="' + BM_URL + '" style="display:inline;text-decoration:underline">BetMeisters tips</a>, which takes no affiliate deals, adverts or sponsorship.</p></div>' +
-    '<div><h4>News</h4><a href="news.html">All news</a>' + TOPICS.map(function (t) { return '<a href="news.html#' + t[0] + '">' + t[1] + "</a>"; }).join("") + '</div>' +
-    '<div><h4>Reviews</h4>' + REVCATS.map(function (t) { return '<a href="reviews.html#' + t[0] + '">' + t[1] + "</a>"; }).join("") + '<a href="bonuses.html">Bonuses and promotions</a><a href="previews.html">Previews</a><a href="fpl.html">FPL</a><a href="section.html#guides">Guides</a></div>' +
+    '<div><h4>News</h4><a href="news.html">All news</a>' + TOPICS.map(function (t) { return '<a href="' + topHref(t[0]) + '">' + t[1] + "</a>"; }).join("") + '</div>' +
+    '<div><h4>Reviews</h4>' + REVCATS.map(function (t) { return '<a href="' + revHref(t[0]) + '">' + t[1] + "</a>"; }).join("") + '<a href="bonuses.html">Bonuses and promotions</a><a href="previews.html">Previews</a><a href="fpl.html">FPL</a><a href="section.html#guides">Guides</a></div>' +
     '<div><h4>About</h4><a href="how-we-score.html">How we score</a><a href="disclosure.html">Affiliate disclosure</a><a href="safer-gambling.html">Safer gambling</a><a href="about.html">About us</a></div></div>' +
     '<p class="rg">18+ only. Gambling can be addictive; please play responsibly. UK: <a style="display:inline" href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a>, National Gambling Helpline 0808 8020 133. US: 1-800-GAMBLER. We only list operators licensed by a regulator and show the countries each one accepts. Nothing here is financial advice.</p></div></footer>';
   if (page === "section" || page === "article" || page === "news" || page === "reviews" || page === "previews" || page === "bonuses" || page === "fpl") window.addEventListener("hashchange", function () { location.reload(); });
@@ -217,7 +219,7 @@
       (FL.length ? '<div class="cards">' + FL.map(function (a) { return card(a); }).join("") + "</div>" : '<p class="empty"><b>Coming this week:</b> the Gameweek 11 deadline preview (the Premier League returns after the November international break), then a review after every gameweek.</p>');
   }
   if (page === "news") {
-    var tk = hashId(), tn = (TOPICS.filter(function (t) { return t[0] === tk; })[0] || [])[1];
+    var tk = hashId() || window.BMN_ID, tn = (TOPICS.filter(function (t) { return t[0] === tk; })[0] || [])[1];
     var NL = A.filter(function (a) { return a.section === "news"; }) /* Keith 17 Nov 11:56: News page = news only; previews, guides and FPL have their own pages */.filter(function (a) { return !tn || (a.topics || []).indexOf(tn) >= 0; });
     document.title = (tn || "News") + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(tn || "All news") + '</h2><span class="meta">' + NL.length + (NL.length === 1 ? " story" : " stories") + "</span></div>" +
@@ -244,7 +246,7 @@
       '<div class="sec-h"><h2>More from the desk</h2></div><div class="cards">' + A.filter(function (x) { return x !== a; }).slice(0, 3).map(function (x) { return card(x); }).join("") + "</div>";
   }
   if (page === "reviews") {
-    var rk = hashId() || "bookies", RC = REVCATS.filter(function (c) { return c[0] === rk; })[0] || REVCATS[0];
+    var rk = hashId() || window.BMN_ID || "bookies", RC = REVCATS.filter(function (c) { return c[0] === rk; })[0] || REVCATS[0];
     document.title = RC[1] + " · BetMeisters News";
     var inprog = (D.operators || []).filter(function (o) { return opTags(o).indexOf(RC[2]) >= 0 && !o.example && !o.desk && (o.draft || o.score == null); });
     var real = inprog.filter(function (o) { return !o.demo; }), demos = inprog.filter(function (o) { return o.demo; });
@@ -272,7 +274,7 @@
       return '<tr class="evm"><td colspan="4">' + esc(m) + "</td></tr>" + R.map(function (e) { return "<tr><td>" + esc(e[0]) + "</td><td>" + esc(e[1]) + '</td><td class="sc">' + (e[3] == null ? "–" : (+e[3]).toFixed(1)) + "</td><td>" + esc(e[4]) + (e[5] ? ' <a href="' + esc(e[5]) + '" rel="noopener">source</a>' : "") + "</td></tr>"; }).join(""); }).join("");
     $("#main").innerHTML = (o.example ? '<div class="example-flag">EXAMPLE LAYOUT · fictional operator · not a review · not shown in any ranking</div>' : "") +
       (o.demo ? '<div class="example-flag">DEMO · internal test · every check filled in, placeholders marked · never published or ranked</div>' : o.draft ? '<div class="example-flag">DRAFT · internal preview · ' + pct + '% of the weight checked · not published or ranked until the desk review reaches 60%</div>' : "") +
-      '<article class="art rev"><div class="kick"><a href="reviews.html#' + revCatOf(o)[0] + '" style="text-decoration:none">' + esc(revCatOf(o)[1]) + "</a></div>" + '<div class="chips topic-menu">' + opTags(o).map(function (t) { var c = REVCATS.filter(function (x) { return x[2] === t; })[0]; return '<a class="chip" href="' + (c ? "reviews.html#" + c[0] : "news.html#" + topicSlug(t)) + '">' + esc(t) + "</a>"; }).join("") + "</div><h1>" + esc(o.name) + ' review</h1><p class="dek">' + esc(o.verdict) + "</p>" +
+      '<article class="art rev"><div class="kick"><a href="' + revHref(revCatOf(o)[0]) + '" style="text-decoration:none">' + esc(revCatOf(o)[1]) + "</a></div>" + '<div class="chips topic-menu">' + opTags(o).map(function (t) { var c = REVCATS.filter(function (x) { return x[2] === t; })[0]; return '<a class="chip" href="' + (c ? revHref(c[0]) : "news.html#" + topicSlug(t)) + '">' + esc(t) + "</a>"; }).join("") + "</div><h1>" + esc(o.name) + ' review</h1><p class="dek">' + esc(o.verdict) + "</p>" +
       (o.desk ? '<div class="desk-note"><b>How we reviewed ' + esc(o.name) + '</b><p>This is a <b>desk review</b>, last checked on ' + esc(o.deskChecked || o.checked) + '. We checked the licence and any fines on the regulator\'s own register, used our own price data where we have it, and read published reviews, each one linked below. <b>We have not yet opened a test account</b>, so withdrawal speed, live chat, login security and the full terms are not yet tested by us. Those checks are left out of the score: they count neither for nor against ' + esc(o.name) + '. We will update this review once we have tested them.</p></div>' : "") +
       '<div class="rev-top"><div class="rev-score' + (o.score == null && o.provisional != null ? " prov" : "") + '"><span>' + (o.score != null ? o.score.toFixed(1) : o.provisional != null ? o.provisional.toFixed(1) : "–") + '</span><small>' + (o.score != null ? "out of 10" : o.provisional != null ? (o.desk ? "desk review score · " + pct + "% of our checks done · test account to come" : "provisional · " + pct + "% checked · terms not yet read") : pct + "% checked") + '</small><em class="lvl">' + esc(o.desk ? "Desk review" : o.score == null && o.provisional != null ? "Not yet published" : lvl) + '</em></div><div class="rev-lic"><div class="kick" style="color:var(--ink)">Licence and countries<span class="meta" style="float:right;letter-spacing:0;text-transform:none">Checked ' + esc(o.checked) + "</span></div>" +
       o.licences.map(function (l) { return "<p><b>" + esc(l.reg) + "</b> · " + esc(l.num) + (l.url ? ' · <a href="' + esc(l.url) + '" rel="noopener">check on the register</a>' : "") + "</p>"; }).join("") +
