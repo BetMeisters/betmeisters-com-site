@@ -319,12 +319,14 @@
   function edgeLine(t) {
     if (!t.prob) return "";
     var e = edgeOf(t);
+    var tg = !!t.tomMethod; /* Owner 24 Nov 10:54: TOM data-assisted picks show TOM's own chance and edge, with the public market chance beside them */
     var mid = t.ew && t.probPlace ? '<div><dt>Place</dt><dd>' + pct(t.probPlace) + "</dd></div>" : '<div><dt>Bookmaker</dt><dd>' + pct(1 / t.price) + "</dd></div>";
-    return '<div class="tip-numbers"><dl class="edge-line"><div><dt>' + (t.ew ? "Win" : "Chance") + '</dt><dd>' + pct(t.prob) + "</dd></div>" + mid + '<div><dt>Edge</dt><dd class="pts ' + cls(e) + '">' + pct(e, true) + "</dd></div></dl>" +
+    return '<div class="tip-numbers"><dl class="edge-line"><div><dt>' + (t.ew ? "Win" : "Chance") + '</dt><dd>' + pct(t.prob) + "</dd></div>" + mid + '<div><dt>' + "Edge" + '</dt><dd class="pts ' + cls(e) + '">' + pct(e, true) + "</dd></div></dl>" +
       (t.minPrice ? '<p class="tip-market tip-take">Take ' + fmtOdds(t.minPrice) + " or bigger</p>" : '<p class="tip-market tip-take">&nbsp;</p>') + exchLine(t) + "</div>";
   }
   function exchLine(t) {
     if (t.result !== "open" || isRemoved(t)) return "";
+    if (t.tomMethod) return '<details class="tip-market exch-line tom-how"><summary style="font-size:11.5px !important;font-weight:400;color:inherit;padding:0;min-height:0">How TOM priced it</summary>Chance and edge are TOM\u2019s own: the public market chance (' + pct(t.mktProb) + ') plus his grade ' + esc(t.tomGrade || "") + " (" + (t.tomPoints >= 0 ? "+" : "") + t.tomPoints + " pts). Best price checked on Oddschecker.</details>";
     var lq = { deep: "Big stakes usually fine", medium: "Medium stakes", thin: "Small stakes only" }[t.liquidity] || "";
     if (t.exch) {
       var at = fmtTime(t.exch.at);
@@ -771,7 +773,7 @@
       ? '<h3 class="htip-sel">Pro tip · subscribers only</h3><p class="htip-ev" title="' + esc(t.event) + '">' + esc(t.event) + '</p><p class="htip-ln">' + where + '</p><p class="htip-ln"><a href="#join" data-join>Subscribe</a> to ' + esc(m.short || m.name) + " or get Full Meister Access to see it.</p>"
       : '<h3 class="htip-sel">' + selHTML(t) + ' <b class="htip-px">@ ' + fmtOdds(t.price) + "</b></h3>" +
         '<p class="htip-ev" title="' + esc(t.event + " · " + (t.sport || "") + (t.comp ? " · " + t.comp : "")) + '">' + esc(t.event) + " · " + where + "</p>" +
-        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">Edge ' + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>";
+        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">' + (t.tomMethod ? '<span title="TOM\u2019s own assessment: market chance plus his grade">Edge</span> ' : "Edge ") + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>";
     var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + ALT(tm, "", " · ") + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
       (lock ? "" : '<p class="htip-sm">' + esc(t.market) + hcpExp(t) + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + exchLine(t).replace('class="tip-market exch-line"', 'class="htip-sm htip-exch"')) +
       pubLine(t).replace('class="tip-pub"', 'class="htip-sm htip-pub"') + (o.next || "") + (o.share ? '<div class="htip-share">' + shareButtons(shareText(t)) + "</div>" : "");
@@ -804,8 +806,8 @@
       '<p class="hc-event">' + esc(t.event) + " · " + esc(t.market) + "</p>" +
       '<p class="hc-comp">' + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + (t.postponed ? ' · <span class="mini-tag postponed">Rescheduled</span>' : "") + "</p>" +
       '<dl class="hc-stats"><div><dt>' + (oop(t) ? "Not before" : "Starts") + '</dt><dd>' + tm.eat + ' <small>UK</small>' + ALT(tm, '<small class="hc-uk">', "</small>") + '</dd></div><div><dt>Price</dt><dd class="price">' + (lock ? "–" : fmtOdds(t.price)) + "</dd></div><div><dt>Stake</dt><dd>" + stakeHTML(t) + "</dd></div>" +
-      "<div><dt>Our chance</dt><dd>" + (t.prob && !lock ? pct(t.ew && t.probPlace ? t.probPlace : t.prob) + (t.ew && t.probPlace ? " <small>place</small>" : "") : "–") + "</dd></div>" +
-      "<div><dt>Edge</dt><dd class=\"" + (e != null && !lock ? cls(e) : "") + "\">" + (e != null && !lock ? pct(e, true) : "–") + "</dd></div></dl>" +
+      "<div><dt>" + (t.tomMethod ? "Chance" : "Our chance") + "</dt><dd>" + (t.prob && !lock ? pct(t.ew && t.probPlace ? t.probPlace : t.prob) + (t.ew && t.probPlace ? " <small>place</small>" : "") : "–") + "</dd></div>" +
+      "<div><dt>" + "Edge" + "</dt><dd class=\"" + (e != null && !lock ? cls(e) : "") + "\">" + (e != null && !lock ? pct(e, true) : "–") + "</dd></div></dl>" +
       (lock ? "" : exchLine(t).replace('tip-market exch-line', 'hc-exch')) +
       '<p class="countdown hc-count" data-countdown="' + t.id + '">' + countdown(t) + "</p>" + nxt +
       '<div class="hc-share">' + shareButtons(shareText(t)) + "</div></article>";
