@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261124201657">
-<link rel="stylesheet" href="modern.css?v=20261124201657">
+<link rel="stylesheet" href="styles.css?v=20261124202355">
+<link rel="stylesheet" href="modern.css?v=20261124202355">
 <style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
 <link rel="canonical" href="https://betmeisters.com/value">
 </head>
@@ -91,6 +91,15 @@
 .vx-inline .out{margin-top:8px;font-weight:700}
 .vx-inline .out.good{color:var(--won)}.vx-inline .out.ok{color:var(--amber-ink)}.vx-inline .out.bad{color:var(--lost)}
 .vx-inline .tip{margin-top:6px;font-size:12.5px;color:var(--ink-3)}
+.vx-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
+.vx-tiles>div{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.vx-tiles span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.vx-tiles b{display:block;font-family:var(--f-data);font-size:20px;color:var(--ink)}
+.vx-tiles b.vx-g{color:var(--won)}.vx-tiles b.vx-a{color:var(--amber-ink)}.vx-tiles b.vx-r{color:var(--lost)}
+.vx-tiles small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:500}
+.vx-res .vx-tiles{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+@media(max-width:420px){.vx-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.vx-tiles>div:first-child{grid-column:1/-1}}
+.vx-verd{margin-top:10px;font-weight:700}
 .vx-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--navy);color:#fff;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;justify-content:space-between;box-shadow:0 -4px 14px rgba(0,0,0,.2)}
 .vx-bar b{color:var(--yellow)}.vx-bar button{background:var(--yellow);color:var(--on-accent);border:0;border-radius:9px;padding:8px 14px;font-weight:800;cursor:pointer}
 body.has-bar{padding-bottom:64px}
@@ -128,11 +137,11 @@ body.has-bar{padding-bottom:64px}
 </main>
 <div id="bm-footer"></div>
 <script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
-<script src="data.js?v=20261124201657"></script>
-<script src="news_feed.js?v=20261124201657"></script>
-<script src="app.js?v=20261124201657"></script>
-<script src="consent.js?v=20261124201657"></script>
-<script src="modern.js?v=20261124201657"></script>
+<script src="data.js?v=20261124202355"></script>
+<script src="news_feed.js?v=20261124202355"></script>
+<script src="app.js?v=20261124202355"></script>
+<script src="consent.js?v=20261124202355"></script>
+<script src="modern.js?v=20261124202355"></script>
 <script>
 (function(){
 var SP={'football':'Football','basketball':'Basketball','american-football':'NFL & college','ice-hockey':'Ice hockey','tennis':'Tennis','handball':'Handball','volleyball':'Volleyball'};
@@ -156,10 +165,13 @@ var cur=null;
 function inline(btn,leg){document.querySelectorAll('.vx-inline').forEach(function(x){x.remove()});document.querySelectorAll('.vx-sel.on').forEach(function(x){x.classList.remove('on')});
  btn.classList.add('on');cur=leg;var fair=1/leg.p,ev=btn.closest('.vx-ev'),d=document.createElement('div');d.className='vx-inline';
  d.innerHTML='<div class="h">'+esc(leg.sel)+' <span style="font-weight:500;color:var(--ink-3)">· '+esc(leg.e)+'</span></div><div class="fair">'+fair.toFixed(2)+' <small>fair price ('+(leg.p*100).toFixed(1)+'% chance)</small></div><p class="rule">Any price <b>above '+fair.toFixed(2)+'</b> is value. Below it, the bookmaker\u2019s margin is working against you.</p>'+
-  '<div class="ask"><label for="ip">What price are you offered?</label><input id="ip" type="number" inputmode="decimal" step="0.01" min="1.01" placeholder="e.g. '+(fair*0.95).toFixed(2)+'"></div><div class="out" id="iout"></div><p class="tip">Decimal odds: 6/4 = 2.50, evens = 2.00, 1/2 = 1.50.</p>';
+  '<div class="ask"><label for="ip">What price are you offered?</label><input id="ip" type="number" inputmode="decimal" step="0.01" min="1.01" placeholder="e.g. '+(fair*0.95).toFixed(2)+'"><label for="stk">Stake \u00a3</label><input id="stk" type="number" inputmode="decimal" step="1" min="1" value="10" style="width:80px"></div><div class="out" id="iout"></div><p class="tip">Decimal odds: 6/4 = 2.50, evens = 2.00, 1/2 = 1.50.</p>';
  ev.appendChild(d);var r=d.getBoundingClientRect();if(r.bottom>window.innerHeight)d.scrollIntoView({behavior:'smooth',block:'nearest'})}
-function judge(p){var o=$('iout');if(!(p>1)){o.className='out';o.textContent='';return}var v=p*cur.p-1,c=v>=0.02?'good':v>=-0.02?'ok':'bad';o.className='out '+c;
- o.innerHTML=v>=0.02?'\u2714 Value: '+pc(v,true)+'. This price beats the fair price. <a href="/tips">Our tips only go out when they do \u2192</a>':v>=-0.02?'About fair ('+pc(v,true)+'). No real edge either way.':'\u2716 Below fair: '+pc(v,true)+'. Over time the bookmaker keeps about '+(Math.round(-v*1000)/10)+'p of every \u00a31. Look for a bigger price.'}
+function money(x){return (x<0?'\u2212':'')+'\u00a3'+Math.abs(x).toFixed(2)}
+function tiles(st,ret,val,v,extra){var c=v>=0.02?'vx-g':v>=-0.02?'vx-a':'vx-r';return '<div class="vx-tiles"><div><span>\u00a3'+st+' returns</span><b>'+money(ret)+'</b><small>if it wins</small></div><div><span>Value</span><b class="'+c+'">'+(val>=0?'+':'')+money(val)+'</b><small>per \u00a3'+st+' on average</small></div><div><span>Edge</span><b class="'+c+'">'+pc(v,true)+'</b><small>v the fair price</small></div>'+(extra||'')+'</div>'}
+function stake(){var s=parseFloat(($('stk')||{}).value);return s>0?s:10}
+function judge(p){var o=$('iout');if(!(p>1)){o.className='out';o.innerHTML='';return}var v=p*cur.p-1,st=stake(),c=v>=0.02?'good':v>=-0.02?'ok':'bad';o.className='out '+c;
+ o.innerHTML=tiles(st,st*p,st*v,v)+'<div class="vx-verd">'+(v>=0.02?'\u2714 Value. This price beats the fair price. <a href="/tips">Our tips only go out when they do \u2192</a>':v>=-0.02?'About fair. No real edge either way.':'\u2716 Below fair. Over many bets like this you lose about '+money(-st*v)+' per \u00a3'+st+'. Look for a bigger price.')+'</div>';if(!o.dataset.seen){o.dataset.seen=1;var r=o.getBoundingClientRect();if(r.bottom>window.innerHeight)o.scrollIntoView({behavior:'smooth',block:'end'})}}
 function add(ei,mi,si,btn){var e=D.ev[ei],m=e.m[mi],s=m[2][si];var leg={e:e.e,s:e.s,sel:s[0],p:s[1],your:''};
  if(mode==='single'){inline(btn,leg);return}
  if(legs.some(function(l){return l.e===e.e}))return;legs.push(leg);slip();list()}
@@ -167,10 +179,12 @@ function bar(){var b=$('bar');if(mode!=='acca'||!legs.length){b.hidden=true;docu
 function slip(){bar();if(!legs.length){$('legs').innerHTML='<div class="vx-empty">Tap selections in the list to add legs.</div>';$('res').innerHTML='';return}
  $('legs').innerHTML=legs.map(function(l,i){return '<div class="vx-leg"><div><div class="s">'+esc(l.sel)+'</div><div class="e">'+esc(l.e)+' · '+when(l.s)+'</div><div class="f">fair '+(l.p*100).toFixed(1)+'% · fair price '+(1/l.p).toFixed(2)+'</div></div><div><label for="p'+i+'">Your price</label><input class="vx-num" type="number" id="p'+i+'" data-i="'+i+'" step="0.01" min="1.01" inputmode="decimal" placeholder="'+(1/l.p).toFixed(2)+'" value="'+(l.your||'')+'"></div><button class="vx-x" data-x="'+i+'" aria-label="Remove">×</button></div>'}).join('');calc()}
 function calc(){var ch=legs.reduce(function(a,l){return a*l.p},1),fair=1/ch,all=legs.every(function(l){return +l.your>1});
- if(!all){$('res').innerHTML='<div class="vx-res"><div class="vx-verdict">Type the price you can get'+(legs.length>1?' for every leg':'')+'. Value starts at <b>'+(Math.ceil(fair*100-1e-9)/100).toFixed(2)+'</b>'+(legs.length>1?' for the whole acca':'')+'.</div></div>';return}
- var yours=legs.reduce(function(a,l){return a*(+l.your)},1),v=yours*ch-1,c=v>=0.02?'good':v>=-0.02?'ok':'bad',ret=10*(1+v);
- var verdict=v>=0.02?'<span class="vx-g">Value.</span> This price beats the sharp market’s fair price. Value like this is rare, and it’s what our Meisters look for every day.':v>=-0.02?'<span class="vx-a">About fair.</span> No real edge either way at this price.':'<span class="vx-r">Below fair.</span> Over many bets like this, the bookmaker keeps about £'+(10-ret).toFixed(2)+' of every £10.'+(legs.length>1?' Each leg adds its own margin.':' Look for a bigger price, or skip it.');
- $('res').innerHTML='<div class="vx-res '+c+'"><div class="vx-big">'+pc(v,true)+' <span style="font-size:18px;color:var(--ink-3)">'+(v>=0?'value':'v fair')+'</span></div><div class="vx-stats"><div><span>True chance</span><b>'+(ch*100).toFixed(ch<0.01?2:1)+'%</b></div><div><span>Fair price</span><b>'+fair.toFixed(2)+'</b></div><div><span>Your price</span><b>'+yours.toFixed(2)+'</b></div><div><span>£10 returns on average</span><b>£'+ret.toFixed(2)+'</b></div></div><div class="vx-verdict">'+verdict+'</div><a class="vx-cta" href="/tips">See today’s tips that beat the fair price →</a></div>'}
+ var st=window._ast||10,sbox='<div class="ask" style="margin-top:12px"><label for="astk" style="font-weight:700;color:var(--ink-2)">Stake \u00a3</label> <input id="astk" class="vx-num" type="text" inputmode="decimal" value="'+st+'" style="width:90px"></div>';
+ if(!all){$('res').innerHTML='<div class="vx-res"><div class="vx-verdict">Type the price you\u2019re offered for every leg. The acca is value above a total price of <b>'+fair.toFixed(2)+'</b>.</div></div>';return}
+ var yours=legs.reduce(function(a,l){return a*(+l.your)},1),v=yours*ch-1,c=v>=0.02?'good':v>=-0.02?'ok':'bad';
+ var extra='<div><span>True chance</span><b>'+(ch*100).toFixed(ch<0.01?2:1)+'%</b><small>about 1 in '+Math.round(1/ch)+'</small></div><div><span>Fair acca price</span><b>'+fair.toFixed(2)+'</b><small>yours '+yours.toFixed(2)+'</small></div>';
+ var verdict=v>=0.02?'<span class="vx-g">\u2714 Value.</span> This acca beats the fair price. That\u2019s what our Meisters look for every day.':v>=-0.02?'<span class="vx-a">About fair.</span> No real edge either way.':'<span class="vx-r">\u2716 Below fair.</span> Over many accas like this you lose about '+money(-st*v)+' per \u00a3'+st+'. Each leg adds its own margin.';
+ $('res').innerHTML='<div class="vx-res '+c+'">'+tiles(st,st*yours,st*v,v,extra)+'<div class="vx-verdict">'+verdict+'</div>'+sbox+'<a class="vx-cta" href="/tips">See today\u2019s tips that beat the fair price \u2192</a></div>'}
 function ours(){var B=window.BM||{},now=Date.now(),L=[];
  (B.TIPS||[]).forEach(function(t){if(t.result==='open'&&t.meister==='cruncher'&&t.prob&&!t.ew&&Date.parse(t.start)>now)L.push({w:'Number Cruncher'+(t.tier==='pro'?' · Pro':''),s:t.tier==='pro'?'Pro tip · subscribers':t.selection+' @ '+(+t.price).toFixed(2),e:t.event,v:t.prob*t.price-1,f:1/t.prob,h:'/tips',lock:t.tier==='pro'})});
  [['COMBOS','/combo'],['ACCAS','/acca']].forEach(function(k){(B[k[0]]||[]).forEach(function(a){if(a.human||a.meister==='tom'||a.meister==='meister')return;if(!a.legs.every(function(l){return(!l.result||l.result==='open')&&Date.parse(l.start)>now}))return;var P=a.legs.reduce(function(m,l){return m*l.price},1),C=a.legs.reduce(function(m,l){return m*l.chance},1);L.push({w:k[0]==='ACCAS'?'Acca Meister':'Combo Meister',s:a.title+' @ '+P.toFixed(2),e:a.legs.length+' legs',v:P*C-1,f:1/C,h:k[1]+'#'+a.id})})});
@@ -184,7 +198,7 @@ document.addEventListener('click',function(ev){var t=ev.target.closest('button')
  else if(t.id==='barbtn')$('slip').scrollIntoView({behavior:'smooth',block:'start'});
  else if(t.hasAttribute('data-x')){legs.splice(+t.getAttribute('data-x'),1);slip();list()}
  else if(t.id==='t-single')setMode('single');else if(t.id==='t-acca')setMode('acca')});
-document.addEventListener('input',function(ev){var t=ev.target;if(t.id==='ip'){judge(parseFloat(t.value));return}if(t.id==='q'){show=12;list()}else if(t.classList.contains('vx-num')){legs[+t.getAttribute('data-i')].your=parseFloat(t.value)||'';calc()}});
+document.addEventListener('input',function(ev){var t=ev.target;if(t.id==='ip'||t.id==='stk'){judge(parseFloat($('ip').value));return}if(t.id==='astk'){window._ast=parseFloat(t.value)>0?parseFloat(t.value):10;calc();var n=$('astk');n.focus();var l=n.value.length;try{n.setSelectionRange(l,l)}catch(e){}return}if(t.id==='q'){show=12;list()}else if(t.classList.contains('vx-num')){legs[+t.getAttribute('data-i')].your=parseFloat(t.value)||'';calc()}});
 ours();
 /* deep link from a tip, combo or acca card: #t-<tip id> or #m-<combo/acca id> loads our pick at our published price */
 function fromHash(){var h=decodeURIComponent(location.hash.slice(1)),B=window.BM||{};if(!h)return;
