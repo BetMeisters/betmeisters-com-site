@@ -149,6 +149,28 @@
   function pts(x) { if (x == null) return "–"; var r = Math.round(x * 100) / 100; return (r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(2); }
   function pct(x, signed) { if (x == null) return "–"; var r = Math.round(x * 1000) / 10; return (signed && r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(1) + "%"; }
   function cls(x) { return x > 0.0001 ? "pos" : x < -0.0001 ? "neg" : ""; }
+  /* Keith 24 Nov 19:52: Bet Value Checker on price-based picks only (NCM tips, Combo Meister, Acca Meister; TOM/OCM/OAM keep stats only, 46.005).
+     Fair price = 1 / our fair chance. The punter types the price they can get and sees value v fair. */
+  /* ON/OFF SWITCH for the whole Bet Value Checker: set to false to remove the menu item and every card panel/line (and drop "value" from PAGES in com/live_build.py to remove the page). */
+  var VALUE_CHECKER = true;
+  function vcMulti(a) { return VALUE_CHECKER && !(a.human || a.meister === "tom" || a.meister === "meister"); }
+  function vcRow(ch, px, lbl) {
+    if (!VALUE_CHECKER || !ch || !px) return "";
+    var fair = 1 / ch, from = Math.ceil(fair * 100 - 1e-9) / 100;
+    return '<div class="vcheck" data-ch="' + ch + '"><div class="vc-top"><span class="vc-lab">Value check</span><span class="vc-fair">Fair price <b>' + fair.toFixed(2) + '</b> \u00b7 value above that</span></div>' +
+      '<div class="vc-row"><label class="vc-lbl">Your price <input class="vc-in" type="number" inputmode="decimal" step="0.01" min="1.01" placeholder="' + (+px).toFixed(2) + '" aria-label="The decimal price you can get' + (lbl ? " for " + esc(lbl) : "") + '"></label><span class="vc-out" aria-live="polite">Type the price you can get</span></div>' +
+      '<a class="vc-more" href="/value">Check any bet \u2192</a></div>';
+  }
+  function vcLine(ch, ref) { if (!VALUE_CHECKER) return ""; var fair = 1 / ch, from = Math.ceil(fair * 100 - 1e-9) / 100; return '<p class="vc-line">Fair price <b>' + fair.toFixed(2) + '</b> \u00b7 value above that \u00b7 <a href="/value#' + ref + '">check your price \u2192</a></p>'; }
+  function vcTip(t) { return t.result === "open" && new Date(t.start) > Date.now() && t.meister === "cruncher" && t.prob && !t.ew ? vcLine(t.prob, "t-" + t.id) : ""; }
+  document.addEventListener("input", function (e) {
+    var t = e.target; if (!t || !t.classList || !t.classList.contains("vc-in")) return;
+    var box = t.closest(".vcheck"), ch = +box.getAttribute("data-ch"), p = parseFloat(t.value), o = box.querySelector(".vc-out");
+    if (!(p > 1)) { o.className = "vc-out"; o.textContent = "Type the price you can get"; return; }
+    var v = p * ch - 1;
+    o.className = "vc-out " + (v >= 0.02 ? "good" : v >= -0.02 ? "ok" : "bad");
+    o.textContent = (v >= 0 ? "Value " : "Below fair ") + pct(v, true) + (v >= 0.02 ? " \u00b7 still worth taking" : v >= -0.02 ? " \u00b7 about fair" : " \u00b7 the bookmaker keeps " + (Math.round(-v * 1000) / 10) + "p of every \u00a31");
+  });
   function byStart(a, b) { return new Date(a.start) - new Date(b.start); }
   function isRemoved(t) { return t.meister === "removed"; }
   function closeStrip() {
@@ -355,7 +377,7 @@
     var body = lock
       ? '<p class="tip-event">' + esc(t.event) + "</p>" +
         '<div class="tip-locked">' + ICON.lock + '<p>Pro tip from ' + esc(meisterById(t.meister).name) + '. <a href="#join" data-join>Subscribe</a> to this Meister or get Full Meister Access to see it.</p></div>'
-      : '<h3 class="tip-sel">' + selHTML(t) + '</h3><p class="tip-event">' + esc(t.event) + '</p><p class="tip-market">' + esc(t.market) + hcpExp(t) + (t.ew ? " (" + (t.stake / 2) + " pts each way = " + stakeTxt(t.stake) + " total)" : "") + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + (oop(t) && t.result === "open" ? '<p class="tip-market oop-note">Order of play: the start is a "not before" time and often runs later.</p>' : "") + edgeLine(t) + removedLine(t);
+      : '<h3 class="tip-sel">' + selHTML(t) + '</h3><p class="tip-event">' + esc(t.event) + '</p><p class="tip-market">' + esc(t.market) + hcpExp(t) + (t.ew ? " (" + (t.stake / 2) + " pts each way = " + stakeTxt(t.stake) + " total)" : "") + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + (oop(t) && t.result === "open" ? '<p class="tip-market oop-note">Order of play: the start is a "not before" time and often runs later.</p>' : "") + edgeLine(t) + vcTip(t) + removedLine(t);
     var first = t.result === "open"
       ? "<div><dt>" + (oop(t) ? "Not before" : "Start UK") + "</dt><dd>" + tm.eat + "</dd></div>"
       : '<div><dt>Result</dt><dd><span class="res ' + t.result + '">' + t.result + "</span></dd></div>";
@@ -562,7 +584,7 @@
         '<span class="sub acca-line">' + (st === "open" ? "First leg starts " + fmtTime(legs[0].start).eat + " UK" : won + " of " + legs.length + " legs landed") + " \u00b7 \u00a310 pays \u00a3" + Math.round(10 * P).toLocaleString("en-GB") + '</span>' +
         (st === "open" ? (function () { var nx = legs.filter(function (l) { return (!l.result || l.result === "open") && new Date(l.start) > Date.now(); })[0]; if (!nx) return '<span class="countdown acca-cd">In play \u00b7 waiting for the last legs</span>'; var pre = new Date(legs[0].start) <= Date.now() ? legWord(legs, nx) : "Starts in"; return '<span class="cd-line"><span class="countdown acca-cd" data-acca-start="' + nx.start + '" data-acca-pre="' + pre + '">' + countdown({ start: nx.start, result: "open" }).replace("Starts in", pre) + "</span>" + (pre !== "Starts in" ? wonTally(legs) : "") + "</span>"; })() : "") + '</div>' +
         '<span class="res-tags">' + ((a.meister === "tom" || a.meister === "meister") && /^ACCA-/.test(a.id || "") ? '<span class="badge acca tom" title="Original Acca Meister">OA</span>' : '<span class="badge acca" title="Acca Meister">AM</span>') + '</span><span class="num pts ' + cls(p) + '">' + (st === "open" ? "–" : pts(p)) + '</span></div>' +
-        '<ol class="acca-legs">' + legs.slice(0, 2).map(accaLegRow).join("") + "</ol>" +
+        (st === "open" && vcMulti(a) && new Date(legs[0].start) > Date.now() ? vcRow(C, P, a.title) : "") + '<ol class="acca-legs">' + legs.slice(0, 2).map(accaLegRow).join("") + "</ol>" +
         (legs.length > 2 ? '<details class="acca-more"><summary>Show all ' + legs.length + ' legs</summary><ol class="acca-legs" start="3">' + legs.slice(2).map(accaLegRow).join("") + "</ol>" + (a.note ? '<p class="acca-note">' + esc(a.note) + "</p>" : "") + '<button type="button" class="acca-less" onclick="this.closest(\'details\').open=false">Show fewer legs \u25b4</button></details>' : (a.note ? '<details class="acca-more"><summary>More details</summary><p class="acca-note">' + esc(a.note) + '</p><button type="button" class="acca-less" onclick="this.closest(\'details\').open=false">Show less \u25b4</button></details>' : "")) + "</li>"; /* Owner 16 Nov 10:43: 2 legs shown, the rest and the note only on expand */
     }).join("") + "</ul>";
   }
@@ -634,7 +656,7 @@
   if ((BM.COMBOS || []).length || document.body.getAttribute("data-page") === "combo") NAV.splice(2, 0, ["combo", "/combo", "Combos"]); /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
   /* Owner 23 Nov 15:53-16:08: one site, menu Home · Tips · Results · News (BM_MERGE) */
   var GNAV = [["home", "/", "Home", []],
-    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ["Combos", "/combo", "combo"], ["Accas", "/acca", "acca"], ["Pro Picks", "/propicks", "propicks"]]],
+    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ["Combos", "/combo", "combo"], ["Accas", "/acca", "acca"], ["Pro Picks", "/propicks", "propicks"]].concat(VALUE_CHECKER ? [["Value checker", "/value", "value"]] : [])],
     ["results", "/results", "Results", [["Results", "/results", "results"], ["Performance", "/performance", "performance"], ["The Meisters", "/meisters", "meisters"]]],
     ["news", "/news/", "News", [["News home", "/news/", "nhome"], ["Previews", "/news/previews.html", "nprev"], ["Guides", "/news/guides.html", "nguide"], ["Industry news", "/news/news.html", "nnews"], ["Online casino", "/news/casino-news.html", "ncas"], ["Bookmaker reviews", "/news/bookie-reviews.html", "nrev"], ["Casino reviews", "/news/casino-reviews.html", "ncrev"]]]];
   var activeNav = window.BM_MERGE ? page : ({ article: "news", review: "reviews", propicks: "tips" }[page] || page);
@@ -752,7 +774,7 @@
       '<div><dt>Stake</dt><dd>' + a.stake + ' pt</dd></div><div><dt>\u00a310 returns</dt><dd class="price">\u00a3' + Math.round(10 * P).toLocaleString("en-GB") + '</dd></div></dl>' +
       '<ul class="ac-mini">' + legs.slice(0, SHOW).map(function (l) { return '<li><span><small class="t">' + fmtTime(l.start).eat + '</small>' + esc(l.sel) + '</span><b>' + fmtOdds(l.price) + '</b></li>'; }).join("") +
       (legs.length > SHOW ? '<li class="more"><span>+ ' + (legs.length - SHOW) + ' more legs</span></li>' : '') + '</ul>' +
-      '<div class="cd-row"><p class="countdown hc-count" data-acca-start="' + first.start + '" data-acca-pre="' + pre + '">' + cd + '</p>' + (started ? wonTally(legs) : "") + '</div>' +
+      (vcMulti(a) && !started ? vcLine(C, "m-" + a.id) : "") + '<div class="cd-row"><p class="countdown hc-count" data-acca-start=""' + first.start + '" data-acca-pre="' + pre + '">' + cd + '</p>' + (started ? wonTally(legs) : "") + '</div>' +
       '<div class="ah-foot"><a class="aw-cta" href="/acca#' + esc(a.id) + '">See every leg and the acca record \u2192</a>' +
       '<p class="ac-sep">Separate record \u00b7 not part of the main BetMeisters totals</p>' +
       '<div class="hc-share">' + shareButtons(share) + '</div></div></article>';
@@ -773,7 +795,7 @@
       ? '<h3 class="htip-sel">Pro tip · subscribers only</h3><p class="htip-ev" title="' + esc(t.event) + '">' + esc(t.event) + '</p><p class="htip-ln">' + where + '</p><p class="htip-ln"><a href="#join" data-join>Subscribe</a> to ' + esc(m.short || m.name) + " or get Full Meister Access to see it.</p>"
       : '<h3 class="htip-sel">' + selHTML(t) + ' <b class="htip-px">@ ' + fmtOdds(t.price) + "</b></h3>" +
         '<p class="htip-ev" title="' + esc(t.event + " · " + (t.sport || "") + (t.comp ? " · " + t.comp : "")) + '">' + esc(t.event) + " · " + where + "</p>" +
-        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">' + (t.tomMethod ? '<span title="TOM\u2019s own assessment: market chance plus his grade">Edge</span> ' : "Edge ") + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>";
+        '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">' + (t.tomMethod ? '<span title="TOM\u2019s own assessment: market chance plus his grade">Edge</span> ' : "Edge ") + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>" + vcTip(t);
     var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + ALT(tm, "", " · ") + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
       (lock ? "" : '<p class="htip-sm">' + esc(t.market) + hcpExp(t) + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + exchLine(t).replace('class="tip-market exch-line"', 'class="htip-sm htip-exch"')) +
       pubLine(t).replace('class="tip-pub"', 'class="htip-sm htip-pub"') + (o.next || "") + (o.share ? '<div class="htip-share">' + shareButtons(shareText(t)) + "</div>" : "");

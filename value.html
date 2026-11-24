@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bet Value Checker · BetMeisters</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Is your bet good value? Check any single or acca against the fair price from the sharp market, free.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BetMeisters">
+<meta property="og:title" content="Bet Value Checker · BetMeisters">
+<meta property="og:description" content="Every tip free to read until 1 January. Is your bet good value? Check any single or acca against the fair price from the sharp market, free.">
+<meta property="og:image" content="https://betmeisters.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bet Value Checker · BetMeisters">
+<meta name="twitter:description" content="Every tip free to read until 1 January. Is your bet good value? Check any single or acca against the fair price from the sharp market, free.">
+<meta name="twitter:image" content="https://betmeisters.com/og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261124201255">
+<link rel="stylesheet" href="modern.css?v=20261124201255">
+<style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
+<link rel="canonical" href="https://betmeisters.com/value">
+</head>
+<body data-page="value">
+<div id="bm-header"></div>
+<style>
+.vx-hero{padding-block:18px 0}
+.vx-hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,54px);line-height:.95;text-transform:uppercase;margin:4px 0 8px;text-wrap:balance}
+.vx-hero h1 span{color:var(--open)}
+.vx-kick{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.vx-lede{color:var(--ink-2);max-width:66ch;margin:0}
+.vx-tabs{display:flex;gap:6px;margin:10px 0 12px}
+.vx-tab{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:7px 16px;font:700 14px var(--f-body,inherit);cursor:pointer}
+.vx-tab[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.vx-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:start}
+@media(max-width:860px){.vx-grid{grid-template-columns:minmax(0,1fr)}}
+.vx-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.vx-card h2{font-family:var(--f-display);font-size:21px;text-transform:uppercase;margin:0 0 10px;letter-spacing:.02em}
+.vx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.vx-chip{border:1px solid var(--line);background:var(--bg-2);color:var(--ink-2);border-radius:999px;padding:4px 11px;font:600 12.5px inherit;cursor:pointer}
+.vx-chip[aria-pressed=true]{background:var(--yellow);color:var(--on-accent);border-color:var(--yellow)}
+.vx-q{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:15px}
+.vx-q:focus,.vx-num:focus{outline:2px solid var(--yellow);outline-offset:1px}
+.vx-list{margin-top:10px;max-height:560px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.vx-ev{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--bg-2)}
+.vx-ev .t{font-weight:700}.vx-ev .l{color:var(--ink-3);font-size:12.5px}
+.vx-mk{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
+.vx-ml{width:100%;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.vx-sel{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 9px;font:500 13px inherit;cursor:pointer;display:flex;gap:8px;align-items:baseline;text-align:left}
+.vx-sel:hover{border-color:var(--open)}.vx-sel .fp{font-family:var(--f-data);color:var(--open);font-size:12.5px}
+.vx-sel[disabled]{opacity:.4;cursor:not-allowed}
+.vx-empty{color:var(--ink-3);padding:12px 2px}
+.vx-leg{border-bottom:1px solid var(--line);padding:10px 0;display:grid;grid-template-columns:minmax(0,1fr) 92px 26px;gap:10px;align-items:center}
+.vx-leg .s{font-weight:700}.vx-leg .e{color:var(--ink-3);font-size:12.5px}.vx-leg .f{font-family:var(--f-data);font-size:12.5px;color:var(--ink-2)}
+.vx-leg label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
+.vx-num{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:500 14px var(--f-data)}
+.vx-x{border:0;background:none;color:var(--ink-3);font-size:20px;cursor:pointer}.vx-x:hover{color:var(--lost)}
+.vx-res{margin-top:12px;border-radius:12px;padding:14px;background:var(--bg-2);border:1px solid var(--line);border-left:8px solid var(--ink-3)}
+.vx-res.good{border-left-color:var(--won)}.vx-res.ok{border-left-color:var(--amber-ink)}.vx-res.bad{border-left-color:var(--lost)}
+.vx-big{font-family:var(--f-display);font-weight:800;font-size:38px;line-height:1}
+.vx-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.vx-stats span{display:block;font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase;font-weight:700}
+.vx-stats b{font-family:var(--f-data);font-size:19px}
+.vx-verdict{margin-top:10px;color:var(--ink-2)}
+.vx-cta{display:inline-block;margin-top:10px;font-weight:800;color:var(--open);text-decoration:none}
+.vx-g{color:var(--won)}.vx-a{color:var(--amber-ink)}.vx-r{color:var(--lost)}
+.vx-ours{margin-top:22px}
+.vx-ours h2{font-family:var(--f-display);font-size:24px;text-transform:uppercase;margin:0 0 4px}
+.vx-ours p.sub{color:var(--ink-3);margin:0 0 10px}
+.vx-oul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.vx-oul li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.vx-oul .w{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.vx-oul .s{font-weight:700;margin-top:2px}.vx-oul .e{font-size:12.5px;color:var(--ink-3)}
+.vx-oul .n{font-family:var(--f-data);font-size:13px;margin-top:6px}
+.vx-note{color:var(--ink-3);font-size:13px;max-width:80ch;margin-top:18px}
+</style>
+<main class="wrap">
+  <section class="vx-hero">
+    <div class="vx-kick">Free tool</div>
+    <h1>Bet value <span>checker</span></h1>
+    <p class="vx-lede">Is the price you've been offered any good? Pick a selection, type the price you can get, and see it against the fair price from the sharp market with the bookmaker margin taken out. Works for singles and accas.</p>
+  </section>
+  <div class="vx-tabs" role="tablist"><button class="vx-tab" role="tab" id="t-single" aria-selected="true">Single</button><button class="vx-tab" role="tab" id="t-acca" aria-selected="false">Acca</button></div>
+  <div class="vx-grid">
+    <section class="vx-card" aria-label="Find a selection">
+      <h2 id="find-h">1 · Find your selection</h2>
+      <div class="vx-chips" id="chips"></div>
+      <input type="search" class="vx-q" id="q" placeholder="Search a team or league, e.g. Arsenal, NBA, Bayern" autocomplete="off">
+      <div class="vx-list" id="list"></div>
+    </section>
+    <section class="vx-card" aria-label="Your bet">
+      <h2 id="slip-h">2 · Your bet</h2>
+      <div id="legs"><div class="vx-empty">Tap a selection on the left.</div></div>
+      <div id="res"></div>
+    </section>
+  </div>
+  <section class="vx-ours" aria-labelledby="ours-h">
+    <h2 id="ours-h">Already value-checked: our open picks</h2>
+    <p class="sub">Every Number Cruncher tip, Combo Meister combo and Acca Meister acca is only published when its price beats the fair price.</p>
+    <ul class="vx-oul" id="ours"></ul>
+  </section>
+  <p class="vx-note" id="stamp"></p>
+  <p class="vx-note"><b>How it works.</b> The fair chance comes from the sharp market's prices with the bookmaker margin removed. Fair price = 1 ÷ fair chance. Value = your price × fair chance − 1: above 0% the price beats the market's view, below 0% the bookmaker keeps that share of your stake over many bets like it. An acca multiplies the chances, so it multiplies the margin too. Two legs from the same game are linked, so the checker takes one leg per game. A guide, not a tip: prices and chances move. Enter decimal prices (2.50 = 6/4).</p>
+  <p class="vx-note">18+ · No affiliate links · BetMeisters does not take bets. If betting stops being fun: BeGambleAware.org · National Gambling Helpline 0808 8020 133 (UK) · 1-800-GAMBLER (US).</p>
+</main>
+<div id="bm-footer"></div>
+<script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
+<script src="data.js?v=20261124201255"></script>
+<script src="news_feed.js?v=20261124201255"></script>
+<script src="app.js?v=20261124201255"></script>
+<script src="consent.js?v=20261124201255"></script>
+<script src="modern.js?v=20261124201255"></script>
+<script>
+(function(){
+var SP={'football':'Football','basketball':'Basketball','american-football':'NFL & college','ice-hockey':'Ice hockey','tennis':'Tennis','handball':'Handball','volleyball':'Volleyball'};
+var TOP=[/UEFA Champions League$/,/England - Premier League/,/NBA$/,/NFL$/,/EuroLeague/,/UEFA Europa League$/,/Conference League$/,/Spain - La ?Liga$/,/Italy - Serie A$/,/Germany - Bundesliga$/,/France - Ligue 1$/,/England - Championship/,/NHL$/,/Scotland - Premiership/,/NCAA/,/MLS/];
+var D=null, sport='all', mode='single', legs=[];
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
+function when(s){try{return new Date(s).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return s}}
+function lg(l){return l.replace(/^International Clubs - /,'')}
+function rank(e){for(var i=0;i<TOP.length;i++)if(TOP[i].test(e.lg))return i;return 99}
+function pc(x,s){var r=Math.round(x*1000)/10;return (s&&r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1)+'%'}
+function chips(){var c=['all'].concat(Object.keys(SP).filter(function(k){return D.ev.some(function(e){return e.sp===k})}));
+ $('chips').innerHTML=c.map(function(k){return '<button class="vx-chip" data-k="'+k+'" aria-pressed="'+(k===sport)+'">'+(k==='all'?'All sports':SP[k])+'</button>'}).join('')}
+function list(){var q=$('q').value.trim().toLowerCase(),now=Date.now();
+ var ev=D.ev.filter(function(e){return Date.parse(e.s)>now&&(sport==='all'||e.sp===sport)&&(!q||e.e.toLowerCase().indexOf(q)>=0||e.lg.toLowerCase().indexOf(q)>=0)});
+ if(!q)ev.sort(function(a,b){return rank(a)-rank(b)||a.s.localeCompare(b.s)});
+ var n=ev.length;ev=ev.slice(0,40);var used={};legs.forEach(function(l){used[l.e]=1});
+ $('list').innerHTML=ev.length?ev.map(function(e){var i=D.ev.indexOf(e);return '<div class="vx-ev"><div class="t">'+esc(e.e)+'</div><div class="l">'+esc(lg(e.lg))+' · '+when(e.s)+'</div>'+
+  e.m.map(function(m,j){return '<div class="vx-mk"><span class="vx-ml">'+(m[0]==='Result'?'Result':m[0]==='Total'?'Total '+m[1]:'Handicap')+'</span>'+m[2].map(function(s,k){return '<button class="vx-sel" data-e="'+i+'" data-m="'+j+'" data-s="'+k+'"'+(mode==='acca'&&used[e.e]?' disabled':'')+'><span>'+esc(s[0])+'</span><span class="fp">'+(1/s[1]).toFixed(2)+'</span></button>'}).join('')+'</div>'}).join('')+'</div>'}).join('')+(n>40?'<div class="vx-empty">Showing 40 of '+n+'. Search to narrow it down.</div>':''):'<div class="vx-empty">No games found. Try another team or sport.</div>'}
+function add(ei,mi,si){var e=D.ev[ei],m=e.m[mi],s=m[2][si];var leg={e:e.e,s:e.s,sel:s[0],p:s[1],your:''};
+ if(mode==='single')legs=[leg];else{if(legs.some(function(l){return l.e===e.e}))return;legs.push(leg)}slip();list();
+ if(window.innerWidth<860)$('slip-h').scrollIntoView({behavior:'smooth',block:'start'})}
+function slip(){if(!legs.length){$('legs').innerHTML='<div class="vx-empty">Tap a selection on the left.</div>';$('res').innerHTML='';return}
+ $('legs').innerHTML=legs.map(function(l,i){return '<div class="vx-leg"><div><div class="s">'+esc(l.sel)+'</div><div class="e">'+esc(l.e)+' · '+when(l.s)+'</div><div class="f">fair '+(l.p*100).toFixed(1)+'% · fair price '+(1/l.p).toFixed(2)+'</div></div><div><label for="p'+i+'">Your price</label><input class="vx-num" type="number" id="p'+i+'" data-i="'+i+'" step="0.01" min="1.01" inputmode="decimal" placeholder="'+(1/l.p).toFixed(2)+'" value="'+(l.your||'')+'"></div><button class="vx-x" data-x="'+i+'" aria-label="Remove">×</button></div>'}).join('');calc()}
+function calc(){var ch=legs.reduce(function(a,l){return a*l.p},1),fair=1/ch,all=legs.every(function(l){return +l.your>1});
+ if(!all){$('res').innerHTML='<div class="vx-res"><div class="vx-verdict">Type the price you can get'+(legs.length>1?' for every leg':'')+'. Value starts at <b>'+(Math.ceil(fair*100-1e-9)/100).toFixed(2)+'</b>'+(legs.length>1?' for the whole acca':'')+'.</div></div>';return}
+ var yours=legs.reduce(function(a,l){return a*(+l.your)},1),v=yours*ch-1,c=v>=0.02?'good':v>=-0.02?'ok':'bad',ret=10*(1+v);
+ var verdict=v>=0.02?'<span class="vx-g">Value.</span> This price beats the sharp market’s fair price. Value like this is rare, and it’s what our Meisters look for every day.':v>=-0.02?'<span class="vx-a">About fair.</span> No real edge either way at this price.':'<span class="vx-r">Below fair.</span> Over many bets like this, the bookmaker keeps about £'+(10-ret).toFixed(2)+' of every £10.'+(legs.length>1?' Each leg adds its own margin.':' Look for a bigger price, or skip it.');
+ $('res').innerHTML='<div class="vx-res '+c+'"><div class="vx-big">'+pc(v,true)+' <span style="font-size:18px;color:var(--ink-3)">'+(v>=0?'value':'v fair')+'</span></div><div class="vx-stats"><div><span>True chance</span><b>'+(ch*100).toFixed(ch<0.01?2:1)+'%</b></div><div><span>Fair price</span><b>'+fair.toFixed(2)+'</b></div><div><span>Your price</span><b>'+yours.toFixed(2)+'</b></div><div><span>£10 returns on average</span><b>£'+ret.toFixed(2)+'</b></div></div><div class="vx-verdict">'+verdict+'</div><a class="vx-cta" href="/tips">See today’s tips that beat the fair price →</a></div>'}
+function ours(){var B=window.BM||{},now=Date.now(),L=[];
+ (B.TIPS||[]).forEach(function(t){if(t.result==='open'&&t.meister==='cruncher'&&t.prob&&!t.ew&&Date.parse(t.start)>now)L.push({w:'Number Cruncher'+(t.tier==='pro'?' · Pro':''),s:t.tier==='pro'?'Pro tip · subscribers':t.selection+' @ '+(+t.price).toFixed(2),e:t.event,v:t.prob*t.price-1,f:1/t.prob,h:'/tips',lock:t.tier==='pro'})});
+ [['COMBOS','/combo'],['ACCAS','/acca']].forEach(function(k){(B[k[0]]||[]).forEach(function(a){if(a.human||a.meister==='tom'||a.meister==='meister')return;if(!a.legs.every(function(l){return(!l.result||l.result==='open')&&Date.parse(l.start)>now}))return;var P=a.legs.reduce(function(m,l){return m*l.price},1),C=a.legs.reduce(function(m,l){return m*l.chance},1);L.push({w:k[0]==='ACCAS'?'Acca Meister':'Combo Meister',s:a.title+' @ '+P.toFixed(2),e:a.legs.length+' legs',v:P*C-1,f:1/C,h:k[1]+'#'+a.id})})});
+ L.sort(function(a,b){return b.v-a.v});
+ $('ours').innerHTML=L.length?L.slice(0,9).map(function(x){return '<li><div class="w">'+x.w+'</div><div class="s"><a href="'+x.h+'">'+esc(x.s)+'</a></div><div class="e">'+esc(x.e)+'</div><div class="n">'+(x.lock?'Edge shown to subscribers':'Fair '+x.f.toFixed(2)+' · <b class="vx-g">'+pc(x.v,true)+' value</b>')+'</div></li>'}).join(''):'<li><div class="s">No open picks right now.</div><div class="e">New tips are published through the day: <a href="/tips">see the tips page</a>.</div></li>'}
+function setMode(m){mode=m;$('t-single').setAttribute('aria-selected',m==='single');$('t-acca').setAttribute('aria-selected',m==='acca');$('find-h').textContent=m==='single'?'1 · Find your selection':'1 · Add your legs';$('slip-h').textContent=m==='single'?'2 · Your bet':'2 · Your acca';if(m==='single'&&legs.length>1)legs=legs.slice(-1);slip();list()}
+document.addEventListener('click',function(ev){var t=ev.target.closest('button');if(!t)return;
+ if(t.classList.contains('vx-chip')){sport=t.getAttribute('data-k');chips();list()}
+ else if(t.classList.contains('vx-sel'))add(+t.getAttribute('data-e'),+t.getAttribute('data-m'),+t.getAttribute('data-s'));
+ else if(t.hasAttribute('data-x')){legs.splice(+t.getAttribute('data-x'),1);slip();list()}
+ else if(t.id==='t-single')setMode('single');else if(t.id==='t-acca')setMode('acca')});
+document.addEventListener('input',function(ev){var t=ev.target;if(t.id==='q')list();else if(t.classList.contains('vx-num')){legs[+t.getAttribute('data-i')].your=parseFloat(t.value)||'';calc()}});
+ours();
+/* deep link from a tip, combo or acca card: #t-<tip id> or #m-<combo/acca id> loads our pick at our published price */
+function fromHash(){var h=decodeURIComponent(location.hash.slice(1)),B=window.BM||{};if(!h)return;
+ if(h.indexOf('t-')===0){var t=(B.TIPS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(t&&t.prob){mode='single';legs=[{e:t.event,s:t.start,sel:t.selection,p:t.prob,your:t.price}]}}
+ else if(h.indexOf('m-')===0){var a=(B.COMBOS||[]).concat(B.ACCAS||[]).filter(function(x){return x.id===h.slice(2)})[0];if(a){mode='acca';legs=a.legs.map(function(l){return{e:l.event,s:l.start,sel:l.sel,p:l.chance,your:l.price}})}}
+ if(legs.length){var keep=legs;setMode(mode);legs=keep;slip();setTimeout(function(){$('slip-h').scrollIntoView({block:'start'})},50);var n=document.createElement('p');n.className='vx-empty';n.style.paddingTop='0';n.innerHTML='Loaded from our pick at our published price. Change any price to check the one you can get.';$('legs').prepend(n)}}
+fromHash();window.addEventListener('hashchange',function(){legs=[];fromHash()});
+fetch('value_data.json').then(function(r){return r.json()}).then(function(d){D=d;chips();list();
+ $('stamp').textContent='Fair chances from our price scan of '+new Date(d.at).toLocaleString([], {weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' (your time), '+d.ev.length+' games over the next three days. Refreshed with every scan.'})
+ .catch(function(){$('list').innerHTML='<div class="vx-empty">Could not load the price data. Please reload.</div>'});
+})();
+</script>
+</body>
+</html>
