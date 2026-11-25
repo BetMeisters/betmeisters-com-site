@@ -370,3 +370,8 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
 .foot-follow a{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px;color:inherit;text-decoration:none;font-size:14px}
 .foot-follow a:hover{border-color:#FFC629;color:#FFC629}
 .foot-follow b{font-weight:600}
+/* Owner 25 Nov 15:23: small score box on review cards */
+.rh-score{display:inline-flex;align-items:baseline;gap:8px;align-self:flex-start;margin:2px 0 2px;padding:4px 10px;border:1px solid var(--line,#D9DFEC);border-radius:8px;background:#F7F9FD}
+.rh-score b{font:800 22px/1 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--navy,#0B1A3A)}
+.rh-score i{font:500 11px var(--mono,ui-monospace,monospace);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#55627F}
+@media (min-width:861px){.foot-grid{grid-template-columns:minmax(0,1.4fr) repeat(4,minmax(0,1fr))!important}}

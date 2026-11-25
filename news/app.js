@@ -39,7 +39,7 @@
   var art0 = page === "article" ? (D.articles.filter(function (a) { return a.id === hashId(); })[0] || {}) : {};
   var sec = page === "section" ? hashId() : page === "article" ? ((D.articles.filter(function (a) { return a.id === hashId(); })[0] || {}).section) : page;
   var NAV = [["index.html", "Latest", page === "home"], /* Owner 25 Nov: "Home" pill renamed so it is not confused with the site home */
-    ["reviews.html", "Reviews", page === "reviews" || page === "review", REVCATS.map(function (c) { return [revHref(c[0]), c[1]]; })],
+    /* Owner 25 Nov 15:24: Reviews moved to their own top menu (.com GNAV), out of the news strip */
     ["news.html", "News", page === "news" || (page === "article" && art0.section !== "guides" && art0.section !== "previews"), [["news.html", "All news"]].concat(TOPICS.map(function (t) { return [topHref(t[0]), t[1]]; }))],
     ["bonuses.html", "Bonuses", page === "bonuses", [["bonuses.html", "All bonuses"], ["bonuses.html#sports-betting", "Sports betting offers"], ["bonuses.html#online-casino", "Online casino offers"], ["bonuses.html#how-it-works", "How offers are chosen"]]],
     ["previews.html", "Previews", sec === "previews" || page === "previews" || (page === "article" && art0.section === "previews"), [["previews.html", "All previews"]].concat(PTYPES.map(function (t) { return ["previews.html#" + t[0], t[1]]; })).concat(SPORTS.slice(0, 8).map(function (t) { return ["previews.html#" + t[0], t[1]]; }))],

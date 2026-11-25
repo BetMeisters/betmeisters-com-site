@@ -213,3 +213,17 @@ h1, h2, h3, .art h1, .lead h2, .card h3, .today-tile h3, .sec-h h2 { font-family
 .front > article.lead .also .kick, .front > article.lead .also .kick * { color: #FFC629 !important; }
 .bm-spot-i > b { font: 800 clamp(24px, 2.4vw, 28px)/1.08 var(--mx-cond) !important; }
 .today-tile > b { font: 700 16.5px/1.3 var(--f-body) !important; }
+/* Owner 25 Nov 15:24: Desk review tag always on its own line in ranking tables */
+.desk-tag{display:block;width:fit-content;margin:6px 0 2px}
+.desk-tag{display:table!important;margin:6px 0 0}
+.desk-tag + br{display:none}
+.mx-foot .foot-follow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.mx-foot .foot-follow span{font:600 12px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.mx-foot .foot-follow a{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px;color:inherit;text-decoration:none;font-size:14px}
+.mx-foot .foot-follow a:hover{border-color:#FFC629;color:#FFC629}
+.mx-fcols{grid-template-columns:1.5fr 1fr 1fr 1fr 1fr 1fr}@media (max-width:900px){.mx-fcols{grid-template-columns:1fr 1fr}}
+.desk-tag{display:block!important;width:fit-content}
+.mx-foot .foot-follow svg{width:16px;height:16px;flex:none;display:block}
+.mx-foot .foot-follow b{font-weight:600;color:inherit}
+.mx-foot .foot-follow a{display:inline-flex!important;flex-direction:row!important;align-items:center;gap:6px;width:auto!important;margin:0!important;padding:6px 12px!important;white-space:nowrap}
+.mx-foot .foot-follow > span{flex-basis:100%}
