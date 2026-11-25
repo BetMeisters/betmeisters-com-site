@@ -238,9 +238,11 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 .pf-st b { display: block; font: 800 clamp(22px, 2.4vw, 28px)/1.05 var(--f-display); white-space: nowrap; }
 .pf-st b.g { color: #5EE0A0; }
 .pf-st span { display: block; font-size: 12.5px; color: #9FB0D2; margin-top: 3px; }
-.pf-acts { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.pf-acts { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
 .pf-cta { background: var(--yellow); color: var(--navy); font-weight: 700; padding: 10px 18px; border-radius: 10px; text-decoration: none; }
-.pf-cta2 { color: #fff; font-weight: 600; text-decoration: none; }
+.pf-cta2 { color: #fff; font-weight: 700; text-decoration: none; padding: 9px 18px; border: 1.5px solid rgba(255,255,255,.55); border-radius: 10px; background: rgba(255,255,255,.06); }
+.pf-cta2:hover { background: rgba(255,255,255,.14); border-color: #fff; }
+.pf-cta2::after { content: ' →'; }
 .pf-news { min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; }
 .pf-nk { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow); }
 .pf-lead { display: block; color: #fff; text-decoration: none; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.12); }
@@ -274,3 +276,4 @@ table.glance.mve th, table.glance.mve td { padding: 8px 8px; }
 .mve-note { font-size: 13px; color: var(--ink-3); margin: 0 0 10px; }
 .ls-big.ls-small { font-size: 20px; line-height: 1.3; }
 @media (max-width: 760px) { body[data-page="home"] #proof { order: 0; } body[data-page="home"] section[aria-labelledby="h-glance"], body[data-page="home"] section[aria-labelledby="h-honest"] { order: 6; } body[data-page="home"] #proof ~ .nx-step { order: 9; } }
+@media (max-width: 560px) { .pf-acts { flex-wrap: nowrap; gap: 8px; } .pf-acts a { flex: 1 1 0; text-align: center; padding-inline: 8px; font-size: 15px; white-space: nowrap; } }
