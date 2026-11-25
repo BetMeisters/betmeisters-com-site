@@ -1437,7 +1437,7 @@
     el.innerHTML = '<div class="gl-wrap"><table class="glance"><thead><tr><th scope="col">Meister</th><th scope="col">Points</th><th scope="col">Return</th><th scope="col">Tips</th><th scope="col">Won – lost</th><th scope="col">Avg edge</th><th scope="col">Beat close</th><th scope="col">Last 7 days</th><th scope="col">Since</th></tr></thead><tbody>' +
       P2M.map(function (id) { return row('<a href="/meisters#' + id + '">' + GL_NAME[id] + "</a>", p2().filter(function (t) { return t.meister === id; }), MCOLOR[id]); }).join("") +
       row("All Meisters", p2(), "", true) + '</tbody></table></div><p class="gl-note">Settled tips at the advised stake. Avg edge = our chance × the price, minus 1, at publication. Beat close = the price we gave was bigger than the closing price (shown from 5 tips). <a href="/performance">Every chart and table →</a></p>';
-    if (chartEl) multiChart(chartEl, P2M.map(function (id) { return { name: GL_NAME[id], color: MCOLOR[id], test: function (t) { return t.meister === id; } }; }), p2());
+    if (chartEl) multiChart(chartEl, P2M.map(function (id) { return { name: GL_NAME[id], color: MCOLOR[id], test: function (t) { return t.meister === id; } }; }).concat([{ name: "All Meisters", color: "var(--chart-line)", test: function () { return true; } }]), p2()); /* Owner 25 Nov 11:39: total line on top of the four Meister lines */
   }
   function madeVExpected(el) {
     if (!el) return;
