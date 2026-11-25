@@ -1841,7 +1841,10 @@
         var lead = function (t) { return typeof t.leadMin === "number" ? t.leadMin : (new Date(t.start) - new Date(t.published)) / 60000; };
         /* Owner 20 Nov 18:48: every Meister page uses the same order as the Performance page: NAP first (the most premium tip), then the other specials,
            Premium Leagues, the Pro / Free tiers, then each sport (or, for NCMR, the publish-time boxes). Only the Meister's live record is used. */
-        var C = function (t, f, o) { return scoreCard(t, mine.filter(f), o); };
+        /* Owner 25 Nov 12:05: same logic as the Performance page: boxes with no settled tip fold into one line, boxes identical to the Meister's whole record are left out */
+        var setK = function (l) { return l.filter(function (t) { return t.result !== "open" && t.result !== "void"; }).map(function (t) { return t.id; }).sort().join(","); };
+        var allK = setK(mine), EMPTY = [];
+        var C = function (t, f, o) { var l = mine.filter(f), k = setK(l); if (!k) { if (l.length || !/ \u00b7 /.test(t)) EMPTY.push(t); return ""; } if (k === allK) return ""; return scoreCard(t, l, o); };
         var sportCards = function (keys) { return keys.map(function (k) { return C(SPORTN[k] + " \u00b7 " + MCODE[m.id], function (t) { return sportK(t) === k; }, { color: SPORTC[k], sub: m.name + ", " + (/^(US|eS)/.test(SPORTN[k]) ? SPORTN[k] : SPORTN[k].toLowerCase()) }); }).join(""); };
         var cards = m.id === "ncmr" ?
           C("Racing NAP", function (t) { return t.nap; }, { tier: "nap", sub: "When one qualifies" }) +
@@ -1851,6 +1854,14 @@
           C("NCMR Free", function (t) { return t.tier !== "pro"; }, { tier: "free", sub: "Racing Free tips" }) +
           C("1\u20132 h before", function (t) { return lead(t) < 120; }, { color: SPORTC.R, sub: "Published 1 to 2 hours before the off" }) +
           C("2\u20134 h before", function (t) { return lead(t) >= 120; }, { color: SPORTC.R, sub: "Published 2 to 4 hours before the off" })
+          : m.id === "ncmp" ?
+          C("NCMP Pro", function (t) { return t.tier === "pro"; }, { tier: "pro", sub: "Edge 4.5% to 13.49%" }) +
+          C("NCMP Free", function (t) { return t.tier !== "pro"; }, { tier: "free", sub: "Edge 1.5% to 4.49%" }) +
+          sportCards(["F", "B", "U", "T", "O"])
+          : m.id === "combo" ?
+          C("Doubles", function (t) { return t.legs && t.legs.length === 2; }, { color: MCOLOR.combo, sub: "Two-leg combos, 1 point" }) +
+          C("Trebles", function (t) { return t.legs && t.legs.length === 3; }, { color: MCOLOR.combo, sub: "Three-leg combos, half a point" }) +
+          sportCards(["F", "R", "B", "T", "U", "O", "E"])
           : m.id === "meister" ?
           C("NAP \u00b7 TOM", function (t) { return t.humanNap; }, { tier: "hnap", sub: "TOM's NAP, from 19 Nov" }) +
           C("Meister Special", function (t) { return t.special; }, { tier: "special", sub: "TOM's Specials" }) +
@@ -1875,22 +1886,25 @@
             P("About " + MCODE[m.id], esc(m.who), '<p class="m-bio">' + esc(m.bio) + '</p><div class="p2-chips">' + m.specialities.map(function (x) { return '<span class="chip">' + esc(x) + "</span>"; }).join("") + '</div><details class="p2-method"><summary>How this Meister works</summary><ul>' + m.method.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>") +
             P("Running profit by section", "All of " + MCODE[m.id] + " (solid) and each sport (dashed)", '<div class="mc" data-pc="' + m.id + '"></div>') +
           "</div>" +
-          P("By sport, NAP and Special", "Points, record and the last 12 results in every section", (function () { /* Owner 20 Nov 09:39: fill every row: 10 cards = 2 rows of 5, 12 = 3 rows of 4 */ var n = (cards.match(/<section class="score/g) || []).length, c = n % 5 === 0 ? 5 : n % 4 === 0 ? 4 : n % 3 === 0 ? 3 : 0; return '<div class="score-grid g6 p2-scores pfsc' + (c ? " fill" : "") + '"' + (c ? ' style="--cols:' + c + '"' : "") + ">" + cards + "</div>"; })()) +
+          (function () { var n0 = (cards.match(/<section class="score/g) || []).length; if (!n0) return P("Every section", "", '<p class="perf-empty" style="margin:0"><b>The record starts with the first result.</b> ' + mine.filter(function (t) { return t.result === "open"; }).length + " tips are open now; every box fills in as they settle.</p>"); return ""; })() +
+          ((cards.match(/<section class="score/g) || []).length ? P(m.id === "combo" ? "By type and sport" : m.id === "ncmp" ? "By tier and sport" : m.id === "ncmr" ? "By tier, special and timing" : "By sport, NAP and Special", "Points, record and the last 12 results in every section" + (EMPTY.length ? ". No settled tips yet: " + esc(EMPTY.join(" \u00b7 ")) : ""), (function () { /* Owner 20 Nov 09:39: fill every row: 10 cards = 2 rows of 5, 12 = 3 rows of 4 */ var n = (cards.match(/<section class="score/g) || []).length, c = n % 5 === 0 ? 5 : n % 4 === 0 ? 4 : n % 3 === 0 ? 3 : 0; return '<div class="score-grid g6 p2-scores pfsc' + (c ? " fill" : "") + '"' + (c ? ' style="--cols:' + c + '"' : "") + ">" + cards + "</div>"; })()) : "") +
           '<div class="pf-two">' + P("Next up <span class=\"tab-n\">" + upAll.length + "</span>", "In play first, then the next to start", upList) + P("Recent results <span class=\"tab-n\">" + recent.length + "</span>", "Newest first", resList) + "</div>" +
           "</section>";
       }).join("");
       /* Owner 12 Nov 15:21: one Meister at a time, chosen with tabs (deep links #meister / #cruncher still work) */
-      $("#meister-list").innerHTML = '<div id="m-tabs"></div>' + CHANGE_NOTE.replace('class="', 'class="pf-note ') + html;
+      $("#meister-list").innerHTML = '<section aria-labelledby="h-mvm"><div class="sec-head"><div><p class="eyebrow">Every Meister side by side</p><h2 class="sec-title" id="h-mvm">Meister v Meister</h2></div><a class="more" href="/performance#h-mvm">Charts on Performance</a></div><div class="panel gl-panel"><div id="m-glance"></div></div></section>' + /* Owner 25 Nov 12:05: Meister v Meister at the top of the Meisters page */
+        '<div id="m-tabs"></div>' + CHANGE_NOTE.replace('class="', 'class="pf-note ') + html;
+      meistersGlance($("#m-glance"));
       var mcur = (location.hash || "").slice(1); if (!MS.some(function (m) { return m.id === mcur; })) mcur = MS[0].id;
       var showM = function () {
         tabBar($("#m-tabs"), "Meister", MS.map(function (m) { var st = stats(p2().filter(function (t) { return t.meister === m.id; })); return [m.id, m.name, MCOLOR[m.id], pts(st.profit)]; }), mcur, function (t) { mcur = t; try { history.replaceState(null, "", "#" + t); } catch (e) { } showM(); });
         $$("[data-mtab]").forEach(function (sec) { sec.hidden = sec.getAttribute("data-mtab") !== mcur; });
-        MS.forEach(function (m) { if (m.id === mcur) { var mine = p2().filter(function (t) { return t.meister === m.id; }); multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.map(function (k) { return { name: MCODE[m.id] + k, color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine); } });
+        MS.forEach(function (m) { if (m.id === mcur) { var mine = p2().filter(function (t) { return t.meister === m.id; }); multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.filter(function (k) { return mine.some(function (t) { return t.result !== "open" && sportK(t) === k; }); }).map(function (k) { return { name: SPORTN[k], color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine); } });
       };
       MS.forEach(function (m) {
         var mine = p2().filter(function (t) { return t.meister === m.id; });
         headline($('[data-mhl="' + m.id + '"]'), mine);
-        multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.map(function (k) { return { name: MCODE[m.id] + k, color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine);
+        multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.filter(function (k) { return mine.some(function (t) { return t.result !== "open" && sportK(t) === k; }); }).map(function (k) { return { name: SPORTN[k], color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine);
       });
       showM();
     },
