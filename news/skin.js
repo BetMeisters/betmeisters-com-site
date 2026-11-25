@@ -5,7 +5,7 @@
   if (window.__mxSkin) return; window.__mxSkin = 1;
   var page = document.body.getAttribute('data-page') || '';
   var G = [["Home", "/", []],
-    ["Tips", "/tips", [["Meister tips", "/tips"], ["Value checker", "/value"]]],
+    ["Tips", "/tips", [["Meisters tips", "/tips"], ["Value checker", "/value"]]],
     ["Results", "/results", [["Results", "/results"], ["Performance", "/performance"], ["The Meisters", "/meisters"]]],
     ["News", "/news/", [["News home", "/news/"], ["Previews", "/news/previews.html"], ["Guides", "/news/guides.html"], ["Industry news", "/news/news.html"], ["Online casino", "/news/casino-news.html"]]],
     /* Owner 25 Nov 15:24: reviews are their own section, not under News */
@@ -71,7 +71,7 @@
   var ftr = document.getElementById('ftr');
   if (ftr) ftr.innerHTML = '<footer class="mx-foot"><div class="mx-wrap"><div class="mx-fcols">' +
     '<div><a class="mx-brand" href="/"><img src="/favicon.svg" alt="" width="30" height="34"><span><b>BET</b>MEISTERS</span></a><p>Independent tips from the Number Cruncher Meisters, every one priced and kept on the record, plus news, previews, guides and bookmaker reviews. We are not a bookmaker and take no bets.</p><p>Contact: tom@betmeisters.com</p><div class="foot-follow"><span>Follow us</span><a href="https://x.com/TheBetMeisters" target="_blank" rel="noopener" aria-label="BetMeisters on X"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"/></svg><b>X</b></a><a href="https://www.youtube.com/channel/UCr1opmSykVQ3hsCgVbYBMqA" target="_blank" rel="noopener" aria-label="BetMeisters on YouTube"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg><b>YouTube</b></a></div></div>' +
-    '<div><h4>Tips</h4><a href="/tips">Meister tips</a><a href="/value">Value checker</a></div>' +
+    '<div><h4>Tips</h4><a href="/tips">Meisters tips</a><a href="/value">Value checker</a></div>' +
     '<div><h4>Results</h4><a href="/results">Results</a><a href="/performance">Performance</a><a href="/meisters">The Meisters</a><a href="/article-price-first">How we price a tip</a></div>' +
     '<div><h4>News</h4><a href="/news/">News home</a><a href="/news/previews.html">Previews</a><a href="/news/guides.html">Guides</a><a href="/news/fpl.html">FPL</a><a href="/news/casino-news.html">Online casino</a></div><div><h4>Reviews</h4><a href="/news/bookie-reviews.html">Bookmaker reviews</a><a href="/news/casino-reviews.html">Casino reviews</a><a href="/news/how-we-score.html">How we score</a></div>' +
     '<div><h4>About</h4><a href="/news/how-we-score.html">How we score reviews</a><a href="/news/safer-gambling.html">Safer gambling</a><a href="/news/about.html">About us</a><a href="/privacy">Privacy and cookies</a></div></div>' +

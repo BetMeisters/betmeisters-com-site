@@ -691,7 +691,7 @@
   /* Owner 25 Nov 10:46: Combos page retired (combos are Combo Meister tips) */ /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
   /* Owner 23 Nov 15:53-16:08: one site, menu Home · Tips · Results · News (BM_MERGE) */
   var GNAV = [["home", "/", "Home", []],
-    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ].concat(VALUE_CHECKER ? [["Value checker", "/value", "value"]] : [])],
+    ["tips", "/tips", "Tips", [["Meisters tips", "/tips", "tips"], ].concat(VALUE_CHECKER ? [["Value checker", "/value", "value"]] : [])],
     ["results", "/results", "Results", [["Results", "/results", "results"], ["Performance", "/performance", "performance"], ["The Meisters", "/meisters", "meisters"]]],
     ["news", "/news/", "News", [["News home", "/news/", "nhome"], ["Previews", "/news/previews.html", "nprev"], ["Guides", "/news/guides.html", "nguide"], ["Industry news", "/news/news.html", "nnews"], ["Online casino", "/news/casino-news.html", "ncas"]]],
     /* Owner 25 Nov 15:24: reviews are their own section, not under News */ ["reviews", "/news/bookie-reviews.html", "Reviews", [["Bookmaker reviews", "/news/bookie-reviews.html", "nrev"], ["Casino reviews", "/news/casino-reviews.html", "ncrev"], ["How we score", "/news/how-we-score.html", "nhow"]]]];
