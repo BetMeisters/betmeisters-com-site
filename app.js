@@ -53,8 +53,8 @@
     var sports = {}; L.forEach(function (l) { sports[l.sport || "Football"] = 1; }); var sp = Object.keys(sports).length === 1 ? Object.keys(sports)[0] : "Multiple sports";
     BM.TIPS.push({ id: a.id, published: a.publishedAt || a.published || L[0].start, meister: "combo", phase: 2, combo: true, legs: L, comboRet: lost ? 0 : f,
       tier: "combo", sport: sp, comp: L.map(function (l) { return l.comp || ""; }).join(" + "),
-      selection: (L.length === 2 ? "Double" : "Treble") + ": " + L.map(function (l) { return l.sel; }).join(" + "),
-      market: (L.length === 2 ? "Double" : "Treble") + " (" + L.length + " legs)", betType: "Multiple", event: L.map(function (l) { return l.event; }).join(" \u00b7 "),
+      selection: L.length === 2 ? "Double" : "Treble",
+      market: (L.length === 2 ? "Double" : "Treble") + " (" + L.length + " legs)", betType: "Multiple", event: L.map(function (l) { return l.sel + " (" + l.event + ")"; }).join(" + "),
       start: L[0].start, lastStart: L[L.length - 1].start, price: Math.round(P * 100) / 100, minPrice: null, prob: C, stake: a.stake || 1, bookie: "", result: res, note: a.note || "", nap: false, value: false });
   });
   BM.COMBOS = [];
@@ -159,6 +159,11 @@
     }
     /* Asian quarter lines (10 Nov): half-won = half the stake wins, half pushed; half-lost = half the stake lost, half pushed */
     return t.result === "won" ? t.stake * (t.price - 1) : t.result === "lost" ? -t.stake : t.result === "half-won" ? t.stake / 2 * (t.price - 1) : t.result === "half-lost" ? -t.stake / 2 : 0;
+  }
+  /* Owner 25 Nov 10:56: combos show each leg on its own line, not one long grey line */
+  function comboLegsHTML(t) {
+    var uk = function (d) { try { return new Date(d).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" }) + " UK"; } catch (e) { return ""; } };
+    return '<ol class="cm-legs">' + t.legs.map(function (l) { return '<li><b>' + esc(l.sel) + '</b> <span class="cm-px">@ ' + fmtOdds(l.price) + '</span><small>' + esc(l.event) + (l.comp ? " \u00b7 " + esc(l.comp) : "") + " \u00b7 " + uk(l.start) + "</small></li>"; }).join("") + "</ol>";
   }
   function edgeOf(t) {
     if (!t.prob) return null;
@@ -824,7 +829,7 @@
     var body = lock
       ? '<h3 class="htip-sel">Pro tip · subscribers only</h3><p class="htip-ev" title="' + esc(t.event) + '">' + esc(t.event) + '</p><p class="htip-ln">' + where + '</p><p class="htip-ln"><a href="#join" data-join>Subscribe</a> to ' + esc(m.short || m.name) + " or get Full Meister Access to see it.</p>"
       : '<h3 class="htip-sel">' + selHTML(t) + ' <b class="htip-px">@ ' + fmtOdds(t.price) + "</b></h3>" +
-        '<p class="htip-ev" title="' + esc(t.event + " · " + (t.sport || "") + (t.comp ? " · " + t.comp : "")) + '">' + esc(t.event) + " · " + where + "</p>" +
+        (t.combo ? comboLegsHTML(t) : '<p class="htip-ev" title="' + esc(t.event + " · " + (t.sport || "") + (t.comp ? " · " + t.comp : "")) + '">' + esc(t.event) + " · " + where + "</p>") +
         '<div class="acca-chips">' + (e != null ? '<span class="acca-edge ' + cls(e) + '">' + (t.tomMethod ? '<span title="TOM\u2019s own assessment: market chance plus his grade">Edge</span> ' : "Edge ") + pct(e, true) + "</span>" : "") + (t.prob ? '<span class="acca-chip">' + (t.ew ? "Win" : "Chance") + " " + pct(t.prob) + "</span>" : "") + (t.ew && t.probPlace ? '<span class="acca-chip">Place ' + pct(t.probPlace) + "</span>" : '<span class="acca-chip">Bookmaker ' + pct(1 / t.price) + "</span>") + "</div>" + vcTip(t);
     var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + ALT(tm, "", " · ") + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
       (lock ? "" : '<p class="htip-sm">' + esc(t.market) + hcpExp(t) + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + exchLine(t).replace('class="tip-market exch-line"', 'class="htip-sm htip-exch"')) +
@@ -1124,7 +1129,7 @@
       : '<span class="tr-price">' + (lock ? "–" : fmtOdds(t.price)) + '</span><span class="tr-stake">' + stakeLbl(t) + "</span>";
     return '<details class="trow" data-tier="' + t.tier + '"><summary>' +
       '<span class="tr-time">' + tm.eat + ' UK' + ALT(tm, "<small>", "</small>") + '</span>' +
-      '<span class="tr-main"><span class="tr-sel">' + (lock ? ICON.lock + " Pro tip" : selHTML(t)) + '</span><span class="tr-ev">' + esc(t.event) + " · " + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "") + "</span></span>" +
+      '<span class="tr-main"><span class="tr-sel">' + (lock ? ICON.lock + " Pro tip" : selHTML(t)) + '</span><span class="tr-ev">' + (t.combo ? t.legs.map(function (l) { return esc(l.sel) + " @ " + fmtOdds(l.price) + " (" + esc(l.event) + ")"; }).join(" \u00b7 ") : esc(t.event) + " · " + esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "")) + "</span></span>" +
       '<span class="tr-tags">' + tierPill(t) + '<span class="badge ' + t.meister + '" title="' + esc(meisterById(t.meister).name) + '">' + esc(meisterById(t.meister).initials) + "</span>" + secTag(t) + extraTags(t) + "</span>" +
       '<span class="tr-right">' + right + '</span><span class="tr-chev" aria-hidden="true"></span></summary>' +
       '<div class="tr-body"><ul class="htips one">' + homeTip(t) + "</ul></div></details>";
