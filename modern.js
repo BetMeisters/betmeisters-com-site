@@ -3,7 +3,7 @@
   var home = document.body.getAttribute('data-page') === 'home';
   var sg = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2); };
   function hero(f) {
-    if (!home || document.querySelector('.mh')) return;
+    if (!home || window.BM_HOME2 || document.querySelector('.mh')) return; /* Owner 25 Nov: the home preview has its own compact strip */
     var root = document.querySelector('[data-page-root] main') || document.querySelector('main');
     if (!root) return;
     var r = (f && f.record) || null, c = f && f.clv;

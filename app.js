@@ -1404,6 +1404,52 @@
     box.innerHTML = '<p class="cs2-main">NCM beat the closing price on <b>' + beat + " of " + C.length + "</b> tips (" + Math.round(beat / C.length * 100) + "%), by <b>" + fmt(av(C)) + "</b> on average.</p>" + '<p class="cs2-sports">' + parts + "</p>" +
       (CT.length ? (function () { var bt = CT.filter(function (t) { return t.close < t.price; }).length; return '<p class="cs2-main" style="margin-top:10px">TOM beat the closing price on <b>' + bt + " of " + CT.length + "</b> tips (" + Math.round(bt / CT.length * 100) + "%), by <b>" + fmt(av(CT)) + "</b> on average.</p>"; })() : "");
   }
+  /* Owner 25 Nov 11:28: homepage preview (home-new.html): compact proof strip split with the lead story, Meisters at a glance, made v expected */
+  var GL_NAME = { cruncher: "Number Cruncher", ncmp: "Premium Events", ncmr: "Racing", combo: "Combo Meister" };
+  function glanceFig(list) {
+    var S = list.filter(function (t) { return t.result !== "open"; }), m = measures(S), wk = Date.now() - 7 * 864e5, p7 = 0, n7 = 0;
+    S.forEach(function (t) { if (new Date(t.start).getTime() >= wk) { p7 += profit(t); n7++; } });
+    var all = list.slice().sort(byStart);
+    m.p7 = p7; m.n7 = n7; m.first = all.length ? all[0].start : null; m.avgEdgeAll = measures(list).avgEdge;
+    return m;
+  }
+  function shortDay(iso) { return iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: SITE_TZ }) : "–"; }
+  function proofStrip(el) {
+    if (!el) return;
+    var m = measures(p2Set()), F = BM.NEWSFEED || { articles: [] }, A = (F.articles || []).slice(0, 3), lead = A[0];
+    var st = function (big, lab, c) { return '<a class="pf-st" href="/performance"><b class="' + (c || "") + '">' + big + "</b><span>" + lab + "</span></a>"; };
+    el.innerHTML = '<div class="pf-in"><div class="pf-l"><h1>Every tip priced. <span>Every result kept.</span></h1>' +
+      '<p class="pf-sub">Four Meisters. Every tip published before the start, with its price and our chance. Winners and losers stay on the record.</p>' +
+      '<div class="pf-stats">' + st(pts(m.profit), "points since 5 Nov", m.profit >= 0 ? "g" : "") + st(pct(m.roi, true), "return on stakes") +
+      (m.beat != null ? st(Math.round(m.beat * 100) + "%", "beat the closing price") : "") + st(p2Set().filter(function (t) { return t.result !== "void"; }).length, "settled tips") + "</div>" +
+      '<div class="pf-acts"><a class="pf-cta" href="/tips">See today\'s tips →</a><a class="pf-cta2" href="/meisters">Meet the Meisters</a></div></div>' +
+      (lead ? '<div class="pf-news"><p class="pf-nk">Latest news</p><a class="pf-lead" href="' + esc(lead.href) + '"><span class="pf-lab">' + esc(lead.label) + " · " + shortDay(lead.date) + "</span><b>" + esc(lead.title) + "</b><span class=\"pf-dek\">" + esc(lead.dek) + "</span></a>" +
+        A.slice(1).map(function (a) { return '<a class="pf-more" href="' + esc(a.href) + '"><span class="pf-lab">' + esc(a.label) + "</span>" + esc(a.title) + "</a>"; }).join("") +
+        '<a class="pf-all" href="' + esc(F.base || "/news/") + '">All news →</a></div>' : "") + "</div>";
+  }
+  function meistersGlance(el, chartEl) {
+    if (!el) return;
+    var row = function (lab, list, color, tot) {
+      var m = glanceFig(list), lw = m.won + " – " + m.lost, nt = list.filter(function (t) { return t.result !== "open" && t.result !== "void"; }).length;
+      return "<tr" + (tot ? ' class="gl-tot"' : "") + '><th scope="row">' + (color ? '<i class="gl-dot" style="background:' + color + '"></i>' : "") + lab + '</th><td class="pts ' + cls(m.profit) + '"><b>' + pts(m.profit) + "</b></td><td>" + pct(m.roi, true) + "</td><td>" + nt + "</td><td>" + lw + "</td><td>" + (m.avgEdgeAll != null ? pct(m.avgEdgeAll, true) : "–") +
+        "</td><td>" + (m.closeN >= 5 ? Math.round(m.beat * 100) + "%" : "–") + '</td><td class="pts ' + cls(m.p7) + '">' + (m.n7 ? pts(m.p7) : "–") + "</td><td>" + shortDay(m.first) + "</td></tr>";
+    };
+    el.innerHTML = '<div class="gl-wrap"><table class="glance"><thead><tr><th scope="col">Meister</th><th scope="col">Points</th><th scope="col">Return</th><th scope="col">Tips</th><th scope="col">Won – lost</th><th scope="col">Avg edge</th><th scope="col">Beat close</th><th scope="col">Last 7 days</th><th scope="col">Since</th></tr></thead><tbody>' +
+      P2M.map(function (id) { return row('<a href="/meisters#' + id + '">' + GL_NAME[id] + "</a>", p2().filter(function (t) { return t.meister === id; }), MCOLOR[id]); }).join("") +
+      row("All Meisters", p2(), "", true) + '</tbody></table></div><p class="gl-note">Settled tips at the advised stake. Avg edge = our chance × the price, minus 1, at publication. Beat close = the price we gave was bigger than the closing price (shown from 5 tips). <a href="/performance">Every chart and table →</a></p>';
+    if (chartEl) multiChart(chartEl, P2M.map(function (id) { return { name: GL_NAME[id], color: MCOLOR[id], test: function (t) { return t.meister === id; } }; }), p2());
+  }
+  function madeVExpected(el) {
+    if (!el) return;
+    var rows = P2M.concat(["all"]).map(function (id) {
+      var m = measures(p2Set().filter(function (t) { return id === "all" || t.meister === id; }));
+      if (!m.settled) return "";
+      return "<tr" + (id === "all" ? ' class="gl-tot"' : "") + '><th scope="row">' + (id === "all" ? "All" : '<i class="gl-dot" style="background:' + MCOLOR[id] + '"></i>' + GL_NAME[id]) + '</th><td class="pts ' + cls(m.exp) + '">' + pts(m.exp) + '</td><td class="pts ' + cls(m.profit) + '"><b>' + pts(m.profit) + "</b></td><td>" + Math.round(m.expW) + " → " + m.wins + "</td></tr>";
+    }).join("");
+    var a = measures(p2Set()), d = a.profit - a.exp;
+    el.innerHTML = '<p class="mve-lead">The edge on our tips said <b>' + pts(a.exp) + "</b> points. We have made <b class=\"pts " + cls(a.profit) + '">' + pts(a.profit) + "</b>, " + (d >= 0 ? "<b>" + pts(d) + "</b> more than expected: some of that is luck, and luck can turn." : "<b>" + pts(-d).replace("+", "") + "</b> less than expected: that is bad luck, and the edge is what we control.") + "</p>" + '<p class="mve-note">Each tip\'s edge (our chance × price, minus 1) times its stake gives the points we expect over time. Short runs swing either way; over hundreds of tips the two lines should meet.</p>' +
+      '<div class="gl-wrap"><table class="glance mve"><thead><tr><th scope="col">Meister</th><th scope="col">Edge said</th><th scope="col">Made</th><th scope="col">Winners (exp → won)</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
+  }
   function p2Sections(el) {
     /* Owner 6 Nov 11:45: twelve dashed/dotted lines were unreadable; now four small charts, one per sport, three solid Meister lines each */
     var keyH = '<div class="sm-key">' + P2M.map(function (id) { return '<span><i style="background:' + MCOLOR[id] + '"></i><b>' + MCODE[id] + '</b> ' + MSHORT[id] + "</span>"; }).join("") + "</div>", kEl = el.id ? $("#" + el.id + "-key") : null;
@@ -1666,8 +1712,9 @@
         var box = function (lab, big, sub, c) { return '<div class="ls-box"><p class="hl-label">' + lab + '</p><p class="ls-big ' + (c || "") + '">' + big + '</p><p class="hl-sub">' + sub + "</p></div>"; };
         $("#latest-list").insertAdjacentHTML("beforeend", '<div class="ls-boxes">' +
           box("Last six", pts(tot), w + " won · " + l + " lost", "pts " + cls(tot)) +
+          (window.BM_HOME2 ? box("By Meister", P2M.map(function (id) { var k = n(function (t) { return t.meister === id; }); return k ? k + " " + MCODE[id] : ""; }).filter(Boolean).join(" · "), "in the last six", "ls-small") + box("Pro v Free", n(function (t) { return t.tier === "pro"; }) + " / " + n(function (t) { return t.tier === "free"; }), "NCM and NCMP, in the last six") :
           box("NCM Pro v Free", pro + " / " + fr, "in the last six") +
-          box("NCM v NCMR", ncm + " / " + ncr, "in the last six") + "</div>");
+          box("NCM v NCMR", ncm + " / " + ncr, "in the last six")) + "</div>");
       })();
       /* Owner 16 Nov 11:05 (flow): latest settled combo and acca under Last six, each linking to its own record */
       (function () {
@@ -1686,6 +1733,7 @@
       if ($("#latest-snap")) latestSnap($("#latest-snap"));
       feedNews($("#news-block"));
       feedReviews($("#review-cards"));
+      if (window.BM_HOME2) { proofStrip($("#proof")); meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
     },
     tips: function () {
       var draw = function () {

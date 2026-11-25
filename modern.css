@@ -224,3 +224,53 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 .privacy-body{padding-top:28px;padding-bottom:40px}
 .privacy-body h3{font:700 19px/1.3 var(--f-body);margin:26px 0 6px}
 .privacy-body p{line-height:1.6;margin:0 0 10px}
+/* Owner 25 Nov 11:28: home preview — compact proof strip split with the lead story (about half the old hero height) */
+.pf { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; margin-inline: calc(50% - 50vw); margin-top: -28px; margin-bottom: 4px; padding-block: 26px 28px; }
+.pf:empty { display: none; }
+.pf-in { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.pf-l { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.pf h1 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.05; margin: 0 0 8px; text-transform: none; }
+.pf h1 span { color: var(--yellow); }
+.pf-sub { margin: 0 0 16px; color: #C9D2E6; font-size: 16px; max-width: 600px; white-space: normal; overflow: visible; text-overflow: clip; display: block; -webkit-line-clamp: unset; }
+.pf-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.pf-st { display: block; text-decoration: none; color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 10px 12px; }
+.pf-st:hover { background: rgba(255,255,255,.1); }
+.pf-st b { display: block; font: 800 clamp(22px, 2.4vw, 28px)/1.05 var(--f-display); white-space: nowrap; }
+.pf-st b.g { color: #5EE0A0; }
+.pf-st span { display: block; font-size: 12.5px; color: #9FB0D2; margin-top: 3px; }
+.pf-acts { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.pf-cta { background: var(--yellow); color: var(--navy); font-weight: 700; padding: 10px 18px; border-radius: 10px; text-decoration: none; }
+.pf-cta2 { color: #fff; font-weight: 600; text-decoration: none; }
+.pf-news { min-width: 0; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; }
+.pf-nk { margin: 0 0 6px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--yellow); }
+.pf-lead { display: block; color: #fff; text-decoration: none; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.12); }
+.pf-lead b { display: block; font-size: 18px; line-height: 1.25; margin: 2px 0 4px; }
+.pf-lead:hover b, .pf-more:hover { text-decoration: underline; }
+.pf-dek { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; color: #C9D2E6; }
+.pf-lab { display: block; font-size: 12px; color: #9FB0D2; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.pf-more { display: block; color: #EAF0FB; text-decoration: none; font-weight: 600; font-size: 14.5px; line-height: 1.3; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.08); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pf-all { margin-top: auto; padding-top: 8px; color: #fff; font-weight: 700; text-decoration: none; }
+@media (max-width: 900px) { .pf-in { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+@media (max-width: 560px) { .pf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pf { padding-block: 20px 22px; } .pf-sub { font-size: 15px; } }
+/* Meisters at a glance + made v expected */
+.gl-panel { padding: 6px 8px; }
+.gl-chart-panel { margin-top: 16px; }
+.gl-wrap { overflow-x: auto; }
+table.glance { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+table.glance th, table.glance td { padding: 10px 12px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+table.glance th:first-child { text-align: left; }
+table.glance thead th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); font-weight: 700; }
+table.glance tbody th { font-weight: 700; }
+table.glance tbody th a { color: inherit; text-decoration: none; }
+table.glance tbody th a:hover { text-decoration: underline; }
+table.glance tr.gl-tot th, table.glance tr.gl-tot td { border-bottom: 0; background: var(--surface-2); }
+table.glance .pts.pos { color: var(--pos, #138A4E); } table.glance .pts.neg { color: var(--neg, #C8102E); }
+.gl-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.gl-note { font-size: 13px; color: var(--ink-3); margin: 8px 12px 6px; }
+.mve-lead { font-size: 16px; margin: 0 0 12px; }
+table.glance.mve { font-size: 14px; }
+table.glance.mve th, table.glance.mve td { padding: 8px 8px; }
+@media (max-width: 560px) { table.glance th:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; } table.glance tr.gl-tot th:first-child { background: var(--surface-2); } }
+.mve-note { font-size: 13px; color: var(--ink-3); margin: 0 0 10px; }
+.ls-big.ls-small { font-size: 20px; line-height: 1.3; }
+@media (max-width: 760px) { body[data-page="home"] #proof { order: 0; } body[data-page="home"] section[aria-labelledby="h-glance"], body[data-page="home"] section[aria-labelledby="h-honest"] { order: 6; } body[data-page="home"] #proof ~ .nx-step { order: 9; } }
