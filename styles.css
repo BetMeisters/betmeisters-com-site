@@ -2043,6 +2043,12 @@ body[data-page="propicks"] .pp-line a { display: none; }
 .today-strip .ts-m { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; }
 .today-strip .ts-m .ts-mlab, .today-strip .ts-m .ts-big { margin: 0; }
 
+/* Owner 25 Nov 11:19: Today so far on one line */
+.today-strip { grid-template-columns: 1.1fr repeat(6, minmax(0, 1fr)) 1.5fr !important; }
+.today-strip > div:last-child .hl-sub { white-space: nowrap; }
+@media (max-width:1180px) { .today-strip { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; } .today-strip > div:last-child .hl-sub { white-space: normal; } }
+@media (max-width:560px) { .today-strip { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
