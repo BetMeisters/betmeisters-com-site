@@ -1454,6 +1454,21 @@
     multiChart($("#mve-chart"), [{ name: "Expected from the edge", color: "#9AA3B5", dash: "6 4", pf: function (t) { var e = edgeOf(t); return t.result === "void" || e == null ? 0 : t.stake * e; }, test: function () { return true; } },
       { name: "Made", color: "var(--chart-line)", test: function () { return true; } }], p2());
   }
+  /* Owner 25 Nov 11:50: home preview news + reviews in the new style (lead story like the header news card, headline list beside it; compact review cards) */
+  function newsHome2(el) {
+    if (!el) return;
+    var F = BM.NEWSFEED || { articles: [] }, A = (F.articles || []).slice(0, 6), lead = A[0];
+    if (!lead) return;
+    var meta = function (a) { return '<span class="nh-meta"><i style="background:' + (FEED_COL[a.label] || "#A9B4C8") + '"></i>' + esc(a.label) + " · " + shortDay(a.date) + (a.read ? " · " + a.read + " min read" : "") + "</span>"; };
+    el.innerHTML = '<div class="nh"><a class="nh-lead" href="' + esc(lead.href) + '">' + meta(lead) + (lead.kicker ? '<span class="nh-kick">' + esc(lead.kicker) + "</span>" : "") + "<b>" + esc(lead.title) + '</b><span class="nh-dek">' + esc(lead.dek) + '</span><span class="nh-go">Read the story →</span></a>' +
+      '<div class="nh-list">' + A.slice(1).map(function (a) { return '<a class="nh-item" href="' + esc(a.href) + '">' + meta(a) + "<b>" + esc(a.title) + "</b></a>"; }).join("") + "</div></div>";
+  }
+  function reviewsHome2(el) {
+    if (!el) return;
+    var R = (BM.NEWSFEED || {}).reviews || [];
+    if (!R.length) return;
+    el.innerHTML = '<ul class="rh">' + R.map(function (r) { var cas = /casino/i.test(r.kind || ""); return '<li><a class="rh-card" href="' + esc(r.href) + '"><span class="rh-top"><b>' + esc(r.name) + '</b><span class="rh-kind' + (cas ? " cas" : "") + '">' + (cas ? "Casino" : "Sportsbook") + '</span></span><span class="rh-sum">' + esc(r.summary) + '</span><span class="rh-go">Read the review →</span></a></li>'; }).join("") + "</ul>";
+  }
   function p2Sections(el) {
     /* Owner 6 Nov 11:45: twelve dashed/dotted lines were unreadable; now four small charts, one per sport, three solid Meister lines each */
     var keyH = '<div class="sm-key">' + P2M.map(function (id) { return '<span><i style="background:' + MCOLOR[id] + '"></i><b>' + MCODE[id] + '</b> ' + MSHORT[id] + "</span>"; }).join("") + "</div>", kEl = el.id ? $("#" + el.id + "-key") : null;
@@ -1741,7 +1756,7 @@
         var L = p2Set().slice(-30), tot = 0, w = 0, l = 0; L.forEach(function (t) { tot += profit(t); if (/won|placed/.test(t.result)) w++; else if (/lost/.test(t.result)) l++; });
         $("#latest-list").insertAdjacentHTML("beforeend", '<div class="form30"><p class="mve-ck">Form, last 30 settled tips <span>oldest → newest</span></p><div class="f30">' + L.map(function (t) { var r = /won|placed/.test(t.result) ? "w" : /lost/.test(t.result) ? "l" : "v"; return '<i class="' + r + '" title="' + esc(t.selection + " · " + MCODE[t.meister] + " · " + pts(profit(t))) + '" style="--mc:' + MCOLOR[t.meister] + '"></i>'; }).join("") + '</div><p class="f30-sum">' + w + " won · " + l + ' lost · <b class="pts ' + cls(tot) + '">' + pts(tot) + "</b> pts · the thin stripe under each block is the Meister's colour</p></div>");
       })();
-      if (window.BM_HOME2) { proofStrip($("#proof")); meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
+      if (window.BM_HOME2) { newsHome2($("#news-block")); reviewsHome2($("#review-cards")); proofStrip($("#proof")); meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
     },
     tips: function () {
       var draw = function () {
