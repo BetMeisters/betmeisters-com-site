@@ -149,7 +149,7 @@
   function pts(x) { if (x == null) return "–"; var r = Math.round(x * 100) / 100; return (r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(2); }
   function pct(x, signed) { if (x == null) return "–"; var r = Math.round(x * 1000) / 10; return (signed && r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(1) + "%"; }
   function cls(x) { return x > 0.0001 ? "pos" : x < -0.0001 ? "neg" : ""; }
-  /* Keith 24 Nov 19:52: Bet Value Checker on price-based picks only (NCM tips, Combo Meister, Acca Meister; TOM/OCM/OAM keep stats only, 46.005).
+  /* Owner 24 Nov 19:52: Bet Value Checker on price-based picks only (NCM tips, Combo Meister, Acca Meister; TOM/OCM/OAM keep stats only, 46.005).
      Fair price = 1 / our fair chance. The punter types the price they can get and sees value v fair. */
   /* ON/OFF SWITCH for the whole Bet Value Checker: set to false to remove the menu item and every card panel/line (and drop "value" from PAGES in com/live_build.py to remove the page). */
   var VALUE_CHECKER = true;

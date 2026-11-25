@@ -24,7 +24,7 @@
       fpl: ['Fantasy <span>Premier League</span>', 'Deadlines, chips, captains and transfers, with the market behind every call.'],
       section: ['Betting <span>guides</span>', 'Plain-English guides: odds, margins, handicaps, each way and more.'],
       bonuses: ['BetMeisters <span>News</span>', ''] };
-    /* Keith 24 Nov 15:32: online casino section (casino news + casino reviews pages) */
+    /* Owner 24 Nov 15:32: online casino section (casino news + casino reviews pages) */
     var bid = window.BMN_ID || (location.hash || '').slice(1);
     if (page === 'reviews' && bid === 'casino') T.reviews = ['Online casino <span>reviews</span>', 'UK-licensed casinos scored on a published method. No score is for sale.'];
     else if (page === 'reviews' && bid !== 'bookies') T.reviews = ['Bookmaker and casino <span>reviews</span>', 'Scored on a published method. No score is for sale.'];

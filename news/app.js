@@ -9,16 +9,16 @@
   var secName = function (k) { var s = D.sections.filter(function (x) { return x[0] === k; })[0]; return s ? s[1] : k; };
   var byDate = function (a, b) { return new Date(b.date) - new Date(a.date); };
   var TOPICS = [["general", "General news"], ["sports-betting", "Sports betting"], ["online-casino", "Online casino"], ["bonuses", "Bonuses, rewards and VIP"], ["sweeps-markets", "Sweepstakes and prediction markets"], ["crypto", "Crypto"], ["licensing", "Licensing and regulation"], ["enforcement", "Enforcement"], ["safer-gambling", "Safer gambling"], ["accas-combos", "Accas and combos"]];
-  /* Keith 16 Nov 16:56: sport tags for Meister previews (and any article): filter, search and a record of what we produce */
+  /* Owner 16 Nov 16:56: sport tags for Meister previews (and any article): filter, search and a record of what we produce */
   var SPORTS = [["football", "Football"], ["horse-racing", "Horse racing"], ["tennis", "Tennis"], ["basketball", "Basketball"], ["nfl", "NFL"], ["ice-hockey", "Ice hockey"], ["handball", "Handball"], ["cricket", "Cricket"], ["rugby", "Rugby"], ["golf", "Golf"], ["darts", "Darts"], ["snooker", "Snooker"], ["boxing-mma", "Boxing and MMA"], ["baseball", "Baseball"], ["volleyball", "Volleyball"], ["motor-sport", "Motor sport"], ["esports", "eSports"]];
-  /* Keith 16 Nov 17:34: preview types (daily racing card, daily football, other sports roundup, event previews, weekend football from Thursday) and an FPL section */
+  /* Owner 16 Nov 17:34: preview types (daily racing card, daily football, other sports roundup, event previews, weekend football from Thursday) and an FPL section */
   var PTYPES = [["tip", "Tip previews"], ["racing-card", "Racing card"], ["daily-football", "Daily football"], ["other-sports", "Other sports roundup"], ["event", "Event previews"], ["weekend-football", "Weekend football"], ["acca", "Acca previews"], ["combo", "Combo previews"]];
   var ptOf = function (a) { return a.previewType || "tip"; };
   var FPLT = [["deadline", "Deadline previews"], ["review", "Weekly reviews"], ["guide", "FPL guides"]];
   var bmBox = function () { return '<a class="tip bm-link" href="' + BM_URL + '" rel="noopener"><span><span class="t-who">BetMeisters tips</span><br><span class="t-sel">See today\'s tips, chances and the full public record</span><br><span class="t-ev">Every tip, win or lose · no affiliate deals, adverts or sponsorship</span></span><span class="t-px">→</span></a>'; };
   var sportSlug = function (name) { var t = SPORTS.filter(function (x) { return x[1] === name; })[0]; return t ? t[0] : ""; };
   var topicSlug = function (name) { var t = TOPICS.filter(function (x) { return x[1] === name; })[0]; return t ? t[0] : ""; };
-  /* Keith 16 Nov 16:51: one tag list for articles AND reviews (same tags as the tips' sport tags); most items carry more than one */
+  /* Owner 16 Nov 16:51: one tag list for articles AND reviews (same tags as the tips' sport tags); most items carry more than one */
   var REVCATS = [["bookies", "Bookie reviews", "Sports betting"], ["casino", "Online casino reviews", "Online casino"], ["sweeps-markets", "Sweepstakes and prediction reviews", "Sweepstakes and prediction markets"], ["crypto", "Crypto site reviews", "Crypto"]];
   var opTags = function (o) { return o.tags || []; };
   var revCatOf = function (o) { var t = opTags(o)[0]; return REVCATS.filter(function (c) { return c[2] === t; })[0] || REVCATS[0]; };
@@ -59,10 +59,10 @@
   if (page === "section" || page === "article" || page === "news" || page === "reviews" || page === "previews" || page === "bonuses" || page === "fpl") window.addEventListener("hashchange", function () { location.reload(); });
 
   /* ---------- pieces ---------- */
-  /* Keith 17 Nov 09:02: smaller, clearer bet boxes. One compact layout for singles and multiples: label row, selection, event, then a stats line; legs as a tight list */
+  /* Owner 17 Nov 09:02: smaller, clearer bet boxes. One compact layout for singles and multiples: label row, selection, event, then a stats line; legs as a tight list */
   var shortWhen = function (iso) { return tz(iso, "Africa/Kampala", { weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }) + " EAT"; };
   var shortWho = function (w) { return { "Number Cruncher Meister": "Number Cruncher", "The Original Meister": "Original Meister" }[w] || String(w || ""); };
-  /* Keith 17 Nov 10:20: Pro Picks teaser. Never names a pick, an event or a price: counts, sports, average edge and the record only */
+  /* Owner 17 Nov 10:20: Pro Picks teaser. Never names a pick, an event or a price: counts, sports, average edge and the record only */
   function ppTeaser(art) {
     var P = D.proPicks, today = tz(new Date().toISOString(), "Africa/Kampala", { year: "numeric", month: "2-digit", day: "2-digit" });
     if (!P || !P.n) return "";
@@ -74,8 +74,8 @@
     var rec = P.since && P.since.settled ? " Record since 14 Nov: " + P.since.settled + " settled, " + P.since.won + " won, " + (P.since.pts >= 0 ? "+" : "\u2212") + Math.abs(P.since.pts).toFixed(2) + " pts." : "";
     return '<a class="pp-tease" href="' + BM_URL + '" rel="noopener"><span class="pp-tag">Pro Picks</span><span class="pp-tx"><b>' + lead + "</b> Average edge " + (P.avgEdge >= 0 ? "+" : "") + (Math.round(P.avgEdge * 1000) / 10) + "%. Selections for BetMeisters.com subscribers only." + rec + '</span><span class="pp-go">BetMeisters.com \u2192</span></a>';
   }
-  /* Keith 17 Nov 09:35: every bet box is the same default size and lines up: header row (label, Meister, price), body, then a stats row and footer pinned to the bottom */
-  /* Keith 17 Nov 11:56: boxes follow BetMeisters.com live (D.bmLive from news/sync_record.js): result, start time, legs; a tip that is now Pro shows no selection */
+  /* Owner 17 Nov 09:35: every bet box is the same default size and lines up: header row (label, Meister, price), body, then a stats row and footer pinned to the bottom */
+  /* Owner 17 Nov 11:56: boxes follow BetMeisters.com live (D.bmLive from news/sync_record.js): result, start time, legs; a tip that is now Pro shows no selection */
   function liveOf(id) { return (D.bmLive || {})[id] || null; }
   var RES_TXT = { won: "Won", lost: "Lost", void: "Void", "half-won": "Half won", "half-lost": "Half lost", placed: "Placed" };
   function tipBox(t) {
@@ -91,7 +91,7 @@
       '<span class="bx-st"><span><small>Chance</small><b>' + Math.round(t.chance * 1000) / 10 + '%</b></span><span><small>' + (res ? "Result" : started ? "Status" : "Starts (EAT)") + "</small><b" + (res ? ' class="res-' + res + '"' : "") + ">" + (res ? RES_TXT[res] || res : started ? "In play" : shortWhen(t.start).replace(" EAT", "")) + "</b></span><span><small>Stake</small><b>" + (t.stake || 1) + " pt</b></span></span>" +
       '<span class="bx-f">Record at BetMeisters.com · no affiliate deals · 18+</span></a>';
   }
-  /* Keith 16 Nov 17:45: acca and combo previews carry the full multiple, every leg, with its chance and the long-odds warning */
+  /* Owner 16 Nov 17:45: acca and combo previews carry the full multiple, every leg, with its chance and the long-odds warning */
   function multiBox(m, maxLegs) {
     if (!m) return "";
     var oneIn = Math.max(2, Math.round(1 / m.chance));
@@ -111,7 +111,7 @@
   }
   function recordStrip() {
     var r = D.record, cell = function (lab, x) { return '<div><div class="rk">' + lab + '</div><div class="rb ' + (x.pts >= 0 ? "pos" : "neg") + '">' + (x.pts >= 0 ? "+" : "−") + Math.abs(x.pts).toFixed(2) + ' pts</div><div class="rs">' + x.n + " settled · " + x.won + " won</div></div>"; };
-    /* Keith 16 Nov 18:10: dark record box in the middle, three equal boxes */
+    /* Owner 16 Nov 18:10: dark record box in the middle, three equal boxes */
     /* Owner 20 Nov 18:32: NCM Racing Meister added (its record from 19 Nov); four boxes: label, NCM, TOM, NCMR */
     return '<div class="record r4"><div class="rec-lab"><div class="rk">The BetMeisters record</div><p>Every tip quoted here is on the public record at BetMeisters.com, win or lose. As of ' + esc(r.asOf) + ".</p></div>" + cell("Number Cruncher Meister", r.ncm) + cell("The Original Meister", r.tom) + (r.ncmr ? cell("NCM Racing Meister", r.ncmr) : "") + "</div>";
   }
@@ -119,10 +119,10 @@
   /* ---------- pages ---------- */
   var A = D.articles.slice().sort(byDate);
   if (page === "home") {
-    /* Keith 16 Nov 17:59-18:00: home top = ONE lead (calendar pick: article.lead, else newest event / weekend / news), a 'Today' strip (racing card, football, other sports, today's tips), 'From the desk' (newest news, guide, review, acca/combo), then tip boxes; nothing shown twice */
+    /* Owner 16 Nov 17:59-18:00: home top = ONE lead (calendar pick: article.lead, else newest event / weekend / news), a 'Today' strip (racing card, football, other sports, today's tips), 'From the desk' (newest news, guide, review, acca/combo), then tip boxes; nothing shown twice */
     var shown = {}, take = function (a) { if (a) shown[a.id] = 1; return a; };
     var notShown = function (a) { return !shown[a.id]; };
-    /* Keith 17 Nov 08:55: the home top rotates with each batch. A 'lead' flag only holds on the Kampala day it was published (or until leadUntil); after that the newest news, guide, event or weekend preview leads. Refreshed tiles say 'Updated HH:MM today'; a 'New today' line lists everything published or updated since midnight. */
+    /* Owner 17 Nov 08:55: the home top rotates with each batch. A 'lead' flag only holds on the Kampala day it was published (or until leadUntil); after that the newest news, guide, event or weekend preview leads. Refreshed tiles say 'Updated HH:MM today'; a 'New today' line lists everything published or updated since midnight. */
     var kday = function (iso) { return tz(iso, "Africa/Kampala", { year: "numeric", month: "2-digit", day: "2-digit" }); };
     var todayK = kday(new Date().toISOString());
     var leadOk = function (a) { return a.lead && (a.leadUntil ? new Date(a.leadUntil) > new Date() : kday(a.date) === todayK); };
@@ -133,25 +133,25 @@
     var tile = function (t) { var x = A.filter(function (a) { return a.section === "previews" && ptOf(a) === t[0] && notShown(a); })[0]; if (x) take(x);
       return '<a class="today-tile" href="' + (x ? "article.html#" + x.id : "previews.html#" + t[0]) + '"><span class="kick">' + esc(t[1]) + "</span><b>" + esc(x ? x.title : "Coming soon") + '</b><span class="meta">' + (x ? whenMeta(x) + " · " + x.read + " min read" : esc(t[2])) + "</span></a>"; };
     var todayH = TODAY.map(tile).join("");
-    /* Keith 17 Nov 11:51: the Today column ended short of the lead; extra headlines (news, then non-tip previews) are added below, and only as many as fit beside the lead are shown */
+    /* Owner 17 Nov 11:51: the Today column ended short of the lead; extra headlines (news, then non-tip previews) are added below, and only as many as fit beside the lead are shown */
     var XT = [];
     var OPN = (D.operators || []).filter(function (o) { return !o.example && !o.demo; });
     var revNew = OPN.slice().sort(function (x, y) { return String(y.addedAt || "").localeCompare(String(x.addedAt || "")); })[0];
     var desk = [["News", A.filter(function (a) { return a.section === "news" && notShown(a); })[0]], ["Guide", A.filter(function (a) { return a.section === "guides" && notShown(a); })[0]], ["Acca or combo", A.filter(function (a) { return a.section === "previews" && /acca|combo/.test(ptOf(a)) && notShown(a); })[0]]];
     desk.forEach(function (d) { take(d[1]); });
     var deskH = desk.filter(function (d) { return d[1]; }).map(function (d) { var x = d[1]; return '<div class="card"><div class="kick">' + esc(d[0]) + " · " + esc(x.kicker.split(" · ").slice(-1)[0]) + '</div><h3><a href="article.html#' + x.id + '">' + esc(x.title) + "</a></h3><p>" + esc(x.dek) + '</p><div class="meta">' + whenMeta(x) + " · " + x.read + " min read</div></div>"; }).join("") +
-      /* Keith 17 Nov 11:53: two reviews in the desk card, title and a short line each */
+      /* Owner 17 Nov 11:53: two reviews in the desk card, title and a short line each */
       (revNew ? '<div class="card rev2"><div class="kick">Reviews · newest</div>' + OPN.slice().sort(function (x, y) { return String(y.addedAt || "").localeCompare(String(x.addedAt || "")); }).slice(0, 2).map(function (o) { return '<div class="rv"><span class="kick" style="color:var(--ink-3)">' + esc(revCatOf(o)[1]) + '</span><h3><a href="review.html#' + o.id + '">' + esc(o.name) + ' review</a></h3><p class="rv-ln">' + esc((o.verdict || "").split(". ")[0]) + '.</p><div class="meta">' + (o.score != null ? o.score.toFixed(1) + " out of 10" : o.provisional != null ? (o.desk ? "Desk review " + o.provisional.toFixed(1) + " out of 10" : "Provisional " + o.provisional.toFixed(1) + " · in progress") : "In progress") + "</div></div>"; }).join("") + "</div>" : "");
-    /* Keith 16 Nov 19:32: only tips that can still be backed (first start in the future); started tips drop off the home tip wall */
+    /* Owner 16 Nov 19:32: only tips that can still be backed (first start in the future); started tips drop off the home tip wall */
     var notStarted = function (a) { var o = a.tip || a.multi, L = o && liveOf(o.id); if (L && (L.r !== "open" || L.pro)) return false;
       var st = a.tip ? (L && L.st || a.tip.start) : (a.multi && a.multi.legs.length ? ((L && L.legs && L.legs.length ? L.legs : a.multi.legs).map(function (l) { return l.st || l.start; }).sort()[0]) : ""); return st && new Date(st) > new Date(); };
     var PV0 = A.filter(function (a) { return a.section === "previews" && (a.tip || a.multi) && notShown(a) && notStarted(a); });
-    /* Keith 17 Nov 09:02: two multiples side by side, then up to three singles */
+    /* Owner 17 Nov 09:02: two multiples side by side, then up to three singles */
     var PVm = PV0.filter(function (a) { return a.multi; }).slice(0, 3), PVs = PV0.filter(function (a) { return !a.multi; });
     var PV = PVm.concat(PVs).slice(0, 6); if (PV.length > 3 && PV.length < 6) PV = PV.slice(0, 3);
     var OPS = OPN;
     var revCard = function (o) { return '<div class="card"><div class="kick">' + esc(revCatOf(o)[1]) + (o.draft ? " · in progress" : o.desk ? " · desk review" : "") + '</div><h3><a href="review.html#' + o.id + '">' + esc(o.name) + ' review</a></h3><p>' + esc((o.verdict || "").split(". ")[0]) + '.</p><div class="meta">' + (o.score != null ? o.score.toFixed(1) + " out of 10" : o.provisional != null ? (o.desk ? "Desk review " + o.provisional.toFixed(1) + " out of 10" : "Provisional " + o.provisional.toFixed(1) + " · not ranked yet") : "Score to come") + " · " + opTags(o).map(function (t) { return esc(t); }).join(", ") + "</div></div>"; };
-    /* Keith 17 Nov 09:02: the lead box looked empty: an excerpt from the piece, then 'Also on the desk' headlines fill it */
+    /* Owner 17 Nov 09:02: the lead box looked empty: an excerpt from the piece, then 'Also on the desk' headlines fill it */
     var leadEx = (function () { var t = (lead.body || []).join(" ").replace(/<h[23][^>]*>.*?<\/h[23]>/g, " ").replace(/<\/(p|li|ul|ol|tr|td|div)>/g, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(); var w = t.split(" "); return w.length > 70 ? w.slice(0, 70).join(" ") + "…" : t; })();
     var ALSO = A.filter(function (a) { return notShown(a) && !(a.section === "previews" && (a.tip || a.multi)); }).slice(0, 3); ALSO.forEach(take);
     var alsoH = ALSO.length ? '<div class="also"><div class="kick" style="color:var(--ink-3)">Also on the desk</div>' + ALSO.map(function (a) { return '<a href="article.html#' + a.id + '"><span class="kick">' + esc(a.kicker.split(" · ")[0]) + "</span><b>" + esc(a.title) + "</b></a>"; }).join("") + "</div>" : "";
@@ -163,7 +163,7 @@
       '<div class="front" style="margin-top:22px"><article class="lead"><div class="kick">' + esc(lead.kicker) + '</div><h2><a href="article.html#' + lead.id + '">' + esc(lead.title) + '</a></h2><p class="dek">' + esc(lead.dek) + "</p>" + '<div class="meta">By the BetMeisters desk · ' + whenMeta(lead) + " · " + lead.read + " min read</div>" + (lead.multi ? multiBox(lead.multi) : lead.tip ? tipBox(lead.tip) : '<p class="lead-ex">' + esc(leadEx) + '</p><a class="lead-more" href="article.html#' + lead.id + '">Read the full ' + (lead.section === "guides" ? "guide" : lead.section === "previews" ? "preview" : "story") + " →</a>") + alsoH + "</article>" +
       '<aside class="today"><div class="sec-h" style="margin:0 0 6px"><h2 style="font-size:22px">Today</h2><a href="previews.html">All previews →</a></div>' + todayH + "</aside></div>" +
       '<div class="sec-h"><h2>From the desk</h2><a href="news.html">All news →</a></div><div class="cards desk4">' + deskH + "</div>" +
-      /* Keith 16 Nov 19:23: no topic filter chips on the home page; filters live on News, Previews, Guides */
+      /* Owner 16 Nov 19:23: no topic filter chips on the home page; filters live on News, Previews, Guides */
       (PV.length ? '<div class="sec-h"><h2>Tips from BetMeisters.com</h2><a href="previews.html#tip">All tip previews →</a></div><p class="meta" style="margin:-4px 0 12px">Copied exactly as published on BetMeisters.com, which takes no affiliate deals, adverts or sponsorship. Tap a box for its record on BetMeisters.com, or the headline for the full preview.</p>' + ppTeaser() +
         '<div class="tipwall grid3">' + PV.map(function (a) { return '<div class="tw-item"><div class="kick"><a href="article.html#' + a.id + '" style="text-decoration:none">' + esc(a.title) + "</a></div>" + (a.multi ? multiBox(a.multi, 4) : tipBox(a.tip)) + "</div>"; }).join("") + "</div>" : "") +
       recordStrip() +
@@ -187,7 +187,7 @@
       '<nav class="chips topic-menu" aria-label="Sports">' + SPORTS.map(function (t) { var n = cnt(t[1]); return '<a class="chip' + (t[0] === sk ? " on" : "") + (n ? "" : " zero") + '" href="previews.html#' + t[0] + '">' + t[1] + " · " + n + "</a>"; }).join("") + "</nav>" +
       (PL.length ? '<div class="tipwall">' + PL.map(function (a) { return '<div class="card"><div class="kick">' + esc(a.kicker) + '</div><h3><a href="article.html#' + a.id + '">' + esc(a.title) + "</a></h3><p>" + esc(a.dek) + "</p>" + (a.multi ? multiBox(a.multi) : a.tip ? tipBox(a.tip) : bmBox()) + '<div class="meta">' + dateOnly(a.date) + " · " + a.read + " min read · " + (a.sports || []).map(function (t) { return '<a href="previews.html#' + sportSlug(t) + '">' + esc(t) + "</a>"; }).join(", ") + "</div></div>"; }).join("") + "</div>" : '<p class="empty">No ' + esc(sn || "") + " previews yet. They are written when a BetMeisters tip on this sport goes up.</p>");
   }
-  /* Keith 16 Nov 17:14: Bonuses and promotions. Operators can buy a highly placed spot, always labelled, always linked to the real review and score; every offer approved for the country it is shown to */
+  /* Owner 16 Nov 17:14: Bonuses and promotions. Operators can buy a highly placed spot, always labelled, always linked to the real review and score; every offer approved for the country it is shown to */
   if (page === "bonuses") {
     var bk = hashId(), bt = bk === "sports-betting" ? "Sports betting" : bk === "online-casino" ? "Online casino" : "";
     var OF = (D.offers || []).filter(function (f) { return !bt || f.product === bt; });
@@ -220,7 +220,7 @@
   }
   if (page === "news") {
     var tk = hashId() || window.BMN_ID, tn = (TOPICS.filter(function (t) { return t[0] === tk; })[0] || [])[1];
-    var NL = A.filter(function (a) { return a.section === "news"; }) /* Keith 17 Nov 11:56: News page = news only; previews, guides and FPL have their own pages */.filter(function (a) { return !tn || (a.topics || []).indexOf(tn) >= 0; });
+    var NL = A.filter(function (a) { return a.section === "news"; }) /* Owner 17 Nov 11:56: News page = news only; previews, guides and FPL have their own pages */.filter(function (a) { return !tn || (a.topics || []).indexOf(tn) >= 0; });
     document.title = (tn || "News") + " · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(tn || "All news") + '</h2><span class="meta">' + NL.length + (NL.length === 1 ? " story" : " stories") + "</span></div>" +
       '<nav class="chips topic-menu" aria-label="Topics"><a class="chip' + (tn ? "" : " on") + '" href="news.html">All</a>' + TOPICS.map(function (t) { return '<a class="chip' + (t[0] === tk ? " on" : "") + '" href="news.html#' + t[0] + '">' + t[1] + "</a>"; }).join("") + "</nav>" +
@@ -303,7 +303,7 @@
     draw();
   }
 })();
-/* Keith 17 Nov 11:51: Today column fills down to the bottom of the lead (desktop only) */
+/* Owner 17 Nov 11:51: Today column fills down to the bottom of the lead (desktop only) */
 (function () {
   function fitToday() {
     var lead = document.querySelector(".front > .lead"), xs = document.querySelectorAll(".today .xt");
