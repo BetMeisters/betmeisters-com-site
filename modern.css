@@ -357,3 +357,7 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
   .page-head.ph-big .ph-st span { font-size: 12.5px; }
 }
 @media (min-width: 981px) { .page-head.ph-big { padding-block: 0; } .page-head.ph-big .wrap { padding-block: 22px 24px; } .page-head.ph-big .ph-side .mh-ne { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } }
+/* Owner 25 Nov 11:59: no seam between the sticky masthead and the navy band under it: the band starts in the masthead's exact navy, and the masthead covers any sub-pixel gap while scrolling */
+.mast { background: var(--navy); box-shadow: 0 1px 0 var(--navy), 0 6px 16px rgba(5, 12, 30, .18); }
+.mh, .pf { background: linear-gradient(180deg, var(--navy) 0%, var(--navy) 18%, var(--navy-2) 100%); }
+.page-head { background: var(--navy); }
