@@ -361,3 +361,6 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
 .mast { background: var(--navy); box-shadow: 0 1px 0 var(--navy), 0 6px 16px rgba(5, 12, 30, .18); }
 .mh, .pf { background: linear-gradient(180deg, var(--navy) 0%, var(--navy) 18%, var(--navy-2) 100%); }
 .page-head { background: var(--navy); }
+/* Owner 25 Nov 12:32: today bar on tablet/phone: Today's card and Today so far take full rows, the 6 tier boxes sit in neat rows of 3 */
+@media (max-width: 1180px) { .today-strip { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; } .today-strip > div:first-child, .today-strip > div:last-child { grid-column: span 3; } }
+@media (max-width: 560px) { .today-strip { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; row-gap: 14px !important; } .today-strip > div:first-child, .today-strip > div:last-child { grid-column: 1 / -1; } .today-strip > div:last-child { border-top: 1px solid var(--line); padding-top: 12px; } .today-strip > div:first-child { border-bottom: 1px solid var(--line); padding-bottom: 12px; } .today-strip .ts-m .ts-mlab .tier { font-size: 10px; padding: 4px 7px 4px 5px; } }
