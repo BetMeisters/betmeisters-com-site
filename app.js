@@ -1449,7 +1449,7 @@
     if (!el) return;
     var rows = P2M.concat(["all"]).map(function (id) {
       var m = measures(p2Set().filter(function (t) { return id === "all" || t.meister === id; }));
-      if (!m.settled) return "";
+      /* Owner 25 Nov 12:08: every live Meister always has a row (Premium Events shows zeros until its first result) */
       return "<tr" + (id === "all" ? ' class="gl-tot"' : "") + '><th scope="row">' + (id === "all" ? "All" : '<i class="gl-dot" style="background:' + MCOLOR[id] + '"></i>' + GL_NAME[id]) + '</th><td class="pts ' + cls(m.exp) + '">' + pts(m.exp) + '</td><td class="pts ' + cls(m.profit) + '"><b>' + pts(m.profit) + "</b></td><td>" + Math.round(m.expW) + " → " + m.wins + "</td></tr>";
     }).join("");
     var a = measures(p2Set()), d = a.profit - a.exp;
