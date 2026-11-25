@@ -2025,6 +2025,11 @@ body[data-page="propicks"] .pp-line a { display: none; }
 .cm-legs b { font-weight: 700; } .cm-legs .cm-px { color: #8a6d1a; font-weight: 700; }
 .cm-legs small { display: block; color: var(--muted, #5b6478); font-size: 12.5px; }
 
+/* Owner 25 Nov 11:01: today bar shows each Meister's own circle and coloured pill */
+.today-strip .ts-mlab { display: flex; align-items: center; gap: 6px; }
+.today-strip .ts-mlab .badge { width: 22px !important; height: 22px !important; min-width: 22px; font-size: 9.5px !important; font-size: 9.5px; line-height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; padding: 0; flex: none; }
+.today-strip .ts-pill { color: #fff; font: 700 11px/1 var(--mono, ui-monospace, monospace); letter-spacing: .06em; padding: 4px 8px; border-radius: 999px; }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}

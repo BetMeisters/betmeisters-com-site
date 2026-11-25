@@ -1498,7 +1498,7 @@
     if (!L.length) { el.innerHTML = ""; return; }
     var s = stats(L), c = function (f) { return L.filter(f).length; };
     el.innerHTML = '<div class="today-strip"><div><p class="hl-label">Today\'s card</p><p class="ts-big">' + L.length + ' tips</p><p class="hl-sub">UK day \u00b7 ' + c(function (t) { return t.result === "open" && new Date(t.start) > Date.now(); }) + ' to start</p></div>' +
-      P2M.map(function (id) { var n = c(function (t) { return t.meister === id; }); return '<div><p class="hl-label"><span class="mdot" style="background:' + MCOLOR[id] + '"></span>' + MCODE[id] + '</p><p class="ts-big">' + n + '</p><p class="hl-sub">' + ({ meister: "Original Meister", cruncher: "Number Cruncher", ncmr: "Racing Meister", combo: "Doubles and trebles" }[id] || MSHORT[id]) + "</p></div>"; }).join("") +
+      P2M.map(function (id) { var n = c(function (t) { return t.meister === id; }); return '<div class="ts-m"><p class="hl-label ts-mlab"><span class="badge ' + id + '">' + esc(meisterById(id).initials) + '</span><span class="ts-pill" style="background:' + MCOLOR[id] + '">' + MCODE[id] + '</span></p><p class="ts-big">' + n + '</p><p class="hl-sub">' + ({ meister: "Original Meister", cruncher: "Number Cruncher", ncmr: "Racing Meister", combo: "Doubles and trebles" }[id] || MSHORT[id]) + "</p></div>"; }).join("") +
       '<div><p class="hl-label">NCM Pro / Free</p><p class="ts-big">' + c(isNP) + " / " + c(isNF) + '</p><p class="hl-sub">Pro = 2.00 to 5.99</p></div>' +
       /* Owner 22 Nov 13:51: shorter strip wording (no repeated 'today', voids shown) */
       /* Owner 20 Nov 11:06: NAP / Specials box removed (it only spaced the bar); with NCMR the bar is 8 boxes on one line */
