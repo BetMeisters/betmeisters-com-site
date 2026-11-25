@@ -229,3 +229,10 @@ h1, h2, h3, .art h1, .lead h2, .card h3, .today-tile h3, .sec-h h2 { font-family
 .mx-foot .foot-follow > span{flex-basis:100%}
 /* Owner 25 Nov 15:31: Desk review tag lighter so the text reads */
 .desk-tag{background:#FFF1C2!important;color:#5C4300!important;border:1px solid #E8C55A!important;padding:2px 8px!important;border-radius:6px!important;font-weight:600!important}
+/* Semrush 25 Nov: archive of every article (crawlable, collapsed) */
+.bm-archive{margin:24px auto 8px}
+.bm-archive summary{cursor:pointer;font-weight:700;color:#0B1A3A;padding:10px 0}
+.bm-archive ul{columns:2;column-gap:28px;padding-left:18px;margin:8px 0 0;font-size:14px;line-height:1.5}
+.bm-archive li{break-inside:avoid;margin:0 0 6px}
+.bm-archive small{color:#6b7280}
+@media (max-width:640px){.bm-archive ul{columns:1}}

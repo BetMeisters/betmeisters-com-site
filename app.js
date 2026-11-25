@@ -257,7 +257,7 @@
   function comboLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
     var won = a.legs.filter(function (l) { return /won|void/.test(l.result || ""); }).length, playing = a.legs.filter(function (l) { return (!l.result || l.result === "open") && new Date(l.start).getTime() <= now; }).length, toCome = a.legs.filter(function (l) { return new Date(l.start).getTime() > now; }).length;
-    return '<a class="ip-acca ip-combo" href="combo.html#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
+    return '<a class="ip-acca ip-combo" href="/tips#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
   }
   function accaLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
@@ -908,15 +908,15 @@
         if (!isC(x) && isT(x)) return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">OAM ' + x.legs.length + '-fold<small>' + dlOf(x) + ' \u00b7 Original Acca Meister \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca tom" title="Original Acca Meister">OA</span></a></div>'; /* Owner 22 Nov 19:30 */
         if (!isC(x)) { var sl = SLOTS.filter(function (z) { return x.legs.length >= z[1] && x.legs.length <= z[2]; })[0];
           return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + (sl ? sl[0] : "Acca") + '<small>' + dlOf(x) + ' \u00b7 ' + x.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; }
-        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="combo.html#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
+        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="/tips#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
       var items = MX.map(function (x) {
         var h = accaList([x], "", labC).replace(/^<ul[^>]*>/, "").replace(/<\/ul>$/, "");
         if (isC(x)) h = h.split("/acca#").join("combo.html#").replace(/<span class="badge acca" title="Acca Meister">AM<\/span>/g, "");
         return h; }).join("");
-      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="combo.html">All combos (' + CL.length + ')</a><a class="more" href="/acca">All accas (' + AL.length + ')</a></span></div>' +
+      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="/tips">All combos (' + CL.length + ')</a><a class="more" href="/acca">All accas (' + AL.length + ')</a></span></div>' +
           '<ul class="res-list acca-list two home-accas">' + items + "</ul></section>" +
           '<div class="home-bar">' + accaBar(MX, isC) + "</div>" :
-        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="combo.html">All combos</a><a class="more" href="/acca">All accas</a></span></div>';
+        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="/tips">All combos</a><a class="more" href="/acca">All accas</a></span></div>';
     }
   }
   function heroIds() { return heroPicks().map(function (g) { return g.list[0] && g.list[0].id; }).filter(Boolean); }
@@ -1315,13 +1315,13 @@
     var Y = L.filter(function (t) { return dayKey(t.start) === yk; }), sy = cnt(Y), sa = cnt(L);
     var pts = function (x) { return (x >= 0 ? "+" : "\u2212") + Math.abs(x).toFixed(2) + " pts"; };
     var ys = !Y.length ? "none picked" : sy.settled ? sy.won + " won, " + sy.lost + " lost" + (sy.void ? ", " + sy.void + " void" : "") + ', <b class="' + (sy.pts >= 0 ? "pos" : "neg") + '">' + pts(sy.pts) + "</b>" + (sy.open ? " (" + sy.open + " still running)" : "") : Y.length + " still running";
-    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="propicks.html">Pro Picks record \u2192</a></p>';
+    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="/performance">Pro Picks record \u2192</a></p>';
   }
   function proPicksStrip(el) {
     /* Owner 17 Nov 10:32: same boxes as the NAP / Specials row, rows of three, soonest off first; started picks drop off like the Specials */
     if (!el) return;
     var T = todaysProPicks().filter(function (t) { return t.result === "open" && new Date(t.start) > new Date(); });
-    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="propicks.html">Pro Picks record</a></div>';
+    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="/performance">Pro Picks record</a></div>';
     el.innerHTML = '<section class="pp-home" aria-labelledby="h-pp">' + head + (T.length ? '<ul class="htips hero-row pp-hero">' + T.slice(0, 3).map(function (t, i) {
         /* Owner 17 Nov 10:35: one row of 3 like the Specials; the rest queue behind and move in as each one starts ("Next up" on the third box) */
         var q = i === 2 ? T.slice(3) : [], nx = q.length ? '<p class="htip-sm hc-next">Next up: <b>' + (locked(q[0]) ? "Pro tip" : esc(q[0].selection)) + "</b> \u00b7 " + esc(q[0].event) + " \u00b7 " + fmtTime(q[0].start).eat + " UK" + (q.length > 1 ? " \u00b7 then " + (q.length - 1) + " more" : "") + "</p>" : "";

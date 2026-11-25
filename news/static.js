@@ -80,7 +80,7 @@
   /* Owner 23 Nov 11:16: live tips from BetMeisters.com (tips_feed.json, updated every pass) */
   (function feed() {
     if (window.__bmFeed) return; window.__bmFeed = 1; var sg0 = document.getElementById('signup'); var box = sg0 ? document.getElementById('bm-feed') : null; if (sg0 && !box) { box = document.createElement('div'); box.id = 'bm-feed'; sg0.appendChild(box); } if (box) box.innerHTML = '';
-    var nav = document.querySelector('nav.sections'), strip = null; if (false) { strip = document.createElement('a'); strip.className = 'bmf-strip'; strip.href = 'https://betmeisters.com/?utm_source=news&utm_medium=referral&utm_campaign=top_strip'; strip.innerHTML = '<b>Every BetMeisters tip free until 1 January</b><span class="bmf-s2"></span><span class="bmf-go">See today\'s tips →</span>'; nav.parentNode.insertBefore(strip, nav.nextSibling); }
+    var nav = document.querySelector('nav.sections'), strip = null; if (false) { strip = document.createElement('a'); strip.className = 'bmf-strip'; strip.href = 'https://betmeisters.com/'; strip.innerHTML = '<b>Every BetMeisters tip free until 1 January</b><span class="bmf-s2"></span><span class="bmf-go">See today\'s tips →</span>'; nav.parentNode.insertBefore(strip, nav.nextSibling); }
     var U = '/tips';
     var e = function (x) { return String(x == null ? '' : x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
     var hm = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };

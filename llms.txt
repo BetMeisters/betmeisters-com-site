@@ -1,0 +1,16 @@
+# BetMeisters
+
+> BetMeisters (betmeisters.com) publishes betting tips for football, horse racing, tennis, basketball and other sports. Every tip is published before the start with its price, bookmaker, stake and the chance we give it, worked out from the sharp betting market with the bookmaker margin removed. Every result, win or lose, stays on the public record from 5 November 2026. No affiliate links in any tip. 18+ only. Please gamble responsibly: BeGambleAware.org.
+
+## Tips and record
+- [Today's tips](https://betmeisters.com/tips): open tips with price, stake, chance and start time
+- [Results](https://betmeisters.com/results): every settled tip and the running record
+- [Performance](https://betmeisters.com/performance): profit, return on stakes and beating the closing price, by Meister and sport
+- [The Meisters](https://betmeisters.com/meisters): the four tipsters (Number Cruncher, NCM Premium Events, NCM Racing Meister, Combo Meister) and how each picks
+- [Bet value checker](https://betmeisters.com/value): check any bet against the fair price from the sharp market
+
+## News, guides and reviews
+- [Betting news](https://betmeisters.com/news/news.html)
+- [Previews](https://betmeisters.com/news/previews.html)
+- [Betting guides](https://betmeisters.com/news/guides.html): odds, margins, Asian handicaps, each way, closing line value
+- [Bookmaker reviews](https://betmeisters.com/news/bookie-reviews.html) and [online casino reviews](https://betmeisters.com/news/casino-reviews.html), scored on a [published method](https://betmeisters.com/news/how-we-score.html)
