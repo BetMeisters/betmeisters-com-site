@@ -1643,7 +1643,7 @@
           var lost = a.legs.some(function (l) { return l.result === "lost"; }), ret = lost ? 0 : a.legs.reduce(function (m, l) { return m * lr(l); }, 1), pt = lost ? -a.stake : a.stake * ret - a.stake;
           var P = a.legs.reduce(function (m, l) { return m * l.price; }, 1), d = dayLabel(dayKey(new Date(last(a)).toISOString())).split(" \u00b7 ")[0];
           return '<a class="ls-multi ' + kind + '" href="' + href + "#" + esc(a.id) + '"><span class="ls-m-k">' + lab + '</span><span class="ls-m-t">' + esc(a.title || (a.legs.length + "-fold")) + " @ " + accaOdds(P) + "<small>" + d + " · " + (lost ? "Lost" : "Won") + '</small></span><b class="pts ' + cls(pt) + '">' + pts(pt) + "</b></a>"; };
-        var h = line(pick(BM.COMBOS), "combo", "/combo", "Latest combo") + line(pick(BM.ACCAS), "acca", "/acca", "Latest acca");
+        var h = line(pick(BM.COMBOS), "combo", "/combo", "Latest combo"); /* Owner 25 Nov: Acca Meister retired */
         if (h) $("#latest-list").insertAdjacentHTML("beforeend", '<div class="ls-multis">' + h + "</div>");
       })();
       p2Total($("#latest-chart"));

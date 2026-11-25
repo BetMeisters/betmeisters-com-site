@@ -1869,7 +1869,7 @@ body[data-page="propicks"] .pp-line a { display: none; }
 
 
 /* Owner 19 Nov 19:26: even boxes. Today bar = 8 boxes: one row on wide screens, 4+4 on tablets/small laptops, 2x4 on phones. Headline tiles = 6 (3x2 desktop, 2x3 phone) or 8 (4x2, 2x4). */
-.today-strip{grid-template-columns:repeat(8,minmax(0,1fr));align-items:stretch}
+.today-strip{grid-template-columns:repeat(7,minmax(0,1fr));align-items:stretch} /* Owner 25 Nov: 7 boxes (Acca removed) */
 @media (max-width:1180px){.today-strip{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:16px}}
 @media (max-width:560px){.today-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.today-strip>div:last-child:nth-child(odd){grid-column:auto}}
 .hl-grid.hl6{grid-template-columns:repeat(3,minmax(0,1fr))}
