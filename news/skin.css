@@ -227,3 +227,5 @@ h1, h2, h3, .art h1, .lead h2, .card h3, .today-tile h3, .sec-h h2 { font-family
 .mx-foot .foot-follow b{font-weight:600;color:inherit}
 .mx-foot .foot-follow a{display:inline-flex!important;flex-direction:row!important;align-items:center;gap:6px;width:auto!important;margin:0!important;padding:6px 12px!important;white-space:nowrap}
 .mx-foot .foot-follow > span{flex-basis:100%}
+/* Owner 25 Nov 15:31: Desk review tag lighter so the text reads */
+.desk-tag{background:#FFF1C2!important;color:#5C4300!important;border:1px solid #E8C55A!important;padding:2px 8px!important;border-radius:6px!important;font-weight:600!important}
