@@ -315,3 +315,28 @@ table.glance.mve th, table.glance.mve td { padding: 8px 8px; }
 @media (max-width: 900px) { .rh { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .rh { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .rh { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding: 0 0 8px; scrollbar-width: none; } .rh::-webkit-scrollbar { display: none; } .rh > li { flex: 0 0 82%; scroll-snap-align: start; } }
+/* Owner 25 Nov 11:51: performance draft (performance-new) */
+.page-head.ph-compact { padding-block: 26px 28px; }
+.page-head.ph-compact h1 { font-size: clamp(32px, 4vw, 44px); margin-bottom: 6px; }
+.page-head.ph-compact p:last-child { margin: 0; max-width: 680px; }
+.pf2-pair { margin-top: 16px; }
+.perf-empty { margin: -6px 0 26px; padding: 10px 14px; border-radius: 10px; background: var(--surface-2); color: var(--ink-3); font-size: 14px; }
+.pf2-more { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+.pf2-more > summary { cursor: pointer; padding: 16px 20px; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.pf2-more > summary::-webkit-details-marker { display: none; }
+.pf2-more > summary::after { content: "Open ▾"; flex: none; color: var(--ink-3); font-weight: 600; }
+.pf2-more[open] > summary::after { content: "Close ▴"; }
+.pf2-more > #pf-x { padding: 0 16px 16px; }
+.pf2-about ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--ink-2); font-size: 15px; }
+.pf2-mve { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; align-items: start; }
+.pf2-mve > .mve-chart { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; padding-top: 0; border-top: 0; }
+.pf2-mve > :not(.mve-chart) { grid-column: 1; }
+@media (max-width: 900px) { .pf2-mve { grid-template-columns: minmax(0, 1fr); } .pf2-mve > .mve-chart { grid-column: 1; grid-row: auto; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); } }
+.nh-leads { display: grid; gap: 16px; min-width: 0; }
+.nh-leads .nh-lead b { font-size: clamp(20px, 2vw, 24px); }
+.nh-leads .nh-dek { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.nh-leads .nh-go { margin-top: 4px; padding-top: 4px; }
+.nh-list { justify-content: space-between; }
+body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:55: the closing See today\'s tips banner removed from the new home */
+.nh-idek { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; color: var(--ink-3); margin-top: 4px; line-height: 1.45; }
+.nh-list { justify-content: space-around; }
