@@ -86,12 +86,13 @@ BM.MEISTERS = [
     initials: "CM",
     who: "AI-assisted Meister · doubles and trebles",
     role: "Doubles and trebles with edge · its own record",
-    bio: "The Combo Meister builds doubles and trebles from legs that are each priced above our fair price, so the whole combo carries an edge. It started as a separate trial on 16 November and earned its place as a full Meister on 25 November with a profit across its first 96 combos, close to what its edges predicted. Every combo is a tip: published before the first leg starts, with its combined price, its chance and its result kept on the record. Legs follow the same price rules as our singles, and every leg is checked again just before the combo is published.",
+    bio: "The Combo Meister builds doubles and trebles, in every sport including horse racing, from legs that are each priced above our fair price, so the whole combo carries an edge. It started as a separate trial on 16 November and earned its place as a full Meister on 25 November with a profit across its first 96 combos, close to what its edges predicted. Every combo is a tip: published before the first leg starts, with its combined price, its chance and its result kept on the record. Legs follow the same price rules as our singles, and every leg is checked again just before the combo is published.",
     specialities: ["Doubles", "Trebles", "Edge on every leg", "Football", "Basketball"],
     method: [
       "Every leg priced above our fair price (Pinnacle, margin removed) by 5% to 12%, at least 40% likely (35% for one leg priced 2.50 to 3.00)",
       "Combined edge of at least 5%; doubles at 1 point, trebles at half a point",
       "Legs follow our singles' price rules (one bookmaker allowed for football and big events); every leg checked again before publishing",
+      "Racing combos too (merged from the Racing Combo Meister on 25 November): every horse priced above the exchange fair price, win only, with racing\u2019s own limits",
       "One combo tip: no Free or Pro split. Record from 16 November"
     ]
   },

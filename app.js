@@ -42,9 +42,8 @@
   /* Owner 25 Nov 10:46: the Combo Meister is a Meister in his own right (proven: +15 pts on 96 combos). Every Combo Meister double/treble
      becomes a tip of meister "combo" here (data.js and the Ledger keep them in BM.COMBOS / the Combos sheets): price = the legs multiplied,
      chance = the leg chances multiplied, result from the legs, start = the first leg. It counts in every list, total, page and box like any Meister.
-     The Racing Combo Meister trial (rcm) stays out (not part of the record). */
-  BM.COMBOS_RCM = (BM.COMBOS || []).filter(function (a) { return a.meister === "rcm"; });
-  BM.COMBOS_CM = (BM.COMBOS || []).filter(function (a) { return a.meister !== "rcm" && a.legs && a.legs.length >= 2 && !a.hidden; });
+     Owner 25 Nov 10:53: the Racing Combo Meister (rcm) is merged into the Combo Meister: racing combos are CM tips too (racing keeps its own leg rules). */
+  BM.COMBOS_CM = (BM.COMBOS || []).filter(function (a) { return a.legs && a.legs.length >= 2 && !a.hidden; });
   BM.COMBOS_CM.forEach(function (a) {
     var L = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); });
     var P = L.reduce(function (m, l) { return m * l.price; }, 1), C = L.reduce(function (m, l) { return m * (l.chance || 0); }, 1);
