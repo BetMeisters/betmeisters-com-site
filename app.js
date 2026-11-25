@@ -174,7 +174,7 @@
       '<a class="vc-more" href="/value">Check any bet \u2192</a></div>';
   }
   function vcLine(ch, ref) { if (!VALUE_CHECKER) return ""; var fair = 1 / ch, from = Math.ceil(fair * 100 - 1e-9) / 100; return '<p class="vc-line">Fair price <b>' + fair.toFixed(2) + '</b> \u00b7 value above that \u00b7 <a href="/value#' + ref + '">check your price \u2192</a></p>'; }
-  function vcTip(t) { return t.result === "open" && new Date(t.start) > Date.now() && t.meister === "cruncher" && t.prob && !t.ew ? vcLine(t.prob, "t-" + t.id) : ""; }
+  function vcTip(t) { return t.result === "open" && new Date(t.start) > Date.now() && (t.meister === "cruncher" || t.meister === "ncmp") && t.prob && !t.ew ? vcLine(t.prob, "t-" + t.id) : ""; }
   document.addEventListener("input", function (e) {
     var t = e.target; if (!t || !t.classList || !t.classList.contains("vc-in")) return;
     var box = t.closest(".vcheck"), ch = +box.getAttribute("data-ch"), p = parseFloat(t.value), o = box.querySelector(".vc-out");
@@ -809,7 +809,7 @@
     var lines = '<p class="htip-ln">' + (oop(t) ? "Not before " : "Starts ") + tm.eat + " UK · " + ALT(tm, "", " · ") + (t.ew ? stakeTxt(t.stake / 2) + " e/w" : stakeTxt(t.stake)) + (!lock && t.minPrice ? " · take " + fmtOdds(t.minPrice) + "+" : "") + "</p>" + cd +
       (lock ? "" : '<p class="htip-sm">' + esc(t.market) + hcpExp(t) + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + exchLine(t).replace('class="tip-market exch-line"', 'class="htip-sm htip-exch"')) +
       pubLine(t).replace('class="tip-pub"', 'class="htip-sm htip-pub"') + (o.next || "") + (o.share ? '<div class="htip-share">' + shareButtons(shareText(t)) + "</div>" : "");
-    return '<li class="htip' + (o.dark ? " dark" : "") + '" data-tier="' + t.tier + '"' + (o.label && /^NAP \u00b7 TOM|^TOM\u2019s NAP/.test(o.label) ? " data-hnap" : o.label && /^NAP/.test(o.label) ? " data-nap" : "") + '><div class="htip-hd">' + left + badge + '</div><div class="htip-tags">' + tags + "</div>" + body + lines + "</li>";
+    return '<li class="htip' + (o.dark ? " dark" : "") + '" data-tier="' + t.tier + '" data-m="' + t.meister + '"' + (o.label && /^NAP \u00b7 TOM|^TOM\u2019s NAP/.test(o.label) ? " data-hnap" : o.label && /^NAP/.test(o.label) ? " data-nap" : "") + '><div class="htip-hd">' + left + badge + '</div><div class="htip-tags">' + tags + "</div>" + body + lines + "</li>";
   }
   /* sweep 16 Nov: one MMA label (feeds send Ufc_Mma / Mixed-Martial-Arts) */
   (function () { var fx = function (o) { if (o && /^(ufc_mma|mixed-martial-arts)$/i.test(o.sport || "")) o.sport = "MMA"; };
@@ -1612,7 +1612,7 @@
   /* ---------- pages ---------- */
   var RENDER = {
     home: function () {
-      napHero($("#nap"));
+      (function () { var e = $("#nap"); if (e) e.innerHTML = ""; })(); /* Owner 25 Nov 10:26: top Free/Pro/NAP/Specials row removed; NAP, Specials and Pro Picks show as tags on the Next tips boxes */
       (function () { var e = $("#propicks-home"); if (e) e.innerHTML = ""; })(); /* Owner 22 Nov 18:09: Pro Picks join the single top row */
       nextTips($("#next-tips"), 6);
       var c = upcoming().length; $("#open-count").textContent = "All " + c + " open tips";

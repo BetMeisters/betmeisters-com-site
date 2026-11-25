@@ -2003,6 +2003,11 @@ body[data-page="propicks"] .pp-line a { display: none; }
 /* Owner 25 Nov 10:06: NCMP Free in a second, lighter purple (as NCM has teal Free / yellow Pro) */
 .tier.free.ncmp { background: #C9B6FF !important; color: #2A1360 !important; border-color: #C9B6FF !important; } .tier.free.ncmp svg path { fill: #2A1360; }
 
+/* Owner 25 Nov 10:26: NCMP tip boxes in purple (Pro deep, Free light); empty top-row holders take no space */
+.htips > li.htip[data-m="ncmp"][data-tier="pro"], body[data-page="home"] #latest-list .htips > li.htip[data-m="ncmp"][data-tier="pro"] { border-top-color: #6B46C1; }
+.htips > li.htip[data-m="ncmp"][data-tier="free"], body[data-page="home"] #latest-list .htips > li.htip[data-m="ncmp"][data-tier="free"] { border-top-color: #C9B6FF; }
+#nap:empty, #propicks-home:empty { display: none; }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
