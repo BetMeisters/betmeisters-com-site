@@ -39,6 +39,26 @@
   BM.MEISTERS = BM.MEISTERS.filter(function (m) { return m.id !== "meister"; });
   /* Owner 25 Nov 10:16: the Acca Meister retired (69 accas, 3 won). Every acca stays in data.js and the Ledger; none are shown or counted on the site. */
   BM.ACCAS_AM = BM.ACCAS || []; BM.ACCAS_AM.forEach(function (a) { a.meisterRetired = "acca"; }); BM.ACCAS = [];
+  /* Owner 25 Nov 10:46: the Combo Meister is a Meister in his own right (proven: +15 pts on 96 combos). Every Combo Meister double/treble
+     becomes a tip of meister "combo" here (data.js and the Ledger keep them in BM.COMBOS / the Combos sheets): price = the legs multiplied,
+     chance = the leg chances multiplied, result from the legs, start = the first leg. It counts in every list, total, page and box like any Meister.
+     The Racing Combo Meister trial (rcm) stays out (not part of the record). */
+  BM.COMBOS_RCM = (BM.COMBOS || []).filter(function (a) { return a.meister === "rcm"; });
+  BM.COMBOS_CM = (BM.COMBOS || []).filter(function (a) { return a.meister !== "rcm" && a.legs && a.legs.length >= 2 && !a.hidden; });
+  BM.COMBOS_CM.forEach(function (a) {
+    var L = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); });
+    var P = L.reduce(function (m, l) { return m * l.price; }, 1), C = L.reduce(function (m, l) { return m * (l.chance || 0); }, 1);
+    var lost = L.some(function (l) { return l.result === "lost"; }), open = L.some(function (l) { return !l.result || l.result === "open"; });
+    var f = L.reduce(function (m, l) { var r = l.result; return m * (r === "won" ? l.price : r === "void" ? 1 : r === "half-won" ? (1 + l.price) / 2 : r === "half-lost" ? 0.5 : 1); }, 1);
+    var res = lost ? "lost" : open ? "open" : f > 1.0001 ? "won" : f < 0.9999 ? "lost" : "void";
+    var sports = {}; L.forEach(function (l) { sports[l.sport || "Football"] = 1; }); var sp = Object.keys(sports).length === 1 ? Object.keys(sports)[0] : "Multiple sports";
+    BM.TIPS.push({ id: a.id, published: a.publishedAt || a.published || L[0].start, meister: "combo", phase: 2, combo: true, legs: L, comboRet: lost ? 0 : f,
+      tier: "combo", sport: sp, comp: L.map(function (l) { return l.comp || ""; }).join(" + "),
+      selection: (L.length === 2 ? "Double" : "Treble") + ": " + L.map(function (l) { return l.sel; }).join(" + "),
+      market: (L.length === 2 ? "Double" : "Treble") + " (" + L.length + " legs)", betType: "Multiple", event: L.map(function (l) { return l.event; }).join(" \u00b7 "),
+      start: L[0].start, lastStart: L[L.length - 1].start, price: Math.round(P * 100) / 100, minPrice: null, prob: C, stake: a.stake || 1, bookie: "", result: res, note: a.note || "", nap: false, value: false });
+  });
+  BM.COMBOS = [];
   function isRetired(t) { return t.meister === "margins" || t.meister === "tomold" || t.meister === "ncmrold" || t.meister === "tomret"; }
   var SITE = BM.SITE, TIPS = BM.TIPS, MEISTERS = BM.MEISTERS;
   /* Owner 3 Nov: "with" totals include The Drift Meister AND The Close Meister; main ("without") totals leave both out. */
@@ -57,9 +77,9 @@
   var access = load("access2", "full");
   function hasAccess(meisterId) { return access === "full" || access === "sub:" + meisterId; }
   var TIER_COLOR = { free: "#3ECFC6", pro: "#FFC629", nap: "#FF6B3D", hnap: "#5B8CFF", value: "#A9BDFF", special: "#D4EE3C", propick: "#B48CFF", premium: "#4DA3FF", mm: "#8B95A8" };
-  var MCOLOR = { ncmp: "#6B46C1", tomret: "#9AA3B5", ncmrold: "#9AA3B5", tomold: "#9AA3B5", meister: "#D99A00", cruncher: "#119C93", ncmr: "#B5651D", margins: "#5B74D6", removed: "#7A8396", close: "#9A6BD1" };
-  var MSHORT = { ncmp: "NCM Premium Events", tomret: "The Original Meister (TOM, retired)", ncmrold: "NCM Racing Old (NCMROLD, retired)", tomold: "AI Hybrid TOM (AHT, retired)", meister: "The Original Meister", cruncher: "Number Cruncher Meister", ncmr: "NCM Racing Meister", margins: "Fine Margins Meister", removed: "The Drift Meister", close: "The Close Meister" };
-  var MSUB = { ncmp: "Big games, small edges · always positive · own record", meister: "The Original Meister's own tips", cruncher: "AI-assisted · stats and maths · best taken early", ncmr: "Number Cruncher racing · exchange method · own record", margins: "Edge of +2% to +5%", removed: "Withdrawn tips: shortened (old rule) or drifted", close: "Near misses, notional 0.5 pt" };
+  var MCOLOR = { combo: "#2196D3", ncmp: "#6B46C1", tomret: "#9AA3B5", ncmrold: "#9AA3B5", tomold: "#9AA3B5", meister: "#D99A00", cruncher: "#119C93", ncmr: "#B5651D", margins: "#5B74D6", removed: "#7A8396", close: "#9A6BD1" };
+  var MSHORT = { combo: "Combo Meister", ncmp: "NCM Premium Events", tomret: "The Original Meister (TOM, retired)", ncmrold: "NCM Racing Old (NCMROLD, retired)", tomold: "AI Hybrid TOM (AHT, retired)", meister: "The Original Meister", cruncher: "Number Cruncher Meister", ncmr: "NCM Racing Meister", margins: "Fine Margins Meister", removed: "The Drift Meister", close: "The Close Meister" };
+  var MSUB = { combo: "Doubles and trebles with edge · own record", ncmp: "Big games, small edges · always positive · own record", meister: "The Original Meister's own tips", cruncher: "AI-assisted · stats and maths · best taken early", ncmr: "Number Cruncher racing · exchange method · own record", margins: "Edge of +2% to +5%", removed: "Withdrawn tips: shortened (old rule) or drifted", close: "Near misses, notional 0.5 pt" };
   var CM = { id: "close", name: "The Close Meister", short: "The Close Meister", initials: "CM" };
   function meisterById(id) { for (var i = 0; i < MEISTERS.length; i++) if (MEISTERS[i].id === id) return MEISTERS[i]; if (id === "close") return CM; return { name: id, initials: "?", id: id }; }
 
@@ -131,6 +151,7 @@
 
   /* ---------- maths ---------- */
   function profit(t) {
+    if (t.combo) return t.result === "lost" ? -t.stake : t.result === "open" ? 0 : t.stake * ((t.comboRet || 1) - 1); /* Owner 25 Nov: combos as tips (voids/half legs priced in) */
     /* NAP top-up (Owner 5 Nov rule): extra stake added later at the price then (napTopUp {stake, price}) */
     if (t.napTopUp && !t.ew) { var b = t.stake - t.napTopUp.stake, x = t.napTopUp; return t.result === "won" ? b * (t.price - 1) + x.stake * (x.price - 1) : t.result === "lost" ? -t.stake : 0; }
     if (t.ew) {
@@ -232,7 +253,7 @@
   function comboLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
     var won = a.legs.filter(function (l) { return /won|void/.test(l.result || ""); }).length, playing = a.legs.filter(function (l) { return (!l.result || l.result === "open") && new Date(l.start).getTime() <= now; }).length, toCome = a.legs.filter(function (l) { return new Date(l.start).getTime() > now; }).length;
-    return '<a class="ip-acca ip-combo" href="/combo#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
+    return '<a class="ip-acca ip-combo" href="combo.html#' + esc(a.id) + '"><span class="live-dot" aria-hidden="true"></span><span class="ip-a-t"><b>' + (a.legs.length === 2 ? "Double" : "Treble") + " @ " + accaOdds(P) + '</b><small>' + won + " landed · " + playing + " in play · " + toCome + " to come · still alive</small></span>" + '<span class="badge combo' + (isOCM(a) ? " tom" : "") + '" title="' + (isOCM(a) ? "Original Combo Meister" : "Combo Meister") + '">' + (isOCM(a) ? "OC" : "CM") + '</span><span class="ip-a-go">Every leg →</span></a>';
   }
   function accaLiveRow(a) {
     var now = Date.now(), P = a.legs.reduce(function (m, l) { return m * l.price; }, 1);
@@ -265,9 +286,9 @@
 
   /* ---------- shared bits ---------- */
   /* Owner 20 Nov 09:34: NCM is the product we sell, so NCM tips say NCM Free / NCM Pro; TOM tips stay Free */
-  function tierWord(t) { var w = t.tier === "pro" ? "Pro" : "Free"; return t.meister === "cruncher" ? "NCM " + w : t.meister === "ncmr" ? "NCMR " + w : t.meister === "ncmp" ? "NCMP " + w : w; }
+  function tierWord(t) { var w = t.tier === "pro" ? "Pro" : "Free"; return t.meister === "cruncher" ? "NCM " + w : t.meister === "ncmr" ? "NCMR " + w : t.meister === "ncmp" ? "NCMP " + w : t.meister === "combo" ? "Combo" : w; }
   function tierPills(t) {
-    var h = '<span class="tier ' + t.tier + (t.meister === "ncmr" ? " ncmr" : t.meister === "ncmp" ? " ncmp" : "") + '">' + miniShield() + tierWord(t) + "</span>";
+    var h = '<span class="tier ' + t.tier + (t.meister === "ncmr" ? " ncmr" : t.meister === "ncmp" ? " ncmp" : t.meister === "combo" ? " combo" : "") + '">' + miniShield() + tierWord(t) + "</span>";
     if (t.nap) h += ' <span class="tier nap">' + miniShield() + "NAP</span>";
     if (t.humanNap) h += ' <span class="tier hnap">' + miniShield() + "NAP \u00b7 TOM</span>";
     if (false && isPremium(t)) h += ' <span class="tier premium" title="A Premium League tip: top European leagues, UEFA cups and international tournaments">' + miniShield() + "Premium League</span>"; /* Owner 20 Nov 20:14: Premium League tag, own colour, added on top of every other tag */ /* Owner 19 Nov 10:51: The Original Meister's own NAP, own label and colour */
@@ -302,10 +323,10 @@
   /* Owner 20 Nov 09:24: Free v Pro compares NCM only (The Original Meister is always free and has his own boxes); labels NCM Free / NCM Pro. Totals unchanged. */
   function isNF(t) { return t.tier === "free" && t.meister === "cruncher"; }
   function isNP(t) { return t.tier === "pro" && t.meister === "cruncher"; }
-  function tierPill(t) { return '<span class="tier ' + t.tier + (t.meister === "ncmr" ? " ncmr" : t.meister === "ncmp" ? " ncmp" : "") + '">' + miniShield() + tierWord(t) + "</span>"; }
+  function tierPill(t) { return '<span class="tier ' + t.tier + (t.meister === "ncmr" ? " ncmr" : t.meister === "ncmp" ? " ncmp" : t.meister === "combo" ? " combo" : "") + '">' + miniShield() + tierWord(t) + "</span>"; }
   /* Owner 5 Nov 10:42: show the Meister section (e.g. TOMT) and the sport clearly on every tip since 5 November */
   var SEC_SPORT = { F: "Football", R: "Racing", T: "Tennis", B: "Basketball", U: "US sports", O: "Other sports", E: "eSports" };
-  var SEC_PRE = { ncmp: "NCMP", tomret: "TOM", ncmrold: "NCMROLD", tomold: "AHT", meister: "TOM", cruncher: "NCM", ncmr: "NCM", margins: "FMM" };
+  var SEC_PRE = { combo: "CM", ncmp: "NCMP", tomret: "TOM", ncmrold: "NCMROLD", tomold: "AHT", meister: "TOM", cruncher: "NCM", ncmr: "NCM", margins: "FMM" };
   function secOf(t) {
     if (t.section) return t.section;
     if (!SEC_PRE[t.meister]) return "";
@@ -663,10 +684,10 @@
 
   /* ---------- header & footer ---------- */
   var NAV = [["home", "/", "Home"], ["tips", "/tips", "Tips"], /* Combos tab added below once the first combo exists (Owner 16 Nov 10:17) */ ["results", "/results", "Results"], ["performance", "/performance", "Performance"], ["meisters", "/meisters", "Meisters"], ["newsx", ((window.BM && BM.NEWSFEED && BM.NEWSFEED.base) || "#"), "News ↗"]];
-  if ((BM.COMBOS || []).length || document.body.getAttribute("data-page") === "combo") NAV.splice(2, 0, ["combo", "/combo", "Combos"]); /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
+  /* Owner 25 Nov 10:46: Combos page retired (combos are Combo Meister tips) */ /* Owner 16 Nov 10:31: Tips, Combos, Accas */ /* Owner 12 Nov 13:20: products, then proof, then people and reading */
   /* Owner 23 Nov 15:53-16:08: one site, menu Home · Tips · Results · News (BM_MERGE) */
   var GNAV = [["home", "/", "Home", []],
-    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ["Combos", "/combo", "combo"], ["Pro Picks", "/propicks", "propicks"]].concat(VALUE_CHECKER ? [["Value checker", "/value", "value"]] : [])],
+    ["tips", "/tips", "Tips", [["Meister tips", "/tips", "tips"], ].concat(VALUE_CHECKER ? [["Value checker", "/value", "value"]] : [])],
     ["results", "/results", "Results", [["Results", "/results", "results"], ["Performance", "/performance", "performance"], ["The Meisters", "/meisters", "meisters"]]],
     ["news", "/news/", "News", [["News home", "/news/", "nhome"], ["Previews", "/news/previews.html", "nprev"], ["Guides", "/news/guides.html", "nguide"], ["Industry news", "/news/news.html", "nnews"], ["Online casino", "/news/casino-news.html", "ncas"], ["Bookmaker reviews", "/news/bookie-reviews.html", "nrev"], ["Casino reviews", "/news/casino-reviews.html", "ncrev"]]]];
   var activeNav = window.BM_MERGE ? page : ({ article: "news", review: "reviews", propicks: "tips" }[page] || page);
@@ -693,8 +714,8 @@
   function footer() {
     return '<footer class="foot"><div class="wrap"><div class="foot-grid"><div>' + brand() +
       '<p>Independent tips from the Number Cruncher Meisters: every tip priced against the sharp market, and only tipped when the price has an edge. Every tip is published before the event, priced, and kept on the record whether it wins or loses.</p><p class="foot-contact">Contact: <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></p></div>' +
-      '<div><h4>Tips</h4><ul><li><a href="/tips">All open tips</a></li><li><a href="/tips#nap">NAP of the day</a></li><li><a href="/propicks">Pro Picks</a></li><li><a href="/results">Results & record</a></li><li><a href="/performance">Performance</a></li></ul></div>' +
-      '<div><h4>BetMeisters</h4><ul><li><a href="/meisters">The Meisters</a></li><li><a href="/combo">Combo Meister (separate record)</a></li><li><a href="/article-price-first">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="/privacy">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
+      '<div><h4>Tips</h4><ul><li><a href="/tips">All open tips</a></li><li><a href="/tips#nap">NAP of the day</a></li><li><a href="/results">Results & record</a></li><li><a href="/performance">Performance</a></li></ul></div>' +
+      '<div><h4>BetMeisters</h4><ul><li><a href="/meisters">The Meisters</a></li><li><a href="/meisters#combo">Combo Meister</a></li><li><a href="/article-price-first">How we price a tip</a></li>' + (window.BM_PUBLIC ? '<li><a href="/privacy">Privacy and cookies</a></li><li><a href="#" onclick="window.bmCookies&&window.bmCookies();return false">Cookie settings</a></li>' : '') + '</ul></div>' +
       '' + (window.BM_MERGE ? '<div class="foot-rev"><h4>News</h4><ul><li><a href="/news/">News home</a></li><li><a href="/news/previews.html">Previews</a></li><li><a href="/news/guides.html">Guides</a></li><li><a href="/news/casino-news.html">Online casino</a></li><li><a href="/news/bookie-reviews.html">Bookmaker reviews</a></li><li><a href="/news/casino-reviews.html">Casino reviews</a></li></ul></div>' : '<div class="foot-rev"><h4>BetMeisters.news</h4><ul><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">News, previews and guides ↗</a></li><li><a href="' + esc((BM.NEWSFEED && BM.NEWSFEED.base) || "#") + '" target="_blank" rel="noopener">Bookmaker reviews ↗</a></li></ul></div>') + '</div>' +
       '<div class="rg-box"><span class="age">18+</span><p>Only bet what you can afford to lose. Our tips are opinions, not guarantees, and past results do not predict future ones. If gambling stops being fun, get free, confidential help from <a href="https://www.gambleaware.org/" target="_blank" rel="noopener">GambleAware.org</a> or the National Gambling Helpline on <span class="mono">0808 8020 133</span> (UK).</p></div>' +
       '<div class="foot-small"><span>© 2026 BetMeisters. No bookmaker commissions, no paid placements.</span><span>' + (window.BM_PUBLIC ? "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK." : "Times shown in UK time (GMT/BST), with your local time alongside if you are outside the UK.") + '</span><span>Contact <a href="mailto:tom@betmeisters.com">tom@betmeisters.com</a></span></div></div></footer>';
@@ -882,15 +903,15 @@
         if (!isC(x) && isT(x)) return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">OAM ' + x.legs.length + '-fold<small>' + dlOf(x) + ' \u00b7 Original Acca Meister \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca tom" title="Original Acca Meister">OA</span></a></div>'; /* Owner 22 Nov 19:30 */
         if (!isC(x)) { var sl = SLOTS.filter(function (z) { return x.legs.length >= z[1] && x.legs.length <= z[2]; })[0];
           return '<div class="acca-hd"><span class="shield">' + shield(ACCA_COL) + '</span><p class="hc-label">' + (sl ? sl[0] : "Acca") + '<small>' + dlOf(x) + ' \u00b7 ' + x.legs.length + ' legs \u00b7 not tips</small></p><a class="who hc-who" href="/acca#' + esc(x.id) + '"><span class="badge acca" title="Acca Meister">AM</span></a></div>'; }
-        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="/combo#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
+        return '<div class="acca-hd"><span class="shield">' + shield("#7FD3FF") + '</span><p class="hc-label">' + esc(x.title) + '<small>' + dlOf(x) + " \u00b7 " + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '</small></p><a class="who hc-who" href="combo.html#' + esc(x.id) + '"><span class="badge acca combo' + (isT(x) ? " tom" : "") + '" title="' + (isT(x) ? "Original Combo Meister" : "Combo Meister") + '">' + (isT(x) ? "OC" : "CM") + "</span></a></div>"; };
       var items = MX.map(function (x) {
         var h = accaList([x], "", labC).replace(/^<ul[^>]*>/, "").replace(/<\/ul>$/, "");
-        if (isC(x)) h = h.split("/acca#").join("/combo#").replace(/<span class="badge acca" title="Acca Meister">AM<\/span>/g, "");
+        if (isC(x)) h = h.split("/acca#").join("combo.html#").replace(/<span class="badge acca" title="Acca Meister">AM<\/span>/g, "");
         return h; }).join("");
-      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="/combo">All combos (' + CL.length + ')</a><a class="more" href="/acca">All accas (' + AL.length + ')</a></span></div>' +
+      cEl.innerHTML = MX.length ? '<section class="acca-home combo-home mixed-ca" aria-label="Combos and accas"><div class="sec-head acca-home-head"><div><p class="eyebrow">Not tips \u00b7 separate records</p><h2 class="sec-title">Combos &amp; Accas</h2></div><span class="more-pair"><a class="more" href="combo.html">All combos (' + CL.length + ')</a><a class="more" href="/acca">All accas (' + AL.length + ')</a></span></div>' +
           '<ul class="res-list acca-list two home-accas">' + items + "</ul></section>" +
           '<div class="home-bar">' + accaBar(MX, isC) + "</div>" :
-        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="/combo">All combos</a><a class="more" href="/acca">All accas</a></span></div>';
+        '<div class="hero-none" style="border-top-color:#7FD3FF"><span class="shield">' + shield("#7FD3FF") + '</span><p><b>Combos</b><small>None to back right now. New ones are added at the next pass.</small></p><span class="more-pair"><a class="more" href="combo.html">All combos</a><a class="more" href="/acca">All accas</a></span></div>';
     }
   }
   function heroIds() { return heroPicks().map(function (g) { return g.list[0] && g.list[0].id; }).filter(Boolean); }
@@ -1144,13 +1165,13 @@
   }
 
   /* ---------- Phase 2 views (rebuild, 6 Nov) ---------- */
-  var CHANGE_NOTE = '<p class="change-note"><b>New from 10 November:</b> the Number Cruncher Meister carries every AI pick, and The Original Meister is our human tipster (his own picks). AI tips published 5 to 9 November under TOM were moved to NCM to match. No result, price or stake was changed; only the Meister label. <b>From 12 November</b> every TOM pick is his own, with no AI input, and his record starts there; his earlier test picks (5 to 11 November) are kept in the full record. <b>From 19 November</b> the NCM Racing Meister uses a new exchange method and its record starts there; racing tips under the old bookmaker method (5 to 18 November) are kept in the full record.</p>' + '<p class="change-note"><b>From 25 November: The Original Meister has retired.</b> TOM\u2019s own tips, his combos (Original Combo Meister) and his accas (Original Acca Meister) are no longer published, and they are left out of the site totals, exactly like our earlier retired Meisters. Nothing is deleted: every TOM tip, combo and acca stays in our full ledger with its result. From now on every tip on BetMeisters is priced by the Number Cruncher Meisters and only published when the price has an edge. TOM stays with us as a human voice, commenting on the Meisters\u2019 tips, and a retired Meister can always come back.</p>' + '<p class="change-note"><b>Also from 25 November: the Acca Meister has retired.</b> Its accas (4 and 5 legs) are no longer published; every acca stays in our full ledger with its result. The Combo Meister carries on with doubles and trebles.</p>';
-  var P2M = ["cruncher", "ncmp", "ncmr"]; /* Owner 25 Nov 09:50: NCM Premium Events, own record, in site totals */ /* Owner 25 Nov: TOM retired */ /* Owner 20 Nov 10:53: NCM Racing Meister, own record, still in site totals */ /* Owner 9 Nov 08:15: Fine Margins retired; its tips stay in the site totals and the data, but it has no lines, cards, charts or open-tip rows of its own */
+  var CHANGE_NOTE = '<p class="change-note"><b>New from 10 November:</b> the Number Cruncher Meister carries every AI pick, and The Original Meister is our human tipster (his own picks). AI tips published 5 to 9 November under TOM were moved to NCM to match. No result, price or stake was changed; only the Meister label. <b>From 12 November</b> every TOM pick is his own, with no AI input, and his record starts there; his earlier test picks (5 to 11 November) are kept in the full record. <b>From 19 November</b> the NCM Racing Meister uses a new exchange method and its record starts there; racing tips under the old bookmaker method (5 to 18 November) are kept in the full record.</p>' + '<p class="change-note"><b>From 25 November: The Original Meister has retired.</b> TOM\u2019s own tips, his combos (Original Combo Meister) and his accas (Original Acca Meister) are no longer published, and they are left out of the site totals, exactly like our earlier retired Meisters. Nothing is deleted: every TOM tip, combo and acca stays in our full ledger with its result. From now on every tip on BetMeisters is priced by the Number Cruncher Meisters and only published when the price has an edge. TOM stays with us as a human voice, commenting on the Meisters\u2019 tips, and a retired Meister can always come back.</p>' + '<p class="change-note"><b>Also from 25 November: the Acca Meister has retired.</b> Its accas (4 and 5 legs) are no longer published; every acca stays in our full ledger with its result. The Combo Meister carries on with doubles and trebles.</p>' + '<p class="change-note"><b>A reshuffle in the team, 25 November.</b> BetMeisters now has four Meisters, every one of them on the record and in our totals. <b>The Number Cruncher Meister (NCM)</b> leads: high edges on the less common events. Beside it sit three specialists: <b>NCM Premium Events (NCMP)</b> for the biggest games with smaller but positive edges, <b>the NCM Racing Meister (NCMR)</b> for horse racing, and <b>the Combo Meister (CM)</b>, whose doubles and trebles have earned their place with a profit since 16 November and are now tips in their own right. The Combos and Pro Picks pages have closed: combos sit with every other tip, and Pro Picks, NAPs and Meister Specials are tags on the tips, with their records on the Meister and Performance pages.</p>';
+  var P2M = ["cruncher", "ncmp", "ncmr", "combo"]; /* Owner 25 Nov 10:46: Combo Meister joins as the 4th Meister */ /* Owner 25 Nov 09:50: NCM Premium Events, own record, in site totals */ /* Owner 25 Nov: TOM retired */ /* Owner 20 Nov 10:53: NCM Racing Meister, own record, still in site totals */ /* Owner 9 Nov 08:15: Fine Margins retired; its tips stay in the site totals and the data, but it has no lines, cards, charts or open-tip rows of its own */
   var SPORTC = { F: "#2E9E5B", R: "#B5651D", T: "#B8A200", B: "#FF8A00", U: "#C8102E", O: "#8A5CD1", E: "#0E9AA7" };
   var SPK = ["F", "R", "T", "B", "U", "O", "E"]; /* Owner 10 Nov 08:57: basketball is its own sport; NBA and college games also carry a US tag */ /* Owner 8 Nov 19:11: eSports is its own sport */
   var SPORTN = { F: "Football", R: "Racing", T: "Tennis", B: "Basketball", U: "US sports", O: "Other sports", E: "eSports" };
   var SPORTDASH = { F: "", R: "7 4", T: "2 4", O: "10 3 2 3" };
-  var MCODE = { ncmp: "NCMP", tomret: "TOM", ncmrold: "NCMROLD", tomold: "AHT", meister: "TOM", cruncher: "NCM", ncmr: "NCMR", margins: "FMM" };
+  var MCODE = { combo: "CM", ncmp: "NCMP", tomret: "TOM", ncmrold: "NCMROLD", tomold: "AHT", meister: "TOM", cruncher: "NCM", ncmr: "NCMR", margins: "FMM" };
   function p2() { return TIPS.filter(function (t) { return isP2(t) && !isRemoved(t) && !isRetired(t); }); } /* Owner 16 Nov 07:41: every total counts LIVE Meisters only (retired FMM left out everywhere) */
   function p2Set() { return p2().filter(function (t) { return t.result !== "open"; }).sort(byStart); }
   function sportK(t) { if (t.sport === "Esports") return "E"; var c = secOf(t); return c ? c.slice(-1) : "O"; }
@@ -1251,7 +1272,14 @@
       scoreCard("1\u20132 h before", v2.filter(function (t) { return lead(t) < 120; }), { color: SPORTC.R, sub: "Published 1 to 2 hours before the off" }) +
       scoreCard("2\u20134 h before", v2.filter(function (t) { return lead(t) >= 120; }), { color: SPORTC.R, sub: "Published 2 to 4 hours before the off" }) +
       "</div>" +
-      grp("ALL", "#8B95A8", "From any Meister", "These boxes count tips from every live Meister: NCM, NCMR and NCMP together.") +
+      grp("CM", MCOLOR.combo, "Combo Meister only", "Doubles and trebles, every leg priced above our fair price. A separate trial from 16 November, a full Meister from 25 November.") +
+      '<div class="score-grid g4">' +
+      meisterCard("combo") +
+      scoreCard("Doubles", L.filter(function (t) { return t.meister === "combo" && t.legs && t.legs.length === 2; }), { color: "#2196D3", sub: "Two-leg combos, 1 point" }) +
+      scoreCard("Trebles", L.filter(function (t) { return t.meister === "combo" && t.legs && t.legs.length === 3; }), { color: "#2196D3", sub: "Three-leg combos, half a point" }) +
+      scoreCard("Football combos", L.filter(function (t) { return t.meister === "combo" && t.sport === "Football"; }), { color: SPORTC.F, sub: "Every leg football" }) +
+      "</div>" +
+      grp("ALL", "#8B95A8", "From any Meister", "These boxes count tips from every live Meister: NCM, NCMP, NCMR and CM together.") +
       '<div class="score-grid g3">' +
       scoreCard("Meister Special", L.filter(function (t) { return t.special; }), { tier: "special", sub: "Highest edge, from any Meister" }) +
       scoreCard("eSports", L.filter(function (t) { return sportK(t) === "E"; }), { color: SPORTC.E || "#B07CFF", sub: "CS2, LoL, Dota 2 and Valorant" }) +
@@ -1274,13 +1302,13 @@
     var Y = L.filter(function (t) { return dayKey(t.start) === yk; }), sy = cnt(Y), sa = cnt(L);
     var pts = function (x) { return (x >= 0 ? "+" : "\u2212") + Math.abs(x).toFixed(2) + " pts"; };
     var ys = !Y.length ? "none picked" : sy.settled ? sy.won + " won, " + sy.lost + " lost" + (sy.void ? ", " + sy.void + " void" : "") + ', <b class="' + (sy.pts >= 0 ? "pos" : "neg") + '">' + pts(sy.pts) + "</b>" + (sy.open ? " (" + sy.open + " still running)" : "") : Y.length + " still running";
-    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="/propicks">Pro Picks record \u2192</a></p>';
+    return '<p class="pp-line"><span class="pp-dot"></span><b>Pro Picks</b> yesterday: ' + ys + ' \u00b7 since 14 Nov: ' + sa.settled + ' settled, ' + sa.won + ' won, ' + sa.lost + ' lost' + (sa.void ? ", " + sa.void + " void" : "") + ', <b class="' + (sa.pts >= 0 ? "pos" : "neg") + '">' + pts(sa.pts) + '</b> <a href="propicks.html">Pro Picks record \u2192</a></p>';
   }
   function proPicksStrip(el) {
     /* Owner 17 Nov 10:32: same boxes as the NAP / Specials row, rows of three, soonest off first; started picks drop off like the Specials */
     if (!el) return;
     var T = todaysProPicks().filter(function (t) { return t.result === "open" && new Date(t.start) > new Date(); });
-    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="/propicks">Pro Picks record</a></div>';
+    var head = '<div class="sec-head"><div><p class="eyebrow">The day\u2019s best five Pro tips \u00b7 one per competition</p><h2 class="sec-title" id="h-pp">Today\u2019s Pro Picks</h2></div><a class="more" href="propicks.html">Pro Picks record</a></div>';
     el.innerHTML = '<section class="pp-home" aria-labelledby="h-pp">' + head + (T.length ? '<ul class="htips hero-row pp-hero">' + T.slice(0, 3).map(function (t, i) {
         /* Owner 17 Nov 10:35: one row of 3 like the Specials; the rest queue behind and move in as each one starts ("Next up" on the third box) */
         var q = i === 2 ? T.slice(3) : [], nx = q.length ? '<p class="htip-sm hc-next">Next up: <b>' + (locked(q[0]) ? "Pro tip" : esc(q[0].selection)) + "</b> \u00b7 " + esc(q[0].event) + " \u00b7 " + fmtTime(q[0].start).eat + " UK" + (q.length > 1 ? " \u00b7 then " + (q.length - 1) + " more" : "") + "</p>" : "";
@@ -1455,10 +1483,10 @@
     S.forEach(function (t) { var k = pk(t); if (days.indexOf(k) < 0) days.push(k); });
     days.sort();
     var run = 0;
-    return '<div class="table-box"><table class="data"><thead><tr><th>Day played</th><th class="n">Tips</th><th class="n">Won–Lost</th><th class="n">NCM</th><th class="n">NCMP</th><th class="n">NCMR</th><th class="n">Day P/L</th><th class="n">Running</th></tr></thead><tbody>' +
+    return '<div class="table-box"><table class="data"><thead><tr><th>Day played</th><th class="n">Tips</th><th class="n">Won–Lost</th><th class="n">NCM</th><th class="n">NCMP</th><th class="n">NCMR</th><th class="n">CM</th><th class="n">Day P/L</th><th class="n">Running</th></tr></thead><tbody>' +
       days.map(function (k) { var l = S.filter(function (t) { return pk(t) === k; }), s = stats(l); run += s.profit;
         var by = function (id) { var p = 0; l.forEach(function (t) { if (t.meister === id) p += profit(t); }); return '<td class="n pts ' + cls(p) + '">' + pts(p) + "</td>"; };
-        return "<tr><td>" + dayLabel(k) + '</td><td class="n">' + l.length + '</td><td class="n">' + s.won + "–" + s.lost + "</td>" + by("cruncher") + by("ncmp") + by("ncmr") + '<td class="n pts ' + cls(s.profit) + '"><b>' + pts(s.profit) + '</b></td><td class="n pts ' + cls(run) + '">' + pts(run) + "</td></tr>"; }).join("") +
+        return "<tr><td>" + dayLabel(k) + '</td><td class="n">' + l.length + '</td><td class="n">' + s.won + "–" + s.lost + "</td>" + by("cruncher") + by("ncmp") + by("ncmr") + by("combo") + '<td class="n pts ' + cls(s.profit) + '"><b>' + pts(s.profit) + '</b></td><td class="n pts ' + cls(run) + '">' + pts(run) + "</td></tr>"; }).join("") +
       "</tbody></table></div>" + '<p class="rec-key">By the day each game was played (UK time), so a late finish counts on the day it started. <b>Tips</b> are settled tips only; games still to run are added when they finish. <b>Day P/L</b> and <b>Running</b> include every tip since 5 November, including early test tips (none since 9 November), so they can differ slightly from TOM + NCM + NCMR.</p>';
   }
   function todayStrip(el) {
@@ -1466,7 +1494,7 @@
     if (!L.length) { el.innerHTML = ""; return; }
     var s = stats(L), c = function (f) { return L.filter(f).length; };
     el.innerHTML = '<div class="today-strip"><div><p class="hl-label">Today\'s card</p><p class="ts-big">' + L.length + ' tips</p><p class="hl-sub">UK day \u00b7 ' + c(function (t) { return t.result === "open" && new Date(t.start) > Date.now(); }) + ' to start</p></div>' +
-      P2M.map(function (id) { var n = c(function (t) { return t.meister === id; }); return '<div><p class="hl-label"><span class="mdot" style="background:' + MCOLOR[id] + '"></span>' + MCODE[id] + '</p><p class="ts-big">' + n + '</p><p class="hl-sub">' + ({ meister: "Original Meister", cruncher: "Number Cruncher", ncmr: "Racing Meister" }[id] || MSHORT[id]) + "</p></div>"; }).join("") +
+      P2M.map(function (id) { var n = c(function (t) { return t.meister === id; }); return '<div><p class="hl-label"><span class="mdot" style="background:' + MCOLOR[id] + '"></span>' + MCODE[id] + '</p><p class="ts-big">' + n + '</p><p class="hl-sub">' + ({ meister: "Original Meister", cruncher: "Number Cruncher", ncmr: "Racing Meister", combo: "Doubles and trebles" }[id] || MSHORT[id]) + "</p></div>"; }).join("") +
       '<div><p class="hl-label">NCM Pro / Free</p><p class="ts-big">' + c(isNP) + " / " + c(isNF) + '</p><p class="hl-sub">Pro = 2.00 to 5.99</p></div>' +
       /* Owner 22 Nov 13:51: shorter strip wording (no repeated 'today', voids shown) */
       /* Owner 20 Nov 11:06: NAP / Specials box removed (it only spaced the bar); with NCMR the bar is 8 boxes on one line */
@@ -1474,7 +1502,7 @@
       (function () { var D = p2Set().filter(function (t) { return dayKey(t.start) === today; }), d = stats(D), op = p2().filter(function (t) { return t.result === "open" && dayKey(t.start) === today; }).length;
         return '<div><p class="hl-label">Today so far</p><p class="ts-big pts ' + cls(d.profit) + '">' + (D.length ? pts(d.profit) : "–") + '</p><p class="hl-sub">' + D.filter(function (t) { return /won|placed/.test(t.result); }).length + " won · " + D.filter(function (t) { return /lost/.test(t.result); }).length + " lost" + (D.filter(function (t) { return t.result === "void"; }).length ? " · " + D.filter(function (t) { return t.result === "void"; }).length + " void" : "") + "<br>" + op + " to finish</p></div>"; })() +
       /* Owner 16 Nov 10:32: site Meisters together first; then the separate records at the end: Combo (blue), then Acca (pink) */
-      (function () { var C = (BM.COMBOS || []).filter(function (a) { var f = a.legs.slice().sort(function (x, y) { return new Date(x.start) - new Date(y.start); })[0]; return f && dayKey(f.start) === today; }); return '<div><p class="hl-label"><span class="mdot" style="background:#7FD3FF"></span>Combo</p><p class="ts-big">' + C.length + '</p><p class="hl-sub ts-one"><a href="/combo">Doubles and trebles</a></p></div>'; })() + "</div>";
+      /* Owner 25 Nov 10:46: Combo box now one of the four Meister boxes */ "</div>";
       /* Owner 25 Nov: Acca Meister retired, its box removed */
   }
 
@@ -1643,7 +1671,7 @@
           var lost = a.legs.some(function (l) { return l.result === "lost"; }), ret = lost ? 0 : a.legs.reduce(function (m, l) { return m * lr(l); }, 1), pt = lost ? -a.stake : a.stake * ret - a.stake;
           var P = a.legs.reduce(function (m, l) { return m * l.price; }, 1), d = dayLabel(dayKey(new Date(last(a)).toISOString())).split(" \u00b7 ")[0];
           return '<a class="ls-multi ' + kind + '" href="' + href + "#" + esc(a.id) + '"><span class="ls-m-k">' + lab + '</span><span class="ls-m-t">' + esc(a.title || (a.legs.length + "-fold")) + " @ " + accaOdds(P) + "<small>" + d + " · " + (lost ? "Lost" : "Won") + '</small></span><b class="pts ' + cls(pt) + '">' + pts(pt) + "</b></a>"; };
-        var h = line(pick(BM.COMBOS), "combo", "/combo", "Latest combo"); /* Owner 25 Nov: Acca Meister retired */
+        var h = line(pick(BM.COMBOS), "combo", "combo.html", "Latest combo"); /* Owner 25 Nov: Acca Meister retired */
         if (h) $("#latest-list").insertAdjacentHTML("beforeend", '<div class="ls-multis">' + h + "</div>");
       })();
       p2Total($("#latest-chart"));
@@ -1754,7 +1782,7 @@
         var mc = MCOLOR[m.id], P = function (t, sub, body, extra) { return '<section class="pf-panel' + (extra || "") + '" style="border-top-color:' + mc + '"><div class="pf-hd"><h3>' + t + "</h3>" + (sub ? "<p>" + sub + "</p>" : "") + '</div><div class="pf-body">' + body + "</div></section>"; };
         return '<section class="m-tab" id="' + m.id + '" data-mtab="' + m.id + '" aria-labelledby="h-' + m.id + '" style="--mc:' + mc + '">' +
           '<div class="m-hero" style="border-top-color:' + mc + '"><span class="avatar ' + m.id + '" aria-hidden="true">' + esc(m.initials) + '</span><div class="m-hero-t"><h2 id="h-' + m.id + '">' + esc(m.name) + '</h2><p>' + esc(m.who) + " \u00b7 " + esc(m.role) + '</p></div><div class="m-hero-r"><span class="m-hero-l">Record</span><b>' + s.won + "\u2013" + s.lost + '</b><b class="pts ' + cls(s.profit) + '">' + pts(s.profit) + ' pts</b><span>ROI ' + pct(s.roi, true) + "</span></div></div>" +
-          P("The numbers", "Every " + MCODE[m.id] + " tip since " + (m.id === "meister" ? "12 November" : m.id === "ncmr" ? "19 November" : m.id === "ncmp" ? "25 November" : "5 November") + ", advised stakes at the published price", '<div class="m-hl" data-mhl="' + m.id + '"></div><div class="m-odds">' + oddsTable(p2().filter(function (t) { return t.meister === m.id; })) + "</div>") +
+          P("The numbers", "Every " + MCODE[m.id] + " tip since " + (m.id === "meister" ? "12 November" : m.id === "ncmr" ? "19 November" : m.id === "ncmp" ? "25 November" : m.id === "combo" ? "16 November" : "5 November") + ", advised stakes at the published price", '<div class="m-hl" data-mhl="' + m.id + '"></div><div class="m-odds">' + oddsTable(p2().filter(function (t) { return t.meister === m.id; })) + "</div>") +
           '<div class="pf-two">' +
             P("About " + MCODE[m.id], esc(m.who), '<p class="m-bio">' + esc(m.bio) + '</p><div class="p2-chips">' + m.specialities.map(function (x) { return '<span class="chip">' + esc(x) + "</span>"; }).join("") + '</div><details class="p2-method"><summary>How this Meister works</summary><ul>' + m.method.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>") +
             P("Running profit by section", "All of " + MCODE[m.id] + " (solid) and each sport (dashed)", '<div class="mc" data-pc="' + m.id + '"></div>') +

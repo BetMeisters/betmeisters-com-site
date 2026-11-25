@@ -46,6 +46,23 @@ BM.MEISTERS = [
     ]
   },
   {
+    id: "ncmp",
+    name: "Number Cruncher Premium Events",
+    short: "NCM Premium Events",
+    initials: "PE",
+    who: "AI-assisted Meister · Number Cruncher, big events",
+    role: "Big games, small edges · always a positive edge · its own record",
+    bio: "The Number Cruncher on the biggest events: the top European football leagues and every European competition, the NBA, EuroLeague, NHL, NFL and the main ATP and WTA tours. Bookmakers price these popular, high-volume events very tightly, so the edges here are smaller than the Number Cruncher's usual 5% to 14%. NCM Premium Events only tips when the price is above our fair price, even if only slightly: every tip has a positive edge, from 1.5%. Often only one bookmaker has the price, and the tip names it; we check the price is still there a few minutes later before publishing, but it can move quickly, so check before you bet. One bet per event. Its record starts on 25 November and is kept apart from the main Number Cruncher Meister, so NCM stays clean. If it does not work, it is retired, like every Meister before it.",
+    specialities: ["Big events", "Small positive edges", "Football", "NBA", "NFL"],
+    method: [
+      "Same maths as the Number Cruncher: fair price from Pinnacle with the margin removed",
+      "Tips when the best price beats the fair price by 1.5% to 13.5%; 13.5% or more is treated as a price error",
+      "Free = edge 1.5% to 4.49%; Pro = edge 4.5% to 13.49%; prices 1.50 to 10.00; 1 point, half a point at 6.00 or more",
+      "One bookmaker is enough (named on the tip); the price is checked again a few minutes later, and at 7.5% or more it must also beat the exchange where the exchange prices the game",
+      "One bet per event; record from 25 November, separate from the Number Cruncher Meister"
+    ]
+  },
+  {
     id: "ncmr",
     name: "NCM Racing Meister",
     short: "NCM Racing Meister",
@@ -63,20 +80,19 @@ BM.MEISTERS = [
     ]
   },
   {
-    id: "ncmp",
-    name: "Number Cruncher Premium Events",
-    short: "NCM Premium Events",
-    initials: "PE",
-    who: "AI-assisted Meister · Number Cruncher, big events",
-    role: "Big games, small edges · always a positive edge · its own record",
-    bio: "The Number Cruncher on the biggest events: the top European football leagues and every European competition, the NBA, EuroLeague, NHL, NFL and the main ATP and WTA tours. Bookmakers price these popular, high-volume events very tightly, so the edges here are smaller than the Number Cruncher's usual 5% to 14%. NCM Premium Events only tips when the price is above our fair price, even if only slightly: every tip has a positive edge, from 1.5%. Often only one bookmaker has the price, and the tip names it; we check the price is still there a few minutes later before publishing, but it can move quickly, so check before you bet. One bet per event. Its record starts on 25 November and is kept apart from the main Number Cruncher Meister, so NCM stays clean. If it does not work, it is retired, like every Meister before it.",
-    specialities: ["Big events", "Small positive edges", "Football", "NBA", "NFL"],
+    id: "combo",
+    name: "Combo Meister",
+    short: "Combo Meister",
+    initials: "CM",
+    who: "AI-assisted Meister · doubles and trebles",
+    role: "Doubles and trebles with edge · its own record",
+    bio: "The Combo Meister builds doubles and trebles from legs that are each priced above our fair price, so the whole combo carries an edge. It started as a separate trial on 16 November and earned its place as a full Meister on 25 November with a profit across its first 96 combos, close to what its edges predicted. Every combo is a tip: published before the first leg starts, with its combined price, its chance and its result kept on the record. Legs follow the same price rules as our singles, and every leg is checked again just before the combo is published.",
+    specialities: ["Doubles", "Trebles", "Edge on every leg", "Football", "Basketball"],
     method: [
-      "Same maths as the Number Cruncher: fair price from Pinnacle with the margin removed",
-      "Tips when the best price beats the fair price by 1.5% to 13.5%; 13.5% or more is treated as a price error",
-      "Free = edge 1.5% to 4.49%; Pro = edge 4.5% to 13.49%; prices 1.50 to 10.00; 1 point, half a point at 6.00 or more",
-      "One bookmaker is enough (named on the tip); the price is checked again a few minutes later, and at 7.5% or more it must also beat the exchange where the exchange prices the game",
-      "One bet per event; record from 25 November, separate from the Number Cruncher Meister"
+      "Every leg priced above our fair price (Pinnacle, margin removed) by 5% to 12%, at least 40% likely (35% for one leg priced 2.50 to 3.00)",
+      "Combined edge of at least 5%; doubles at 1 point, trebles at half a point",
+      "Legs follow our singles' price rules (one bookmaker allowed for football and big events); every leg checked again before publishing",
+      "One combo tip: no Free or Pro split. Record from 16 November"
     ]
   },
   {

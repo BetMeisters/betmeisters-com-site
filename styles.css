@@ -2012,6 +2012,12 @@ body[data-page="propicks"] .pp-line a { display: none; }
 #combo-home:empty, #acca-home:empty, #in-play-sec[hidden] { display: none !important; }
 #acca-home { display: none !important; }
 
+/* Owner 25 Nov 10:46: Combo Meister (CM), blue, one Combo tier */
+.badge.combo, .who .badge.combo, .tr-tags .badge.combo, .res-tags .badge.combo, .hc-who .badge.combo { background: #2196D3 !important; color: #fff !important; }
+.avatar.combo { background: #2196D3; color: #fff; }
+.tier.combo, .tier.combo.combo { background: #2196D3 !important; color: #fff !important; border-color: #2196D3 !important; } .tier.combo svg path { fill: #fff; }
+.htips > li.htip[data-m="combo"], body[data-page="home"] #latest-list .htips > li.htip[data-m="combo"] { border-top-color: #2196D3; }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
