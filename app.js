@@ -1448,7 +1448,11 @@
     }).join("");
     var a = measures(p2Set()), d = a.profit - a.exp;
     el.innerHTML = '<p class="mve-lead">The edge on our tips said <b>' + pts(a.exp) + "</b> points. We have made <b class=\"pts " + cls(a.profit) + '">' + pts(a.profit) + "</b>, " + (d >= 0 ? "<b>" + pts(d) + "</b> more than expected: some of that is luck, and luck can turn." : "<b>" + pts(-d).replace("+", "") + "</b> less than expected: that is bad luck, and the edge is what we control.") + "</p>" + '<p class="mve-note">Each tip\'s edge (our chance × price, minus 1) times its stake gives the points we expect over time. Short runs swing either way; over hundreds of tips the two lines should meet.</p>' +
-      '<div class="gl-wrap"><table class="glance mve"><thead><tr><th scope="col">Meister</th><th scope="col">Edge said</th><th scope="col">Made</th><th scope="col">Winners (exp → won)</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
+      '<div class="gl-wrap"><table class="glance mve"><thead><tr><th scope="col">Meister</th><th scope="col">Edge said</th><th scope="col">Made</th><th scope="col">Winners (exp → won)</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+      '<div class="mve-chart"><p class="mve-ck">Made v expected, tip by tip</p><div id="mve-chart" data-h="190"></div></div>';
+    /* Owner 25 Nov 11:42: small chart under the table: running points made against running points the edge expected */
+    multiChart($("#mve-chart"), [{ name: "Expected from the edge", color: "#9AA3B5", dash: "6 4", pf: function (t) { var e = edgeOf(t); return t.result === "void" || e == null ? 0 : t.stake * e; }, test: function () { return true; } },
+      { name: "Made", color: "var(--chart-line)", test: function () { return true; } }], p2());
   }
   function p2Sections(el) {
     /* Owner 6 Nov 11:45: twelve dashed/dotted lines were unreadable; now four small charts, one per sport, three solid Meister lines each */
@@ -1733,6 +1737,10 @@
       if ($("#latest-snap")) latestSnap($("#latest-snap"));
       feedNews($("#news-block"));
       feedReviews($("#review-cards"));
+      if (window.BM_HOME2) (function () { /* Owner 25 Nov 11:42: form strip of the last 30 settled tips under Last six (fills the panel, shows the losers too) */
+        var L = p2Set().slice(-30), tot = 0, w = 0, l = 0; L.forEach(function (t) { tot += profit(t); if (/won|placed/.test(t.result)) w++; else if (/lost/.test(t.result)) l++; });
+        $("#latest-list").insertAdjacentHTML("beforeend", '<div class="form30"><p class="mve-ck">Form, last 30 settled tips <span>oldest → newest</span></p><div class="f30">' + L.map(function (t) { var r = /won|placed/.test(t.result) ? "w" : /lost/.test(t.result) ? "l" : "v"; return '<i class="' + r + '" title="' + esc(t.selection + " · " + MCODE[t.meister] + " · " + pts(profit(t))) + '" style="--mc:' + MCOLOR[t.meister] + '"></i>'; }).join("") + '</div><p class="f30-sum">' + w + " won · " + l + ' lost · <b class="pts ' + cls(tot) + '">' + pts(tot) + "</b> pts · the thin stripe under each block is the Meister's colour</p></div>");
+      })();
       if (window.BM_HOME2) { proofStrip($("#proof")); meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
     },
     tips: function () {

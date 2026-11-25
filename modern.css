@@ -277,3 +277,12 @@ table.glance.mve th, table.glance.mve td { padding: 8px 8px; }
 .ls-big.ls-small { font-size: 20px; line-height: 1.3; }
 @media (max-width: 760px) { body[data-page="home"] #proof { order: 0; } body[data-page="home"] section[aria-labelledby="h-glance"], body[data-page="home"] section[aria-labelledby="h-honest"] { order: 6; } body[data-page="home"] #proof ~ .nx-step { order: 9; } }
 @media (max-width: 560px) { .pf-acts { flex-wrap: nowrap; gap: 8px; } .pf-acts a { flex: 1 1 0; text-align: center; padding-inline: 8px; font-size: 15px; white-space: nowrap; } }
+.mve-chart { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.mve-ck { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+.form30 { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+.form30 .mve-ck span { font-weight: 500; text-transform: none; letter-spacing: 0; margin-left: 6px; }
+.f30 { display: grid; grid-template-columns: repeat(30, minmax(0, 1fr)); gap: 3px; margin: 8px 0 6px; }
+.f30 i { display: block; height: 34px; border-radius: 3px; border-bottom: 4px solid var(--mc); }
+.f30 i.w { background: #2E9E5B; } .f30 i.l { background: #D9534F; } .f30 i.v { background: #B8C0CF; }
+.f30-sum { margin: 0; font-size: 14px; color: var(--ink-2); }
+@media (max-width: 560px) { .f30 { gap: 2px; } .f30 i { height: 26px; } }
