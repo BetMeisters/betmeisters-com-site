@@ -346,6 +346,10 @@ nav.sections .dd-menu a:hover { background: var(--paper-2); }
 
 .rank-body{overflow-x:auto;-webkit-overflow-scrolling:touch}@media(max-width:640px){.rank-body .rank th:nth-child(4),.rank-body .rank td:nth-child(4),.rank-body .rank th:nth-child(5),.rank-body .rank td:nth-child(5){display:none}}
 
+/* Owner 25 Nov: record strip with four Meisters */
+.record.r5 { grid-template-columns: 1.3fr repeat(4, minmax(0, 1fr)); }
+@media (max-width: 760px) { .record.r5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .record.r5 > .rec-lab { grid-column: 1 / -1; } }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
