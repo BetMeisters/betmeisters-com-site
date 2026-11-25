@@ -2039,6 +2039,10 @@ body[data-page="propicks"] .pp-line a { display: none; }
 /* Owner 25 Nov 11:13: bar numbers centred under the pills */
 .today-strip .ts-m { text-align: center; } .today-strip .ts-m .ts-mlab { justify-content: center; }
 
+/* Owner 25 Nov 11:16: pill + number centred vertically in each box */
+.today-strip .ts-m { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; }
+.today-strip .ts-m .ts-mlab, .today-strip .ts-m .ts-big { margin: 0; }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
