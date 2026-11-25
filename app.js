@@ -1083,7 +1083,8 @@
   function narrowBar(el, list, onChange) {
     if (!el) return;
     var days = [], sports = [], bts = [];
-    list.forEach(function (t) { var k = dayKey(t.start); if (days.indexOf(k) < 0) days.push(k); if (sports.indexOf(t.sport) < 0) sports.push(t.sport); var bt = betType(t); if (bts.indexOf(bt) < 0) bts.push(bt); });
+    var onTips = document.body.getAttribute("data-page") === "tips"; /* Owner 25 Nov 11:13: Tips lists only sports and bet types we have open tips in; Results keeps every sport ever tipped */
+    list.forEach(function (t) { var k = dayKey(t.start); if (days.indexOf(k) < 0) days.push(k); if (onTips && t.result !== "open") return; if (sports.indexOf(t.sport) < 0) sports.push(t.sport); var bt = betType(t); if (bts.indexOf(bt) < 0) bts.push(bt); });
     days.sort(); sports.sort();
     if (filt.day !== "all" && days.indexOf(filt.day) < 0) days.push(filt.day);
     if (filt.sport !== "all" && sports.indexOf(filt.sport) < 0) sports.push(filt.sport);
@@ -1143,7 +1144,7 @@
     }).join("");
   }
   function filterBar(el, onChange) {
-    var tiers = [["all", "All tiers", null], ["free", "NCM Free", TIER_COLOR.free], ["pro", "NCM Pro", TIER_COLOR.pro], ["propick", "Pro Picks", TIER_COLOR.propick], ["nap", "NAP", TIER_COLOR.nap], ["special", "Meister Special", TIER_COLOR.special]]; /* Owner 20 Nov 20:21: Premium League filter */
+    var tiers = [["all", "All tiers", null], ["free", "NCM Free", TIER_COLOR.free], ["pro", "NCM Pro", TIER_COLOR.pro], ["pfree", "NCMP Free", "#C9B6FF"], ["ppro", "NCMP Pro", "#6B46C1"], ["racing", "NCMR", "#B5651D"], ["combo", "Combo", "#2196D3"], ["propick", "Pro Picks", TIER_COLOR.propick], ["nap", "NAP", TIER_COLOR.nap], ["special", "Meister Special", TIER_COLOR.special]]; /* Owner 20 Nov 20:21: Premium League filter */
     /* Owner 5 Nov 11:47: Phase 2 has three Meisters; the Drift and Close Meister and Best Value filters are gone (their records stay in the data) */
     if (["allwith", "removed", "close"].indexOf(filt.meister) >= 0) filt.meister = "all";
     if (filt.tier === "value") filt.tier = "all";
@@ -1164,7 +1165,7 @@
   }
   function applyFilt(list) {
     return list.filter(function (t) {
-      return (filt.tier === "all" || (filt.tier === "nap" ? t.nap : filt.tier === "hnap" ? t.humanNap : filt.tier === "value" ? t.value : filt.tier === "special" ? t.special : filt.tier === "premium" ? isPremium(t) : filt.tier === "propick" ? t.proPick : filt.tier === "human" ? t.human : filt.tier === "free" ? isNF(t) : filt.tier === "pro" ? isNP(t) : t.tier === filt.tier)) && (filt.meister === "all" ? !isRemoved(t) : filt.meister === "allwith" ? true : t.meister === filt.meister) && (!filt.edge || (edgeOf(t) != null && edgeOf(t) * 100 >= filt.edge - 1e-9));
+      return (filt.tier === "all" || (filt.tier === "nap" ? t.nap : filt.tier === "hnap" ? t.humanNap : filt.tier === "value" ? t.value : filt.tier === "special" ? t.special : filt.tier === "premium" ? isPremium(t) : filt.tier === "propick" ? t.proPick : filt.tier === "human" ? t.human : filt.tier === "free" ? isNF(t) : filt.tier === "pro" ? isNP(t) : filt.tier === "pfree" ? (t.meister === "ncmp" && t.tier !== "pro") : filt.tier === "ppro" ? (t.meister === "ncmp" && t.tier === "pro") : filt.tier === "racing" ? t.meister === "ncmr" : filt.tier === "combo" ? t.meister === "combo" : t.tier === filt.tier)) && (filt.meister === "all" ? !isRemoved(t) : filt.meister === "allwith" ? true : t.meister === filt.meister) && (!filt.edge || (edgeOf(t) != null && edgeOf(t) * 100 >= filt.edge - 1e-9));
     });
   }
 
