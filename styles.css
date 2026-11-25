@@ -1996,6 +1996,11 @@ body[data-page="propicks"] .pp-line a { display: none; }
 .vc-line a { font-family: inherit; font-weight: 700; color: var(--open); text-decoration: none; white-space: nowrap; }
 .vc-line a:hover { text-decoration: underline; }
 
+/* Owner 25 Nov: NCM Premium Events (PE) */
+.badge.ncmp, .who .badge.ncmp, .tr-tags .badge.ncmp, .res-tags .badge.ncmp, .hc-who .badge.ncmp { background: #6B46C1 !important; color: #fff !important; }
+.avatar.ncmp { background: #6B46C1; color: #fff; }
+.tier.ncmp, .tier.pro.ncmp, .tier.free.ncmp { background: #6B46C1 !important; color: #fff !important; border-color: #6B46C1 !important; } .tier.ncmp svg path { fill: #fff; }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
