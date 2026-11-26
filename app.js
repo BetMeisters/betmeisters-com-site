@@ -1206,8 +1206,8 @@
     var m = measures(list), d = m.profit - m.exp, dw = m.wins - m.expW, r1 = function (x) { return Math.round(x * 10) / 10; };
     var h = tile("Running profit", pts(m.profit) + "<small>pts</small>", m.settled + m.void + " settled · " + pts(m.staked).replace("+", "") + " pts staked · ROI " + pct(m.roi, true), cls(m.profit)) +
       tile("Profit v expected", (d >= 0 ? "+" : "−") + Math.abs(d).toFixed(2) + "<small>pts</small>", "Made " + pts(m.profit) + " pts; our edges expected " + pts(m.exp), cls(d)) +
-      (function () { var cv = clvStats(list); return tile("Average CLV", clvTxt(cv.avg), cv.n ? cv.n + " tips v Pinnacle's fair price at the close" : "Measured from each tip's closing price", cv.avg == null ? "" : cls(cv.avg)); })() +
-      tile("Beat SP / closing price", m.beat == null ? "–" : pct(m.beat), m.closeN ? m.closeN + " tips so far: racing v SP, other sports v Pinnacle's close" : "Closing prices tracked from 6 Nov", m.beat == null ? "" : m.beat >= 0.5 ? "pos" : "neg") +
+      (function () { var cv = clvStats(list); return tile("Average CLV", clvTxt(cv.avg), cv.n ? cv.n + " tips v the fair price at the close" : "Measured from each tip's closing price", cv.avg == null ? "" : cls(cv.avg)); })() +
+      tile("Beat SP / closing price", m.beat == null ? "–" : pct(m.beat), m.closeN ? m.closeN + " tips so far: racing v SP, other sports v the closing fair price" : "Closing prices tracked from 6 Nov", m.beat == null ? "" : m.beat >= 0.5 ? "pos" : "neg") +
       tile("Average edge", m.avgEdge == null ? "–" : pct(m.avgEdge, true), "Across every tip published", "");
     /* Owner 19 Nov 19:26: even number of boxes everywhere (6 without the odds block, 8 with it) */
     if (!(opt && opt.odds)) { var dec0 = m.won + m.lost; h += tile("Strike rate", dec0 ? pct(m.won / dec0) : "–", m.won + " won of " + dec0 + " decided (voids out) · our chances expected " + m.expW.toFixed(1), ""); }
