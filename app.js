@@ -50,12 +50,14 @@
     var lost = L.some(function (l) { return l.result === "lost"; }), open = L.some(function (l) { return !l.result || l.result === "open"; });
     var f = L.reduce(function (m, l) { var r = l.result; return m * (r === "won" ? l.price : r === "void" ? 1 : r === "half-won" ? (1 + l.price) / 2 : r === "half-lost" ? 0.5 : 1); }, 1);
     var res = lost ? "lost" : open ? "open" : f > 1.0001 ? "won" : f < 0.9999 ? "lost" : "void";
+    /* Keith 26 Nov 08:53: CLV on ALL Meisters. A combo has a close only when every leg has a Pinnacle closeChance (combo_close.py). */
+    var CC = L.every(function (l) { return typeof l.closeChance === "number" && l.closeChance > 0; }) ? L.reduce(function (m, l) { return m * l.closeChance; }, 1) : null;
     var sports = {}; L.forEach(function (l) { sports[l.sport || "Football"] = 1; }); var sp = Object.keys(sports).length === 1 ? Object.keys(sports)[0] : "Multiple sports";
     BM.TIPS.push({ id: a.id, published: a.publishedAt || a.published || L[0].start, meister: "combo", phase: 2, combo: true, legs: L, comboRet: lost ? 0 : f,
       tier: "combo", sport: sp, comp: L.map(function (l) { return l.comp || ""; }).join(" + "),
       selection: L.length === 2 ? "Double" : "Treble",
       market: (L.length === 2 ? "Double" : "Treble") + " (" + L.length + " legs)", betType: "Multiple", event: L.map(function (l) { return l.sel + " (" + l.event + ")"; }).join(" + "),
-      start: L[0].start, lastStart: L[L.length - 1].start, price: Math.round(P * 100) / 100, minPrice: null, prob: C, stake: a.stake || 1, bookie: "", result: res, note: a.note || "", nap: false, value: false });
+      start: L[0].start, lastStart: L[L.length - 1].start, price: Math.round(P * 100) / 100, minPrice: null, prob: C, stake: a.stake || 1, bookie: "", result: res, note: a.note || "", nap: false, value: false, close: CC ? Math.round(1 / CC * 100) / 100 : null, closeChance: CC, clv: CC ? Math.round((P * CC - 1) * 10000) / 10000 : undefined });
   });
   BM.COMBOS = [];
   function isRetired(t) { return t.meister === "margins" || t.meister === "tomold" || t.meister === "ncmrold" || t.meister === "tomret"; }
