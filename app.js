@@ -748,12 +748,42 @@
 
   /* ---------- page sections ---------- */
   /* Owner 23 Nov 07:12: plain explainer for .5 handicaps; the market line keeps the bookmaker's name (Asian handicap) */
+  /* Owner 26 Nov 10:23: quarter and whole lines are back, so EVERY handicap and total carries a plain "How it settles" line,
+     worked out from the actual line for each possible score (full win, half win, stake back, half loss, loss). */
   function hcpExp(t) {
-    if (!t || t.sport !== "Football" || !/handicap/i.test(t.market || "")) return "";
-    var m = /([+-])(\d+)\.5\b/.exec(t.selection || ""); if (!m) return "";
-    var n = +m[2], txt = m[1] === "+" ? (n === 0 ? "Wins if they win or draw." : "Wins if they win, draw or lose by " + (n === 1 ? "1 goal." : "up to " + n + " goals.")) : (n === 0 ? "Wins only if they win." : "Wins only if they win by " + (n + 1) + " or more goals.");
-    return '<br><span class="hcp-exp"><b>What it means:</b> ' + txt + " Half-point line: no refunds, no half results.</span>";
+    if (!t || t.legs) return "";
+    var sel = t.selection || "", mk = (t.market || "") + " " + (t.betType || "");
+    var unit = t.sport === "Football" ? "goal" : (/goals/i.test(sel + mk) ? "goal" : "point");
+    var U = function (n) { return n + " " + unit + (n === 1 ? "" : "s"); };
+    var split = function (L) { var q = Math.round(L * 4); return (Math.abs(q) % 2 === 1) ? [L - 0.25, L + 0.25] : [L]; };
+    var res = function (x, Ls) { var o = Ls.map(function (l) { var d = x + l; return d > 1e-9 ? "w" : d < -1e-9 ? "l" : "p"; }).join(""); return o.length === 1 ? o + o : o; };
+    var WORD = { ww: "full win", wp: "half wins, half your stake back", pw: "half wins, half your stake back", pp: "stake back", pl: "half your stake back, half lost", lp: "half your stake back, half lost", ll: "lost" };
+    var groups = function (vals, lab) { var out = [], cur = null; vals.forEach(function (v) { if (cur && cur.r === v.r) cur.to = v.k; else { cur = { r: v.r, from: v.k, to: v.k }; out.push(cur); } }); return out.map(function (g) { var l = lab(g); return '<span class="hx-row">' + l.charAt(0).toUpperCase() + l.slice(1) + ': <b class="hx-' + g.r.charAt(0) + g.r.charAt(1) + '">' + WORD[g.r] + "</b></span>"; }).join(""); };
+    var mt = /\b(over|under)\s+(\d+(?:\.\d+)?)/i.exec(sel);
+    if (mt && /total|goals|points/i.test(mk + sel)) {
+      var over = /over/i.test(mt[1]), L = +mt[2], Ls = split(L), lo = Math.max(0, Math.floor(L) - 2), hi = Math.ceil(L) + 2, V = [];
+      for (var n = lo; n <= hi; n++) V.push({ k: n, r: res(over ? n - 0 : -n, Ls.map(function (l) { return over ? -l : l; })) });
+      var txt = groups(V, function (g) { var a = g.from, b = g.to; if (a === lo && b === hi) return "any total"; if (a === lo) return (b === 0 ? "0" : b + " or fewer") + " " + unit + "s"; if (b === hi) return a + " or more " + unit + "s"; return a === b ? "exactly " + U(a) : a + "–" + b + " " + unit + "s"; });
+      return '<span class="hcp-exp"><b class="hx-h">How it settles</b>' + txt + "</span>";
+    }
+    var mh = /^(.*?)\s([+-]\d+(?:\.\d+)?)\b/.exec(sel);
+    if (mh && /handicap|spread/i.test(mk)) {
+      var team = mh[1].replace(/\s*\(.*$/, ""), L2 = +mh[2], Ls2 = split(L2), top = Math.max(3, Math.ceil(Math.abs(L2)) + 2), W = [];
+      for (var m = top; m >= -top; m--) W.push({ k: m, r: res(m, Ls2) });
+      var lab = function (g) { var a = g.from, b = g.to; /* a > b */
+        var one = function (m) { return m > 0 ? team + " win by " + U(m) : m === 0 ? "draw" : team + " lose by " + U(-m); };
+        if (a === top && b === -top) return "any result";
+        if (a === top) return b > 0 ? team + " win by " + b + "+" : b === 0 ? team + " win or draw" : team + " win, draw or lose by up to " + U(-b);
+        if (b === -top) return a < 0 ? team + " lose by " + (-a) + "+" : a === 0 ? "draw or " + team + " lose" : team + " lose, draw or win by up to " + U(a);
+        return a === b ? one(a) : one(a) + " or " + one(b).replace(team + " ", "");
+      };
+      var hx = groups(W, lab); if (unit === "point") hx = hx.replace(/win, draw or lose/g, "win or lose").replace(/lose, draw or win/g, "lose or win").replace(/<span class="hx-row">Draw:.*?<\/span>/g, "");
+      return '<span class="hcp-exp"><b class="hx-h">How it settles</b>' + hx + "</span>";
+    }
+    if (/draw no bet/i.test(mk + sel)) return '<span class="hcp-exp"><b class="hx-h">How it settles</b><span class="hx-row">Win: <b class="hx-ww">full win</b></span><span class="hx-row">Draw: <b class="hx-pp">stake back</b></span><span class="hx-row">Lose: <b class="hx-ll">lost</b></span></span>';
+    return "";
   }
+
   function heroPicks() {
     /* Owner 22 Nov 18:09: ONE top row on the home page, up to FIVE boxes, any mix of NAP, Special and Pro Pick (Pro Picks no longer have their own home row).
        NAPs always on the left (NCM NAP, then TOM's NAP; several TOM NAPs share one box); then Specials and Pro Picks together in start order.

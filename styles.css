@@ -2049,6 +2049,13 @@ body[data-page="propicks"] .pp-line a { display: none; }
 @media (max-width:1180px) { .today-strip { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; } .today-strip > div:last-child .hl-sub { white-space: normal; } }
 @media (max-width:560px) { .today-strip { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
 
+/* Owner 26 Nov 10:23: clear "How it settles" box on the expanded card */
+.hcp-exp{display:block;margin:8px 0 4px;padding:8px 10px;border-radius:8px;background:rgba(255,198,41,.10);border-left:3px solid #FFC629;font-size:13px;line-height:1.45;opacity:1}
+.hcp-exp .hx-h{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.hcp-exp .hx-row{display:block}
+.hcp-exp .hx-ww{color:#1E9E5A}.hcp-exp .hx-wp,.hcp-exp .hx-pw{color:#4C9B5F}.hcp-exp .hx-pp{color:#8B95A8}.hcp-exp .hx-pl,.hcp-exp .hx-lp{color:#C77A2B}.hcp-exp .hx-ll{color:#C2413A}
+.htip.dark .hcp-exp .hx-ww{color:#6EE7A0}.htip.dark .hcp-exp .hx-ll{color:#FF8A80}
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
