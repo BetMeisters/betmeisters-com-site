@@ -1471,7 +1471,7 @@
     el.innerHTML = '<div class="pf-in"><div class="pf-l"><h1>Every tip priced. <span>Every result kept.</span></h1>' +
       '<p class="pf-sub">Four Meisters. Every tip published before the start, with its price and our chance. Winners and losers stay on the record.</p>' +
       '<div class="pf-stats">' + st(pts(m.profit), "points since 5 Nov", m.profit >= 0 ? "g" : "") + st(pct(m.roi, true), "return on stakes") +
-      (m.beat != null ? st(Math.round(m.beat * 100) + "%", "beat the closing price") : "") + st(p2Set().filter(function (t) { return t.result !== "void"; }).length, "settled tips") + "</div>" +
+      (m.beat != null ? st(Math.round(m.beat * 100) + "%", "beat the closing price") : "") + st(p2Set().length, "settled tips") + "</div>" +
       '<div class="pf-acts"><a class="pf-cta" href="/tips">See today\'s tips →</a><a class="pf-cta2" href="/meisters">Meet the Meisters</a></div></div>' +
       (lead ? '<div class="pf-news"><p class="pf-nk">Latest news</p><a class="pf-lead" href="' + esc(lead.href) + '"><span class="pf-lab">' + esc(lead.label) + " · " + shortDay(lead.date) + "</span><b>" + esc(lead.title) + "</b><span class=\"pf-dek\">" + esc(lead.dek) + "</span></a>" +
         A.slice(1).map(function (a) { return '<a class="pf-more" href="' + esc(a.href) + '"><span class="pf-lab">' + esc(a.label) + "</span>" + esc(a.title) + "</a>"; }).join("") +
