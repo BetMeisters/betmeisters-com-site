@@ -181,7 +181,7 @@
     list.forEach(function (t) {
       if (t.result === "open") s.open++;
       else if (t.result === "void") s.void++;
-      else { s[t.result === "placed" ? "lost" : t.result]++; if (t.result === "placed") s.placed = (s.placed || 0) + 1; s.staked += t.stake; s.profit += profit(t); }
+      else { var rk = t.result === "placed" || t.result === "half-lost" ? "lost" : t.result === "half-won" ? "won" : t.result; s[rk]++; if (t.result === "placed") s.placed = (s.placed || 0) + 1; if (t.result === "half-won") s.halfWon = (s.halfWon || 0) + 1; if (t.result === "half-lost") s.halfLost = (s.halfLost || 0) + 1; s.staked += t.stake; s.profit += profit(t); } /* Owner 26 Nov: half won counts as a win and half lost as a loss in W-L (they were left out) */
     });
     s.settled = s.won + s.lost;
     s.roi = s.staked ? s.profit / s.staked : null;
@@ -219,7 +219,7 @@
     var L = BM.CLOSE || [], s = stats(L);
     var openL = L.filter(function (t) { return t.result === "open"; }).sort(byStart), done = L.filter(function (t) { return t.result !== "open"; }).sort(byStart).reverse();
     var row = function (t) { var tm = fmtTime(t.start), p = t.result === "open" ? null : profit(t);
-      return '<li><span class="cm-when">' + (t.result === "open" ? tm.day + " " + tm.eat : '<span class="res ' + t.result + '">' + t.result + "</span>") + '</span><span class="cm-sel"><b>' + esc(t.selection) + "</b> " + fmtOdds(t.price) + ' <small>' + esc(t.sport) + " · " + esc(t.event) + (t.edgeNote ? " · " + esc(t.edgeNote) : "") + "</small></span>" + (p == null ? "" : '<span class="num pts ' + cls(p) + '">' + pts(p) + "</span>") + "</li>"; };
+      return '<li><span class="cm-when">' + (t.result === "open" ? tm.day + " " + tm.eat : '<span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + "</span>") + '</span><span class="cm-sel"><b>' + esc(t.selection) + "</b> " + fmtOdds(t.price) + ' <small>' + esc(t.sport) + " · " + esc(t.event) + (t.edgeNote ? " · " + esc(t.edgeNote) : "") + "</small></span>" + (p == null ? "" : '<span class="num pts ' + cls(p) + '">' + pts(p) + "</span>") + "</li>"; };
     return '<section class="close-strip" id="close" aria-labelledby="h-close"><div class="cm-head"><span class="avatar close" aria-hidden="true">CM</span><div><h3 id="h-close">The Close Meister <small>tracking only</small></h3><p class="cm-sub">Near misses: selections that came within 2 points of our edge floor at two or more UK bookmakers. Notional 0.5 pt each, kept out of every total. It shows whether our floor is too strict.</p></div><p class="cm-sum">' + (L.length ? "Record <b>" + s.won + "–" + s.lost + '</b> · <b class="pts ' + cls(s.profit) + '">' + pts(s.profit) + " pts</b> · ROI " + pct(s.roi, true) + " · " + s.open + " open" : "Starts today") + "</p></div>" +
       (openL.length || done.length ? '<div class="cm-body' + (done.length ? " has-chart" : "") + '"><ul class="cm-list">' + openL.slice(0, 10).map(row).join("") + done.slice(0, 6).map(row).join("") + "</ul>" +
         /* Owner 3 Nov: test graph in the lower-right corner, shown once the first Close Meister tips settle */
@@ -422,7 +422,7 @@
       : '<h3 class="tip-sel">' + selHTML(t) + '</h3><p class="tip-event">' + esc(t.event) + '</p><p class="tip-market">' + esc(t.market) + hcpExp(t) + (t.ew ? " (" + (t.stake / 2) + " pts each way = " + stakeTxt(t.stake) + " total)" : "") + (t.bookie ? " · best at " + esc(t.bookie) : "") + "</p>" + (oop(t) && t.result === "open" ? '<p class="tip-market oop-note">Order of play: the start is a "not before" time and often runs later.</p>' : "") + edgeLine(t) + vcTip(t) + removedLine(t);
     var first = t.result === "open"
       ? "<div><dt>" + (oop(t) ? "Not before" : "Start UK") + "</dt><dd>" + tm.eat + "</dd></div>"
-      : '<div><dt>Result</dt><dd><span class="res ' + t.result + '">' + t.result + "</span></dd></div>";
+      : '<div><dt>Result</dt><dd><span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + "</span></dd></div>";
     var third = t.result === "open"
       ? (t.ew ? '<div class="meta-ew"><dt>Stake</dt><dd><span class="ew-wrap">' + stakeTxt(t.stake / 2) + '<small class="ew-under">e/w</small></span></dd></div>' : "<div><dt>Stake</dt><dd>" + stakeTxt(t.stake) + "</dd></div>")
       : '<div><dt>P/L</dt><dd class="pts ' + cls(profit(t)) + '">' + pts(profit(t)) + "</dd></div>";
@@ -483,7 +483,7 @@
       '<div class="score-top">' + title + head + "</div>" +
       '<p class="score-big pts ' + cls(s.profit) + '">' + pts(s.profit) + "<small>pts</small></p>" +
       '<dl class="kv"><div><dt>Won–Lost</dt><dd>' + s.won + "–" + s.lost + "</dd></div><div><dt>ROI</dt><dd>" + pct(s.roi, true) + "</dd></div><div><dt>Strike</dt><dd>" + pct(s.strike) + "</dd></div><div><dt>CLV</dt><dd>" + (function () { var c = clvStats(list); return c.n ? '<span class="pts ' + cls(c.avg) + '">' + clvTxt(c.avg) + "</span> <small>(" + c.n + ")</small>" : "\u2013"; })() + "</dd></div></dl>" +
-      '<div class="wl-wrap"><div class="wl" aria-label="Last 12 results, oldest on the left, latest on the right">' + (recent.length ? recent.map(function (t, i) { return '<i class="' + t.result + (i === recent.length - 1 ? " latest" : "") + '" title="' + esc(t.selection) + ": " + t.result + " (" + fmtTime(t.start).day + ')"></i>'; }).join("") + '</div><div class="wl-key"><span>latest &rarr;</span></div>' : '<span class="score-note">No settled tips yet</span></div>') + "</div>" +
+      '<div class="wl-wrap"><div class="wl" aria-label="Last 12 results, oldest on the left, latest on the right">' + (recent.length ? recent.map(function (t, i) { return '<i class="' + t.result + (i === recent.length - 1 ? " latest" : "") + '" title="' + esc(t.selection) + ": " + resTxt(t) + " (" + fmtTime(t.start).day + ')"></i>'; }).join("") + '</div><div class="wl-key"><span>latest &rarr;</span></div>' : '<span class="score-note">No settled tips yet</span></div>') + "</div>" +
       '<p class="score-note">' + s.open + " open · " + s.void + " void</p>" +
       "</section>";
   }
@@ -640,7 +640,7 @@
     /* Owner 12 Nov 14:11-14:20: each result shows its bet type (cards open on the Results page, not here) */
     return '<ul class="res-list">' + list.map(function (t) {
       var tm = fmtTime(t.start);
-      return '<li><span class="res ' + t.result + '">' + t.result + "</span><div style=\"min-width:0\"><span class=\"sel\">" + selHTML(t) + '</span><span class="sub">' + esc(betType(t)) + " · " + esc(t.event) + " · " + tm.day + "</span></div>" +
+      return '<li><span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + "</span><div style=\"min-width:0\"><span class=\"sel\">" + selHTML(t) + '</span><span class="sub">' + esc(betType(t)) + " · " + esc(t.event) + " · " + tm.day + "</span></div>" +
         '<span class="res-tags">' + tierPills(t) + '<span class="badge ' + t.meister + '" title="' + esc(meisterById(t.meister).name) + '">' + esc(meisterById(t.meister).initials) + '</span></span><span class="num pts ' + cls(profit(t)) + '">' + pts(profit(t)) + "</span></li>";
     }).join("") + "</ul>";
   }
@@ -748,6 +748,15 @@
 
   /* ---------- page sections ---------- */
   /* Owner 23 Nov 07:12: plain explainer for .5 handicaps; the market line keeps the bookmaker's name (Asian handicap) */
+  /* Owner 26 Nov 10:28: quarter/whole lines can settle as half won, half lost or stake back: plain words on every result badge */
+  function resTxt(t) {
+    var r = t.result, line = /handicap|total|spread|draw no bet/i.test((t.market || "") + " " + (t.betType || ""));
+    return r === "half-won" ? "\u00bd won" : r === "half-lost" ? "\u00bd lost" : r === "void" && line ? "stake back" : r;
+  }
+  function resTitle(t) {
+    var r = t.result;
+    return r === "half-won" ? ' title="Half the stake won at the price, the other half returned"' : r === "half-lost" ? ' title="Half the stake lost, the other half returned"' : r === "void" ? ' title="The stake was returned (no win, no loss)"' : "";
+  }
   /* Owner 26 Nov 10:23: quarter and whole lines are back, so EVERY handicap and total carries a plain "How it settles" line,
      worked out from the actual line for each possible score (full win, half win, stake back, half loss, loss). */
   function hcpExp(t) {
@@ -860,7 +869,7 @@
     var left = o.label ? '<span class="shield">' + shield(o.col) + '</span><p class="hc-label" style="color:' + o.col + '">' + o.label + "<small>" + o.sub + "</small></p>" : tierPill(t);
     var tags = secTag(t) + extraTags(t).replace(o.label === "Meister Special" ? /<span class="mini-tag special">Meister Special<\/span>/ : /$^/, "") + (o.label ? '<span class="tier-mini">' + tierWord(t) + "</span>" : "");
     var where = esc(t.sport) + (t.comp && t.comp !== t.sport ? " · " + esc(t.comp) : "");
-    var cd = t.result === "open" ? '<p class="countdown htip-cd" data-countdown="' + t.id + '">' + countdown(t) + "</p>" : '<p class="htip-ln htip-res">Result <span class="res ' + t.result + '">' + esc(t.result) + '</span> \u00b7 <b class="pts ' + cls(profit(t)) + '">' + pts(profit(t)) + " pts</b>" + (t.settledNote ? " \u00b7 " + esc(t.settledNote) : "") + "</p>";
+    var cd = t.result === "open" ? '<p class="countdown htip-cd" data-countdown="' + t.id + '">' + countdown(t) + "</p>" : '<p class="htip-ln htip-res">Result <span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + '</span> \u00b7 <b class="pts ' + cls(profit(t)) + '">' + pts(profit(t)) + " pts</b>" + (t.settledNote ? " \u00b7 " + esc(t.settledNote) : "") + "</p>";
     if (oop(t) && t.result === "open") cd += '<p class="htip-sm">Order of play: the start is a \u201cnot before\u201d time and often runs later.</p>';
     var body = lock
       ? '<h3 class="htip-sel">Pro tip · subscribers only</h3><p class="htip-ev" title="' + esc(t.event) + '">' + esc(t.event) + '</p><p class="htip-ln">' + where + '</p><p class="htip-ln"><a href="#join" data-join>Subscribe</a> to ' + esc(m.short || m.name) + " or get Full Meister Access to see it.</p>"
@@ -1162,7 +1171,7 @@
   function tipRow(t) {
     var tm = fmtTime(t.start), lock = locked(t), done = t.result !== "open";
     var right = done
-      ? '<span class="res ' + t.result + '">' + t.result + '</span><span class="tr-pl pts ' + cls(profit(t)) + '">' + pts(profit(t)) + "</span>"
+      ? '<span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + '</span><span class="tr-pl pts ' + cls(profit(t)) + '">' + pts(profit(t)) + "</span>"
       : '<span class="tr-price">' + (lock ? "–" : fmtOdds(t.price)) + '</span><span class="tr-stake">' + stakeLbl(t) + "</span>";
     return '<details class="trow" data-tier="' + t.tier + '"><summary>' +
       '<span class="tr-time">' + tm.eat + ' UK' + ALT(tm, "<small>", "</small>") + '</span>' +
@@ -1625,7 +1634,7 @@
     var S = p2().filter(function (t) { return t.result !== "open"; }), sum = function (l) { var p = 0; l.forEach(function (t) { p += profit(t); }); return p; };
     var today = dayKey(new Date().toISOString()), yd = dayKey(new Date(Date.now() - 864e5).toISOString()), dk = function (t) { return dayKey(t.start); }; /* Owner 11 Nov 00:04: count by the day the game started (Kampala), same as the Daily Record, so late settlements after midnight stay on their own day */
     var T0 = S.filter(function (t) { return dk(t) === today; }), Y0 = S.filter(function (t) { return dk(t) === yd; });
-    var last = S.slice().sort(function (a, b) { return new Date(b.settledAt || b.start) - new Date(a.settledAt || a.start); }).slice(0, 10), lw = last.filter(function (t) { return t.result === "won"; }).length, ll = last.filter(function (t) { return t.result === "lost" || t.result === "placed"; }).length;
+    var last = S.slice().sort(function (a, b) { return new Date(b.settledAt || b.start) - new Date(a.settledAt || a.start); }).slice(0, 10), lw = last.filter(function (t) { return /won/.test(t.result); }).length, ll = last.filter(function (t) { return /lost|placed/.test(t.result); }).length;
     var best = S.filter(function (t) { return t.result === "won"; }).sort(function (a, b) { return profit(b) - profit(a); })[0];
     var cell = function (lab, big, sub, c) { return '<div class="snap"><p class="hl-label">' + lab + '</p><p class="snap-big pts ' + (c || "") + '">' + big + '</p><p class="hl-sub">' + sub + "</p></div>"; };
     el.innerHTML = '<div class="snap-grid">' +
@@ -1663,7 +1672,7 @@
   function perfX(el) {
     var A = p2Set().filter(function (t) { return !isRetired(t) || true; }), S = A.filter(function (t) { return t.result !== "void"; });
     var m = measures(A), st = streaks(S), r2 = function (x) { return (Math.round(x * 100) / 100).toFixed(2); };
-    var won = S.filter(function (t) { return t.result === "won"; }), lost = S.filter(function (t) { return t.result === "lost" || t.result === "placed"; }); /* Owner 20 Nov 11:06: same counts as Settled tips (placed each-way counts as lost) */
+    var won = S.filter(function (t) { return /won/.test(t.result); }), lost = S.filter(function (t) { return /lost|placed/.test(t.result); }); /* Owner 20 Nov 11:06: same counts as Settled tips (placed each-way counts as lost) */
     var avgW = won.length ? won.reduce(function (a, t) { return a + t.price; }, 0) / won.length : 0, avgL = lost.length ? lost.reduce(function (a, t) { return a + t.price; }, 0) / lost.length : 0;
     var best = S.slice().sort(function (a, b) { return profit(b) - profit(a); })[0];
     var days = {}; A.forEach(function (t) { var k = dayKey(t.start); days[k] = (days[k] || 0) + profit(t); }); var dk = Object.keys(days).sort();
@@ -1760,7 +1769,7 @@
         var L6 = p2Set().filter(function (t) { return !isRetired(t); }).slice(-6), tot = 0;
         L6.forEach(function (t) { tot += profit(t); });
         var n = function (f) { return L6.filter(f).length; };
-        var w = n(function (t) { return t.result === "won" || t.result === "placed"; }), l = n(function (t) { return t.result === "lost"; });
+        var w = n(function (t) { return /won|placed/.test(t.result); }), l = n(function (t) { return /lost/.test(t.result); });
         var pro = n(isNP), fr = n(isNF);
         var ncr = n(function (t) { return t.meister === "ncmr"; }), ncm = n(function (t) { return t.meister === "cruncher"; });
         var box = function (lab, big, sub, c) { return '<div class="ls-box"><p class="hl-label">' + lab + '</p><p class="ls-big ' + (c || "") + '">' + big + '</p><p class="hl-sub">' + sub + "</p></div>"; };
@@ -1854,7 +1863,7 @@
       };
       var resRow = function (t) {
         var tm = fmtTime(t.start), p = profit(t);
-        return '<li><span class="up-when"><span class="res ' + t.result + '">' + t.result + "</span><small>" + tm.day + "</small></span><div style=\"min-width:0\"><span class=\"sel\">" + selHTML(t) + '</span><span class="sub">' + esc(t.event) + " · " + esc(t.market) + '</span><span class="up-tags">' + tierPills(t) + secTag(t) + '</span></div><span class="num pts ' + cls(p) + '">' + pts(p) + "</span></li>";
+        return '<li><span class="up-when"><span class="res ' + t.result + '"' + resTitle(t) + '>' + resTxt(t) + "</span><small>" + tm.day + "</small></span><div style=\"min-width:0\"><span class=\"sel\">" + selHTML(t) + '</span><span class="sub">' + esc(t.event) + " · " + esc(t.market) + '</span><span class="up-tags">' + tierPills(t) + secTag(t) + '</span></div><span class="num pts ' + cls(p) + '">' + pts(p) + "</span></li>";
       };
       var ROWS = 6;
       var MS = MEISTERS.filter(function (m) { return P2M.indexOf(m.id) >= 0; });

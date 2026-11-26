@@ -2056,6 +2056,12 @@ body[data-page="propicks"] .pp-line a { display: none; }
 .hcp-exp .hx-ww{color:#1E9E5A}.hcp-exp .hx-wp,.hcp-exp .hx-pw{color:#4C9B5F}.hcp-exp .hx-pp{color:#8B95A8}.hcp-exp .hx-pl,.hcp-exp .hx-lp{color:#C77A2B}.hcp-exp .hx-ll{color:#C2413A}
 .htip.dark .hcp-exp .hx-ww{color:#6EE7A0}.htip.dark .hcp-exp .hx-ll{color:#FF8A80}
 
+/* Owner 26 Nov: half results from quarter lines */
+.res.half-won { color: var(--won); background: var(--won-bg); }
+.res.half-lost { color: var(--lost, #C2413A); background: var(--lost-bg, rgba(194,65,58,.10)); }
+.wl i.half-won { background: linear-gradient(90deg, var(--won) 50%, var(--ink-3) 50%); }
+.wl i.half-lost { background: linear-gradient(90deg, var(--lost) 50%, var(--ink-3) 50%); }
+
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}
 #cc button{font:700 14px Barlow,Arial,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid #FFC629}
