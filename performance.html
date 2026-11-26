@@ -19,21 +19,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261126110553">
-<link rel="stylesheet" href="modern.css?v=20261126110553">
+<link rel="stylesheet" href="styles.css?v=20261126110834">
+<link rel="stylesheet" href="modern.css?v=20261126110834">
 <style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } [hidden] { display: none !important; }</style>
 <link rel="canonical" href="https://betmeisters.com/performance">
 </head>
 <body data-page="performance">
 <div id="bm-header"></div>
 <div class="page-head ph-compact"><div class="wrap"><p class="eyebrow">Every number, every chart</p><h1>Our <span>performance</span></h1><p>Four Meisters, every settled tip since 5 November, winners and losers. Advised stakes at the published price.</p></div></div>
-<nav class="jump-bar" aria-label="Jump to"><div class="wrap"><a href="#h-today">Today</a><a href="#h-score">Numbers</a><a href="#h-mvm">Meister v Meister</a><a href="#h-each">Each Meister</a><a href="#h-mrec">Day by day</a><a href="#h-clv">Closing price</a><a href="#h-charts">More charts</a><a href="#h-stat">Every number</a></div></nav>
+<nav class="jump-bar" aria-label="Jump to"><div class="wrap"><a href="#h-today">Today</a><a href="#h-score">Numbers</a><a href="#h-mvm">Meister v Meister</a><a href="#h-each">Each Meister</a><a href="#h-pvf">Pro v Free</a><a href="#h-mrec">Day by day</a><a href="#h-clv">Closing price</a><a href="#h-charts">More charts</a><a href="#h-stat">Every number</a></div></nav>
 <div data-page-root>
 <main class="wrap">
   <section aria-labelledby="h-today"><div class="sec-head"><div><p class="eyebrow">Games played today</p><h2 class="sec-title" id="h-today">Today</h2></div><a class="more" href="/tips">Today's tips</a></div><div id="pf-today"></div></section>
   <section aria-labelledby="h-score"><div class="sec-head"><div><p class="eyebrow">Every settled tip since 5 November</p><h2 class="sec-title" id="h-score">The numbers</h2></div><a class="more" href="/results">Full record</a></div><div id="p2-headline"></div></section>
   <section aria-labelledby="h-mvm"><div class="sec-head"><div><p class="eyebrow">Every Meister side by side</p><h2 class="sec-title" id="h-mvm">Meister v Meister</h2></div><a class="more" href="/meisters">Meet the Meisters</a></div><div class="panel gl-panel"><div id="glance"></div></div><div class="panel gl-chart-panel"><h3>Running profit: all Meisters and each Meister</h3><p class="panel-sub">Points after each settled tip, from 5 November. The dark line is the site total.</p><div id="glance-chart" data-h="300"></div></div><div class="panel pf2-pair"><h3>Made v expected</h3><p class="panel-sub">What the edge said we should make, against what we made.</p><div id="mve" class="pf2-mve"></div></div></section>
   <section aria-labelledby="h-each"><div class="sec-head"><div><p class="eyebrow">Every box counts that Meister's tips only</p><h2 class="sec-title" id="h-each">Each Meister</h2></div></div><div id="scorecards"></div></section>
+  <section aria-labelledby="h-pvf" id="pf-pvf"><div class="sec-head"><div><p class="eyebrow">Members' tips against the free tips, per Meister</p><h2 class="sec-title" id="h-pvf">Pro v Free</h2></div></div>
+    <div class="pvf-grid"><div class="panel"><h3>NCM · Number Cruncher</h3><div class="mc" data-pvfp="cruncher" data-h="240"></div></div><div class="panel"><h3>NCMP · Premium Events</h3><div class="mc" data-pvfp="ncmp" data-h="240"></div></div><div class="panel"><h3>NCMR · Racing</h3><div class="mc" data-pvfp="ncmr" data-h="240"></div></div></div></section>
   <section aria-labelledby="h-mrec"><div class="sec-head"><div><p class="eyebrow">Day by day, month by month, to date</p><h2 class="sec-title" id="h-mrec">Results by Meister</h2></div><a class="more" href="/results">Every result</a></div><div id="pf-mrec"></div></section>
   <section aria-labelledby="h-clv"><div class="sec-head"><div><p class="eyebrow">Our main measure from 14 November</p><h2 class="sec-title" id="h-clv">Beating the closing price</h2></div></div><div id="pf-clv"></div><div class="panel gl-chart-panel"><h3>At our price v at the closing price</h3><p class="panel-sub">Each Meister's line, and NCM settled at the closing price (dashed). The gap shows what taking the price early is worth.</p><div id="all-meisters-chart"></div></div></section>
   <!-- Owner 26 Nov: Pro Picks retired -->
@@ -46,8 +48,8 @@
 
 <script>document.body.setAttribute("data-page", "performance");window.BM_PERF2=1</script>
 <script>window.BM_PUBLIC=1</script><script>window.BM_MERGE=1</script>
-<script src="data.js?v=20261126110553"></script>
-<script src="news_feed.js?v=20261126110553"></script>
-<script src="app.js?v=20261126110553"></script>
-<script src="modern.js?v=20261126110553"></script>
-<script src="consent.js?v=20261126110553"></script>
+<script src="data.js?v=20261126110834"></script>
+<script src="news_feed.js?v=20261126110834"></script>
+<script src="app.js?v=20261126110834"></script>
+<script src="modern.js?v=20261126110834"></script>
+<script src="consent.js?v=20261126110834"></script>

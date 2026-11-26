@@ -2063,6 +2063,7 @@ body[data-page="propicks"] .pp-line a { display: none; }
 .wl i.half-lost { background: linear-gradient(90deg, var(--lost) 50%, var(--ink-3) 50%); }
 
 .pvf-panel { margin-top: 20px; }
+.pvf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.pvf-grid .panel h3{margin:0 0 6px}@media (max-width:900px){.pvf-grid{grid-template-columns:1fr}}
 
 #cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:99;max-width:640px;margin:0 auto;background:#0B1A3A;color:#EAF0FB;border:1px solid #2A4478;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:500 15px/1.45 Barlow,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 #cc p{margin:0;flex:1 1 280px}#cc a{color:#FFC629}#cc div{display:flex;gap:8px}

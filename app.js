@@ -1421,6 +1421,8 @@
       (R.length ? '<p class="panel-sub" style="margin-top:10px">Racing v2 (from 19 Nov; v Betfair starting price, net of 2% commission, not part of CLV): beat BSP on <b>' + rb + " of " + R.length + "</b>.</p>" : "") + "</div></div>" +
       '<p class="rec-key"><b>CLV (closing line value)</b> = our published price \u00d7 Pinnacle\u2019s fair chance just before the start \u2212 1. Positive means the edge was still there when the market closed: the best early sign that tips are genuinely good value, long before profit settles down. Official from 14 Nov; earlier days come from the snapshots we already had (none for 12\u201313 Nov). Left out: markets Pinnacle doesn\u2019t price the same way (team totals, three-way handicaps, set betting, youth and women\u2019s games) and any close beyond \u00b130%, which usually means a mismatched market.</p>';
   }
+  /* Owner 26 Nov 11:06: Pro v Free running profit for one Meister (Meister pages and Performance) */
+  function pvfChart(el, id) { if (!el) return; var mine = p2().filter(function (t) { return t.meister === id; }); multiChart(el, [{ name: MCODE[id] + " Pro", color: TIER_COLOR.pro, test: function (t) { return t.tier === "pro"; } }, { name: MCODE[id] + " Free", color: TIER_COLOR.free, test: function (t) { return t.tier !== "pro"; } }], mine); }
   function p2Total(el) { multiChart(el, [{ name: "Total", color: "var(--chart-line)", test: function () { return true; } }], p2()); }
   /* Owner 10 Nov 14:05: same result, but at the closing price (SP in racing); where no closing price was recorded, the published price is kept (good faith). Shows the gain from getting on early. */
   function closeProfit(t) {
@@ -1827,6 +1829,7 @@
       p2Board($("#scorecards"));
       if (window.BM_PERF2) { meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
       if ($("#pf-mrec")) meisterRecord($("#pf-mrec"));
+      if ($("#pf-pvf")) ["cruncher", "ncmp", "ncmr"].forEach(function (id) { pvfChart($('[data-pvfp="' + id + '"]'), id); }); /* Owner 26 Nov 11:06 */
       if ($("#pf-clv")) clvBoard($("#pf-clv"));
       p2Meisters($("#all-meisters-chart"));
       p2Sections($("#sections-chart"));
@@ -1918,6 +1921,8 @@
           ((cards.match(/<section class="score/g) || []).length ? P(m.id === "combo" ? "By type and sport" : m.id === "ncmp" ? "By tier and sport" : m.id === "ncmr" ? "By NAP, tier and timing" : "By tier and sport", "Points, record and the last 12 results in every section" + (EMPTY.length ? ". No settled tips yet: " + esc(EMPTY.join(" \u00b7 ")) : ""), (function () { /* Owner 20 Nov 09:39: fill every row: 10 cards = 2 rows of 5, 12 = 3 rows of 4 */ var n = (cards.match(/<section class="score/g) || []).length, c = n % 5 === 0 ? 5 : n % 4 === 0 ? 4 : n % 3 === 0 ? 3 : 0; return '<div class="score-grid g4 m-g4">' + cards + "</div>"; })()) : "") + /* Owner 25 Nov 13:00: every Meister's boxes four across, the same size as on Performance */
           /* Owner 25 Nov 13:00: numbers first, then the boxes, the chart, next up and results; the About text moves to the end */
           P("Running profit by section", "All of " + MCODE[m.id] + " (solid) and each sport (dashed)", '<div class="mc" data-pc="' + m.id + '"></div>') +
+          /* Owner 26 Nov 11:06: Pro v Free for every Meister that has a Pro tier */
+          (m.id === "cruncher" || m.id === "ncmp" || m.id === "ncmr" ? P("Pro v Free", "Running profit of " + MCODE[m.id] + " Pro tips against " + MCODE[m.id] + " Free tips", '<div class="mc" data-pvf="' + m.id + '"></div>') : "") +
           '<div class="pf-two">' + P("Next up <span class=\"tab-n\">" + upAll.length + "</span>", "In play first, then the next to start", upList) + P("Recent results <span class=\"tab-n\">" + recent.length + "</span>", "Newest first", resList) + "</div>" +
           P("About " + MCODE[m.id] + " and how it works", esc(m.who), '<p class="m-bio">' + esc(m.bio) + '</p><div class="p2-chips">' + m.specialities.map(function (x) { return '<span class="chip">' + esc(x) + "</span>"; }).join("") + '</div><details class="p2-method"><summary>How this Meister works</summary><ul>' + m.method.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></details>") +
           "</section>";
@@ -1930,12 +1935,13 @@
       var showM = function () {
         tabBar($("#m-tabs"), "Meister", MS.map(function (m) { var st = stats(p2().filter(function (t) { return t.meister === m.id; })); return [m.id, m.name, MCOLOR[m.id], pts(st.profit)]; }), mcur, function (t) { mcur = t; try { history.replaceState(null, "", "#" + t); } catch (e) { } showM(); });
         $$("[data-mtab]").forEach(function (sec) { sec.hidden = sec.getAttribute("data-mtab") !== mcur; });
-        MS.forEach(function (m) { if (m.id === mcur) { var mine = p2().filter(function (t) { return t.meister === m.id; }); multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.filter(function (k) { return mine.some(function (t) { return t.result !== "open" && sportK(t) === k; }); }).map(function (k) { return { name: SPORTN[k], color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine); } });
+        MS.forEach(function (m) { if (m.id === mcur) { var mine = p2().filter(function (t) { return t.meister === m.id; }); multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.filter(function (k) { return mine.some(function (t) { return t.result !== "open" && sportK(t) === k; }); }).map(function (k) { return { name: SPORTN[k], color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine); pvfChart($('[data-pvf="' + m.id + '"]'), m.id); } });
       };
       MS.forEach(function (m) {
         var mine = p2().filter(function (t) { return t.meister === m.id; });
         headline($('[data-mhl="' + m.id + '"]'), mine);
         multiChart($('[data-pc="' + m.id + '"]'), [{ name: "All", color: MCOLOR[m.id], test: function () { return true; } }].concat(SPK.filter(function (k) { return mine.some(function (t) { return t.result !== "open" && sportK(t) === k; }); }).map(function (k) { return { name: SPORTN[k], color: SPORTC[k], dash: "5 3", test: function (t) { return sportK(t) === k; } }; })), mine);
+        pvfChart($('[data-pvf="' + m.id + '"]'), m.id);
       });
       showM();
     },
