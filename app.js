@@ -1801,6 +1801,8 @@
         $("#latest-list").insertAdjacentHTML("beforeend", '<div class="form30"><p class="mve-ck">Form, last 30 settled tips <span>oldest → newest</span></p><div class="f30">' + L.map(function (t) { var r = /won|placed/.test(t.result) ? "w" : /lost/.test(t.result) ? "l" : "v"; return '<i class="' + r + '" title="' + esc(t.selection + " · " + MCODE[t.meister] + " · " + pts(profit(t))) + '" style="--mc:' + MCOLOR[t.meister] + '"></i>'; }).join("") + '</div><p class="f30-sum">' + w + " won · " + l + ' lost · <b class="pts ' + cls(tot) + '">' + pts(tot) + "</b> pts · the thin stripe under each block is the Meister's colour</p></div>");
       })();
       if (window.BM_HOME2) { newsHome2($("#news-block")); reviewsHome2($("#review-cards")); proofStrip($("#proof")); meistersGlance($("#glance"), $("#glance-chart")); madeVExpected($("#mve")); }
+      /* Owner 26 Nov 11:04: second homepage chart, Pro v Free running profit (the main sales hook) */
+      if ($("#pvf-chart")) multiChart($("#pvf-chart"), [{ name: "Pro", color: TIER_COLOR.pro, test: function (t) { return t.tier === "pro" && !t.legs; } }, { name: "Free", color: TIER_COLOR.free, test: function (t) { return t.tier === "free" && !t.legs; } }], p2());
     },
     tips: function () {
       var draw = function () {
