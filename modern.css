@@ -120,8 +120,12 @@ body[data-page="performance"] .sm-h { text-transform: none; letter-spacing: 0; }
 @media (max-width: 900px) {
   .gn { display: block; }
   .gn-top { display: block; }
-  .gn-c { display: none; }
-  .gn-menu { display: block; position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
+  /* Owner 26 Nov 13:21: on mobile the groups start collapsed; tap a heading to open it (one at a time) */
+  .nav .gn-top { display: flex; justify-content: space-between; align-items: center; }
+  .gn-c { display: inline-block; font-size: 14px; opacity: .8; transition: transform .15s ease; }
+  .gn[data-open="true"] .gn-c { transform: rotate(180deg); }
+  .gn-menu, .gn:hover .gn-menu, .gn:focus-within .gn-menu { display: none; position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
+  .gn[data-open="true"] .gn-menu { display: block; }
   .nav .gn-menu a { color: #C9D2E6; border-top: 0; padding: 8px 8px; font-size: 15px; }
   .nav .gn-menu a:hover, .nav .gn-menu a.on { background: rgba(255,255,255,.08); color: #fff; }
 }

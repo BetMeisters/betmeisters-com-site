@@ -736,6 +736,12 @@
     if (f) f.outerHTML = footer();
     var mast = $("#mast"), btn = $(".menu-btn");
     if (btn) btn.addEventListener("click", function () { var o = mast.getAttribute("data-open") === "true"; mast.setAttribute("data-open", String(!o)); btn.setAttribute("aria-expanded", String(!o)); });
+    /* Owner 26 Nov 13:21: mobile menu groups collapsed; tapping a heading opens its links instead of leaving the page */
+    $$(".gn-top").forEach(function (a) { a.setAttribute("aria-expanded", "false"); a.addEventListener("click", function (e) {
+      if (!window.matchMedia("(max-width: 900px)").matches) return;
+      e.preventDefault(); var g = a.parentNode, o = g.getAttribute("data-open") === "true";
+      $$(".gn").forEach(function (x) { x.removeAttribute("data-open"); var t = x.querySelector(".gn-top"); if (t) t.setAttribute("aria-expanded", "false"); });
+      if (!o) { g.setAttribute("data-open", "true"); a.setAttribute("aria-expanded", "true"); } }); });
     $$("[data-odds]").forEach(function (b) { b.addEventListener("click", function () { oddsMode = b.getAttribute("data-odds"); save("odds2", oddsMode); refresh(); }); });
     var sel = $("#access-select");
     if (sel) sel.addEventListener("change", function () { access = sel.value; save("access2", access); refresh(); toast(sel.options[sel.selectedIndex].text); });

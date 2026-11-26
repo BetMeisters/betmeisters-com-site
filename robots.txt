@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://betmeisters.com/sitemap_index.xml
-Sitemap: https://betmeisters.com/sitemap.xml
