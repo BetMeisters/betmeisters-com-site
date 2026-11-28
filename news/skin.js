@@ -7,9 +7,9 @@
   var G = [["Home", "/", []],
     ["Tips", "/tips", [["Meisters tips", "/tips"], ["Value checker", "/value"], ["Non-runners today", "/non-runners"]]],
     ["Results", "/results", [["Results", "/results"], ["Performance", "/performance"], ["The Meisters", "/meisters"]]],
-    ["News", "/news/", [["News home", "/news/"], ["Previews", "/news/previews.html"], ["Guides", "/news/guides.html"], ["Industry news", "/news/news.html"], ["Online casino", "/news/casino-news.html"]]],
+    ["News", "/news/", [["News home", "/news/"], ["Previews", "/news/previews.html"], ["Guides", "/news/guides.html"], ["Industry news", "/news/news.html"]]],
     /* Owner 25 Nov 15:24: reviews are their own section, not under News */
-    ["Reviews", "/news/bookie-reviews.html", [["Bookmaker reviews", "/news/bookie-reviews.html"], ["Casino reviews", "/news/casino-reviews.html"], ["How we score", "/news/how-we-score.html"]]]];
+    ["Reviews", "/news/bookie-reviews.html", [["Bookmaker reviews", "/news/bookie-reviews.html"], ["How we score", "/news/how-we-score.html"]]]];
   var nav = G.map(function (g) {
     var on = /^(review|reviews|how-we-score)$/.test(page) ? g[0] === 'Reviews' : g[0] === 'News';
     if (!g[2].length) return '<a href="' + g[1] + '">' + g[0] + '</a>';
@@ -29,7 +29,7 @@
     /* Owner 24 Nov 15:32: online casino section (casino news + casino reviews pages) */
     var bid = window.BMN_ID || (location.hash || '').slice(1);
     if (page === 'reviews' && bid === 'casino') T.reviews = ['Online casino <span>reviews</span>', 'UK-licensed casinos scored on a published method. No score is for sale.'];
-    else if (page === 'reviews' && bid !== 'bookies') T.reviews = ['Bookmaker and casino <span>reviews</span>', 'Scored on a published method. No score is for sale.'];
+    else if (page === 'reviews' && bid !== 'bookies') T.reviews = ['Bookmaker <span>reviews</span>', 'Scored on a published method. No score is for sale.'];
     if (page === 'news' && bid === 'online-casino') T.news = ['Online casino <span>news</span>', 'Online casino, slots and live casino news for UK players, from primary sources.'];
     var isCas = false; try { var _o = ((window.BMN || {}).operators || []).filter(function (x) { return x.id === bid; })[0]; isCas = !!(_o && (_o.tags || [])[0] === 'Online casino'); } catch (e) {}
     var t = T[page] || ['BetMeisters <span>News</span>', ''];
@@ -79,7 +79,7 @@
     '<div><a class="mx-brand" href="/"><img src="/favicon.svg" alt="" width="30" height="34"><span><b>BET</b>MEISTERS</span></a><p>Independent tips from the Number Cruncher Meisters, every one priced and kept on the record, plus news, previews, guides and bookmaker reviews. We are not a bookmaker and take no bets.</p><p>Contact: tom@betmeisters.com</p><div class="foot-follow"><span>Follow us</span><a href="https://x.com/TheBetMeisters" target="_blank" rel="noopener" aria-label="BetMeisters on X"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.8-6.3L6.4 22H3.3l7.3-8.3L1 2h6.3l4.4 5.8L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"/></svg><b>X</b></a><a href="https://www.youtube.com/channel/UCr1opmSykVQ3hsCgVbYBMqA" target="_blank" rel="noopener" aria-label="BetMeisters on YouTube"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg><b>YouTube</b></a></div></div>' +
     '<div><h4>Tips</h4><a href="/tips">Meisters tips</a><a href="/value">Value checker</a><a href="/non-runners">Non-runners today</a></div>' +
     '<div><h4>Results</h4><a href="/results">Results</a><a href="/performance">Performance</a><a href="/meisters">The Meisters</a><a href="/article-price-first">How we price a tip</a></div>' +
-    '<div><h4>News</h4><a href="/news/">News home</a><a href="/news/previews.html">Previews</a><a href="/news/guides.html">Guides</a><a href="/news/fpl.html">FPL</a><a href="/news/casino-news.html">Online casino</a></div><div><h4>Reviews</h4><a href="/news/bookie-reviews.html">Bookmaker reviews</a><a href="/news/casino-reviews.html">Casino reviews</a><a href="/news/how-we-score.html">How we score</a></div>' +
+    '<div><h4>News</h4><a href="/news/">News home</a><a href="/news/previews.html">Previews</a><a href="/news/guides.html">Guides</a><a href="/news/fpl.html">FPL</a></div><div><h4>Reviews</h4><a href="/news/bookie-reviews.html">Bookmaker reviews</a><a href="/news/how-we-score.html">How we score</a></div>' +
     '<div><h4>About</h4><a href="/news/how-we-score.html">How we score reviews</a><a href="/news/safer-gambling.html">Safer gambling</a><a href="/news/about.html">About us</a><a href="/privacy">Privacy and cookies</a></div></div>' +
     '<p class="mx-honest"><b>No tip is sold.</b> Every tip comes from the numbers (the Number Cruncher Meisters) and is only published when the price has an edge. <b>No review score is for sale.</b></p>' +
     '<div class="mx-rg"><span class="mx-age">18+</span><p>Only bet what you can afford to lose. Tips are opinions, not guarantees. Free, confidential help: <a href="https://www.begambleaware.org" rel="noopener">BeGambleAware.org</a> or the National Gambling Helpline on 0808 8020 133 (UK); 1-800-GAMBLER (US).</p></div>' +

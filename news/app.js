@@ -8,7 +8,7 @@
   var dateOnly = function (iso) { return tz(iso, "Africa/Kampala", { day: "numeric", month: "long", year: "numeric" }); };
   var secName = function (k) { var s = D.sections.filter(function (x) { return x[0] === k; })[0]; return s ? s[1] : k; };
   var byDate = function (a, b) { return new Date(b.date) - new Date(a.date); };
-  var TOPICS = [["general", "General news"], ["sports-betting", "Sports betting"], ["online-casino", "Online casino"], ["bonuses", "Bonuses, rewards and VIP"], ["sweeps-markets", "Sweepstakes and prediction markets"], ["crypto", "Crypto"], ["licensing", "Licensing and regulation"], ["enforcement", "Enforcement"], ["safer-gambling", "Safer gambling"], ["accas-combos", "Accas and combos"]];
+  var TOPICS = [["general", "General news"], ["sports-betting", "Sports betting"], ["bonuses", "Bonuses, rewards and VIP"], ["sweeps-markets", "Sweepstakes and prediction markets"], ["crypto", "Crypto"], ["licensing", "Licensing and regulation"], ["enforcement", "Enforcement"], ["safer-gambling", "Safer gambling"], ["accas-combos", "Accas and combos"]];
   /* Owner 16 Nov 16:56: sport tags for Meister previews (and any article): filter, search and a record of what we produce */
   var SPORTS = [["football", "Football"], ["horse-racing", "Horse racing"], ["tennis", "Tennis"], ["basketball", "Basketball"], ["nfl", "NFL"], ["ice-hockey", "Ice hockey"], ["handball", "Handball"], ["cricket", "Cricket"], ["rugby", "Rugby"], ["golf", "Golf"], ["darts", "Darts"], ["snooker", "Snooker"], ["boxing-mma", "Boxing and MMA"], ["baseball", "Baseball"], ["volleyball", "Volleyball"], ["motor-sport", "Motor sport"], ["esports", "eSports"]];
   /* Owner 16 Nov 17:34: preview types (daily racing card, daily football, other sports roundup, event previews, weekend football from Thursday) and an FPL section */
@@ -19,7 +19,7 @@
   var sportSlug = function (name) { var t = SPORTS.filter(function (x) { return x[1] === name; })[0]; return t ? t[0] : ""; };
   var topicSlug = function (name) { var t = TOPICS.filter(function (x) { return x[1] === name; })[0]; return t ? t[0] : ""; };
   /* Owner 16 Nov 16:51: one tag list for articles AND reviews (same tags as the tips' sport tags); most items carry more than one */
-  var REVCATS = [["bookies", "Bookie reviews", "Sports betting"], ["casino", "Online casino reviews", "Online casino"], ["sweeps-markets", "Sweepstakes and prediction reviews", "Sweepstakes and prediction markets"], ["crypto", "Crypto site reviews", "Crypto"]];
+  var REVCATS = [["bookies", "Bookie reviews", "Sports betting"], ["sweeps-markets", "Sweepstakes and prediction reviews", "Sweepstakes and prediction markets"], ["crypto", "Crypto site reviews", "Crypto"]];
   var opTags = function (o) { return o.tags || []; };
   var revCatOf = function (o) { var t = opTags(o)[0]; return REVCATS.filter(function (c) { return c[2] === t; })[0] || REVCATS[0]; };
   var hashId = function () { return window.BMN_ID || decodeURIComponent((location.hash || "").slice(1)); };
@@ -41,7 +41,7 @@
   var NAV = [["index.html", "Latest", page === "home"], /* Owner 25 Nov: "Home" pill renamed so it is not confused with the site home */
     /* Owner 25 Nov 15:24: Reviews moved to their own top menu (.com GNAV), out of the news strip */
     ["news.html", "News", page === "news" || (page === "article" && art0.section !== "guides" && art0.section !== "previews"), [["news.html", "All news"]].concat(TOPICS.map(function (t) { return [topHref(t[0]), t[1]]; }))],
-    ["bonuses.html", "Bonuses", page === "bonuses", [["bonuses.html", "All bonuses"], ["bonuses.html#sports-betting", "Sports betting offers"], ["bonuses.html#online-casino", "Online casino offers"], ["bonuses.html#how-it-works", "How offers are chosen"]]],
+    ["bonuses.html", "Bonuses", page === "bonuses", [["bonuses.html", "All bonuses"], ["bonuses.html#sports-betting", "Sports betting offers"], ["bonuses.html#how-it-works", "How offers are chosen"]]],
     ["previews.html", "Previews", sec === "previews" || page === "previews" || (page === "article" && art0.section === "previews"), [["previews.html", "All previews"]].concat(PTYPES.map(function (t) { return ["previews.html#" + t[0], t[1]]; })).concat(SPORTS.slice(0, 8).map(function (t) { return ["previews.html#" + t[0], t[1]]; }))],
     ["fpl.html", "FPL", page === "fpl" || (page === "article" && art0.section === "fpl"), [["fpl.html", "All FPL"]].concat(FPLT.map(function (t) { return ["fpl.html#" + t[0], t[1]]; }))],
     ["section.html#guides", "Guides", sec === "guides"]];
@@ -203,7 +203,7 @@
         '<p class="meta of-rg">18+ · T&amp;Cs apply · ' + esc(f.countries.join(", ")) + " only · BeGambleAware.org</p></div>"; };
     document.title = "Bonuses and promotions · BetMeisters News";
     $("#main").innerHTML = '<div class="sec-h" style="margin-top:22px"><h2 style="font-size:40px">' + esc(bt ? bt + " offers" : "Bonuses and promotions") + "</h2></div>" +
-      '<nav class="chips topic-menu"><a class="chip' + (bt ? "" : " on") + '" href="bonuses.html">All</a><a class="chip' + (bk === "sports-betting" ? " on" : "") + '" href="bonuses.html#sports-betting">Sports betting</a><a class="chip' + (bk === "online-casino" ? " on" : "") + '" href="bonuses.html#online-casino">Online casino</a></nav>' +
+      '<nav class="chips topic-menu"><a class="chip' + (bt ? "" : " on") + '" href="bonuses.html">All</a><a class="chip' + (bk === "sports-betting" ? " on" : "") + '" href="bonuses.html#sports-betting">Sports betting</a></nav>' +
       '<div class="firewall" id="how-it-works"><div class="kick" style="color:var(--ink)">How offers are chosen</div><div class="fw-cols"><p><b>Every offer must be approved where it is shown:</b> the operator is licensed in that country and the offer meets its rules (in the UK, 10x wagering at most and no mixed sports and casino offers). Each card says which countries it is for, and we only show it there.</p><p><b>Operators can pay for a featured spot.</b> Paid placements are labelled, sit in their own block, and always show our real review score with a link to the review. Payment never changes a score, a review ranking or the order of the unpaid list, which follows our score. <a href="disclosure.html">How we make money</a></p></div></div>' +
       (paid.length ? '<div class="sec-h"><h2>Featured</h2><span class="meta">Paid placements</span></div><div class="offers">' + paid.map(offCard).join("") + "</div>" : "") +
       '<div class="sec-h"><h2>All offers</h2><span class="meta">Ordered by our review score</span></div>' + (unpaid.length ? '<div class="offers">' + unpaid.map(offCard).join("") + "</div>" : '<p class="empty">No offers in this category yet.</p>') +
