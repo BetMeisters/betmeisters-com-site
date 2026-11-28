@@ -704,12 +704,12 @@
   function brand() { return '<a class="brand" href="/" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
   function header() {
     var seg = function (key, opts, cur) { return '<span class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</span>"; };
-    return '<div class="utility"><div class="wrap util-grid"><span class="rg"><b class="util-free">Free until 1 Jan 2027</b><span class="util-rg"><span class="util-dot"> · </span>18+<span class="util-only"> only</span> · Bet responsibly</span></span>' +
+    return '<div class="utility"><div class="wrap util-grid"><span class="rg"><b class="util-free">Pro tips free until 1 Jan 2027</b><span class="util-rg"><span class="util-dot"> · </span>18+<span class="util-only"> only</span> · Bet responsibly</span></span>' +
       (window.BM_PUBLIC ? "" : '<span class="util-access"><label class="seg-label" for="access-select">Preview as</label><select id="access-select" class="access-select">' +
       [["full", "Full Meister Access"], ["visitor", "Visitor · no subscription"]].concat(MEISTERS.filter(function (m) { return m.id !== "removed"; }).map(function (m) { return ["sub:" + m.id, m.name + " only"]; }))
         .map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === access ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("") +
       "</select></span>") + /* Owner 23 Nov 09:41: public site hides Preview as, Join now and the test strip until launch (window.BM_PUBLIC) */
-      '<span class="util-odds"><span class="seg-label">Odds</span>' + seg("odds", [["dec", "Decimal"], ["frac", "Fractional"], ["us", "US"]], oddsMode) + "</span></div></div>" +
+      '<span class="util-odds"><span class="seg-label">Odds</span>' + seg("odds", [["dec", 'Dec<span class="seg-lg">imal</span>'], ["frac", 'Frac<span class="seg-lg">tional</span>'], ["us", "US"]], oddsMode) + "</span></div></div>" +
       /* Owner 23 Nov 09:37 free banner; Keith 28 Nov 12:08 declutter: merged into the utility bar (util-free) */ ''+
       '<header class="mast" id="mast"><div class="wrap">' + brand() +
       '<button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">' + ICON.menu + "</button>" +
@@ -1472,7 +1472,7 @@
       '<p class="pf-sub">Four Meisters. Every tip published before the start, with its price and our chance. Winners and losers stay on the record.</p>' +
       '<div class="pf-stats">' + st(pts(m.profit), "points since 5 Nov", m.profit >= 0 ? "g" : "") + st(pct(m.roi, true), "return on stakes") +
       (m.beat != null ? st(Math.round(m.beat * 100) + "%", "beat the closing price") : "") + st(p2Set().length, "settled tips") + "</div>" +
-      '<div class="pf-acts"><a class="pf-cta" href="/tips">See today\'s tips →</a><a class="pf-cta2" href="/meisters">Meet the Meisters</a></div><p class="pf-founders" style="margin-top:12px;font-size:14px;color:#DCE4F5">Free to read until 1 January 2027.<br><a href="https://docs.google.com/forms/d/e/1FAIpQLSeefz8GJgWK0Nay8UJoVZfAM_P7JVHZBPhp-Wxxow_Vs_21cg/viewform" target="_blank" rel="noopener" style="color:#FFC629;font-weight:800;white-space:nowrap;display:inline-block;margin-top:2px">Reserve a founders\u2019 place&nbsp;→</a></p></div>' +
+      '<div class="pf-acts"><a class="pf-cta" href="/tips">See today\'s tips →</a><a class="pf-cta2" href="/meisters">Meet the Meisters</a></div><p class="pf-founders" style="margin-top:12px;font-size:14px;color:#DCE4F5">Pro tips are free until 1 January 2027.<br><a href="https://docs.google.com/forms/d/e/1FAIpQLSeefz8GJgWK0Nay8UJoVZfAM_P7JVHZBPhp-Wxxow_Vs_21cg/viewform" target="_blank" rel="noopener" style="color:#FFC629;font-weight:800;white-space:nowrap;display:inline-block;margin-top:2px">Reserve a founders\u2019 place&nbsp;→</a></p></div>' +
       (lead ? '<div class="pf-news"><p class="pf-nk">Latest news</p><a class="pf-lead" href="' + esc(lead.href) + '"><span class="pf-lab">' + esc(lead.label) + " · " + shortDay(lead.date) + "</span><b>" + esc(lead.title) + "</b><span class=\"pf-dek\">" + esc(lead.dek) + "</span></a>" +
         A.slice(1).map(function (a) { return '<a class="pf-more" href="' + esc(a.href) + '"><span class="pf-lab">' + esc(a.label) + "</span>" + esc(a.title) + "</a>"; }).join("") +
         '<a class="pf-all" href="' + esc(F.base || "/news/") + '">All news →</a></div>' : "") + "</div>";
