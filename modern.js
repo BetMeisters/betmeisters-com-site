@@ -14,7 +14,7 @@
       return '<a class="mh-nt" href="/tips"><span class="mh-nm">' + uk(t.start) + ' UK · ' + esc(t.sport) + ' · ' + esc(t.who) + '</span><b>' + esc(t.sel) + ' <em>@ ' + Number(t.price).toFixed(2) + '</em></b><span class="mh-ne">' + esc(t.event) + (t.chance ? ' · our chance ' + Math.round(t.chance * 100) + '%' : '') + '</span></a>';
     }).join('') + '<a class="mh-all" href="/tips">All of today\'s tips →</a></aside>' : '';
     h.innerHTML = '<div class="in"><div class="mh-l"><h1>Every tip priced.<br><span>Every result kept.</span></h1>' +
-      '<p>Our Meisters publish every tip before the start, with the price and the chance we give it. Winners and losers stay on the record. Every tip is free to read until 1 January.</p>' +
+      '<p>Our Meisters publish every tip before the start, with the price and the chance we give it. Winners and losers stay on the record. Every tip is free to read until 1 January 2027.</p>' +
       '<div class="acts"><a class="cta" href="/tips">See today\'s tips →</a><a class="cta2" href="/meisters">How the Meisters work</a></div>' +
       (r ? '<div class="st"><div><b class="' + (r.pts >= 0 ? 'g' : '') + '">' + sg(r.pts) + '</b><span>points since 5 Nov</span></div><div><b>' + r.tips + '</b><span>settled tips</span></div><div><b>' + (r.roi >= 0 ? '+' : '−') + Math.abs(r.roi).toFixed(1) + '%</b><span>return on stakes</span></div>' +
         (c ? '<div><b>' + c.pct + '%</b><span>beat the closing price</span></div>' : '') + '</div>' : '') + '</div>' + side + '</div>';
