@@ -384,3 +384,5 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
 .util-free{font-weight:700;margin-left:4px;color:inherit}
 @media (max-width:560px){.util-free{display:block;margin-left:0}}
 .one-col{display:block}
+/* Keith 28 Nov 12:15: "What the price says" bars off the home page (still on Tips, Combos and each day) */
+body[data-page="home"] .home-bar{display:none}
