@@ -704,7 +704,7 @@
   function brand() { return '<a class="brand" href="/" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
   function header() {
     var seg = function (key, opts, cur) { return '<span class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</span>"; };
-    return '<div class="utility"><div class="wrap util-grid"><span class="rg">18+ only · Bet responsibly <b class="util-free">· Free until 1 Jan 2027</b></span>' +
+    return '<div class="utility"><div class="wrap util-grid"><span class="rg"><b class="util-free">Free until 1 Jan 2027</b><span class="util-rg"><span class="util-dot"> · </span>18+<span class="util-only"> only</span> · Bet responsibly</span></span>' +
       (window.BM_PUBLIC ? "" : '<span class="util-access"><label class="seg-label" for="access-select">Preview as</label><select id="access-select" class="access-select">' +
       [["full", "Full Meister Access"], ["visitor", "Visitor · no subscription"]].concat(MEISTERS.filter(function (m) { return m.id !== "removed"; }).map(function (m) { return ["sub:" + m.id, m.name + " only"]; }))
         .map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === access ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("") +

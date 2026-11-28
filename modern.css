@@ -381,8 +381,9 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
 @media (min-width:861px){.foot-grid{grid-template-columns:minmax(0,1.4fr) repeat(4,minmax(0,1fr))!important}}
 
 /* Keith 28 Nov 12:08 declutter */
-.util-free{font-weight:700;margin-left:4px;color:inherit}
-@media (max-width:560px){.util-free{display:block;margin-left:0}}
+.util-free{font-weight:700;color:inherit}
+@media (max-width:560px){.util-free{display:block}.util-rg{display:block;white-space:nowrap}.util-dot{display:none}}
+@media (max-width:380px){.util-only{display:none}}
 .one-col{display:block}
 /* Keith 28 Nov 12:15: "What the price says" bars off the home page (still on Tips, Combos and each day) */
 body[data-page="home"] .home-bar{display:none}
