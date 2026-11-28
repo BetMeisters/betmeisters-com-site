@@ -379,3 +379,8 @@ body[data-page="home"] #proof ~ .nx-step { display: none; } /* Owner 25 Nov 11:5
 .rh-score b{font:800 22px/1 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--navy,#0B1A3A)}
 .rh-score i{font:500 11px var(--mono,ui-monospace,monospace);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#55627F}
 @media (min-width:861px){.foot-grid{grid-template-columns:minmax(0,1.4fr) repeat(4,minmax(0,1fr))!important}}
+
+/* Keith 28 Nov 12:08 declutter */
+.util-free{font-weight:700;margin-left:4px;color:inherit}
+@media (max-width:560px){.util-free{display:block;margin-left:0}}
+.one-col{display:block}

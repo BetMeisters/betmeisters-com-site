@@ -704,13 +704,13 @@
   function brand() { return '<a class="brand" href="/" aria-label="BetMeisters home">' + shield(TIER_COLOR.pro) + '<span class="brand-word"><span>BET</span>MEISTERS<small class="brand-tag">TRUST THE MEISTERS</small></span></a>'; }
   function header() {
     var seg = function (key, opts, cur) { return '<span class="seg" role="group">' + opts.map(function (o) { return '<button type="button" data-' + key + '="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</span>"; };
-    return '<div class="utility"><div class="wrap util-grid"><span class="rg">18+ only · Bet responsibly</span>' +
+    return '<div class="utility"><div class="wrap util-grid"><span class="rg">18+ only · Bet responsibly <b class="util-free">· All tips free until 1 Jan</b></span>' +
       (window.BM_PUBLIC ? "" : '<span class="util-access"><label class="seg-label" for="access-select">Preview as</label><select id="access-select" class="access-select">' +
       [["full", "Full Meister Access"], ["visitor", "Visitor · no subscription"]].concat(MEISTERS.filter(function (m) { return m.id !== "removed"; }).map(function (m) { return ["sub:" + m.id, m.name + " only"]; }))
         .map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === access ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("") +
       "</select></span>") + /* Owner 23 Nov 09:41: public site hides Preview as, Join now and the test strip until launch (window.BM_PUBLIC) */
       '<span class="util-odds"><span class="seg-label">Odds</span>' + seg("odds", [["dec", "Decimal"], ["frac", "Fractional"], ["us", "US"]], oddsMode) + "</span></div></div>" +
-      /* Owner 23 Nov 09:37: everything free until 1 January, Pro still labelled */ '<div class="free-banner"><div class="wrap"><b>FREE UNTIL 1 JANUARY</b><span>Let the Meisters prove themselves. Every tip, Free and <span class="fb-pro">PRO</span>, is open to everyone until 1 January. After that, Pro tips are for subscribers.</span></div></div>' +
+      /* Owner 23 Nov 09:37 free banner; Keith 28 Nov 12:08 declutter: merged into the utility bar (util-free) */ ''+
       '<header class="mast" id="mast"><div class="wrap">' + brand() +
       '<button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">' + ICON.menu + "</button>" +
       '<nav class="nav" id="site-nav" aria-label="Main">' + (window.BM_MERGE ? GNAV.map(function (g) {
@@ -1519,6 +1519,7 @@
     if (!el) return;
     var R = (BM.NEWSFEED || {}).reviews || [];
     if (!R.length) return;
+    R = R.slice(0, 3); /* Keith 28 Nov 12:08 declutter: 3 reviews on the home page, the rest one click away */
     el.innerHTML = '<ul class="rh">' + R.map(function (r) { var cas = /casino/i.test(r.kind || ""); return '<li><a class="rh-card" href="' + esc(r.href) + '"><span class="rh-top"><b>' + esc(r.name) + '</b><span class="rh-kind' + (cas ? " cas" : "") + '">' + (cas ? "Casino" : "Sportsbook") + '</span></span>' + (r.score != null ? '<span class="rh-score"><b>' + Number(r.score).toFixed(1) + '</b><i>' + (r.desk ? 'Desk review' : 'Score') + '' + '</i></span>' : '') + '<span class="rh-sum">' + esc(r.summary) + '</span><span class="rh-go">Read the review →</span></a></li>'; }).join("") + "</ul>";
   }
   function p2Sections(el) {
